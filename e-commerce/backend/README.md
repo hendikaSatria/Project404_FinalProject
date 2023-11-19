@@ -1,4 +1,4 @@
-## Getting Started
+# Getting Started
 
 First, install pakage:
 
@@ -18,7 +18,7 @@ for example in my local database (postgreSQL)
 
 postgresql://postgres:postgres@localhost:5432/e-commerce
 
-# do migration
+### do migration
 
 ```bash
 
@@ -26,7 +26,7 @@ npx prisma migrate dev
 
 ```
 
-# do seeding
+### do seeding
 
 ```bash
 
