@@ -11,7 +11,7 @@ async function main() {
   });
 
   //Seeding Warehouse
-  const warehouse = await prisma.warehouse.create({
+  const warehouse = await prisma.warehouse.createMany({
     data: [
       {
         province_id: 31,
