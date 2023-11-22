@@ -2,6 +2,7 @@ const { PrismaClient } = require('../prisma/generated/client');
 const prisma = new PrismaClient();
 
 const promoController = {
+
   //Create promo
   createPromo: async (req, res) => {
     try {
@@ -27,10 +28,10 @@ const promoController = {
 
   // Get promo by id
   getPromoById: async (req, res) => {
-    const { promo_id } = req.params;
+    const { id } = req.params;
     try {
       const promotion = await prisma.promotion.findUnique({
-        where: { promo_id: parseInt(promo_id) },
+        where: { promo_id: parseInt(id) },
       });
 
       if (!promotion) {
@@ -45,13 +46,13 @@ const promoController = {
 
   //Update promo
   updatePromo: async (req, res) => {
-    const { promo_id } = req.params;
+    const { id } = req.params;
     const { type, maximum_usage, amount, remaining_usage, admin_id, product_id } = req.body;
 
     try {
     console.log('Updated:', req.body);
       const promotion = await prisma.promotion.update({
-        where: { promo_id: parseInt(promo_id) },
+        where: { promo_id: parseInt(id) },
         data: {
           type,
           maximum_usage,
@@ -69,10 +70,10 @@ const promoController = {
 
   //Delete promo
   deletePromo: async (req, res) => {
-    const { promo_id } = req.params;
+    const { id } = req.params;
     try {
       const promotion = await prisma.promotion.delete({
-        where: { promo_id: parseInt(promo_id) },
+        where: { promo_id: parseInt(id) },
       });
       res.status(200).json({ message: "Successfully deleted"});
     } catch (err) {

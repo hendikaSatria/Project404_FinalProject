@@ -2,7 +2,6 @@ const { PrismaClient } = require('./generated/client');
 const prisma = new PrismaClient();
 
 async function main() {
-
   const currentTimestamp = new Date();
 
   //Seeding Admin
@@ -230,6 +229,24 @@ async function main() {
         payment_status: 'Unconfirmed',
         order_status: 'Check out',
         admin_id: 1,
+      },
+    ],
+  });
+
+  //Seeding Affiliate_Discount
+  const affiliate = await prisma.affiliateDiscount.createMany({
+    data: [
+      {
+        user_id: 1,
+        discount_amount: 1,
+        created_at: currentTimestamp,
+        updated_at: currentTimestamp,
+      },
+      {
+        user_id: 1,
+        discount_amount: 2,
+        created_at: currentTimestamp,
+        updated_at: currentTimestamp,
       },
     ],
   });
