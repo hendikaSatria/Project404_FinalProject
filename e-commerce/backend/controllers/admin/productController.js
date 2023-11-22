@@ -1,6 +1,4 @@
-var express = require('express');
-var router = express.Router();
-const { PrismaClient } = require("../prisma/generated/client");
+const { PrismaClient } = require("../../prisma/generated/client");
 const prisma = new PrismaClient()
 
 // const productController = {
