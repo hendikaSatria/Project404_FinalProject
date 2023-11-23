@@ -1,5 +1,6 @@
+
 const { PrismaClient } = require("../../prisma/generated/client");
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 
 const productController = {
@@ -51,16 +52,19 @@ const productController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
-
+  
   updateProduct: async (req, res) => {
     try {
       const { id } = req.params;
       const { name, description, price, stock, is_available, category_id, warehouse_id, weight } = req.body;
       const intStock = parseInt(stock);
-      const intPrice = parseInt(price);
+      const numericPrice = parseFloat(price);
       const intWeight = parseInt(weight);
-      const isAvailableBoolean = is_available.toLowerCase() === 'true';
-  
+
+      // Pastikan is_available tidak null atau undefined sebelum memanggil toLowerCase
+      const isAvailableBoolean = typeof is_available === 'string' ? is_available.toLowerCase() === 'true' : undefined;
+
+
       const updatedProduct = await prisma.product.update({
         where: {
           product_id: parseInt(id),
@@ -68,21 +72,22 @@ const productController = {
         data: {
           name: name,
           description: description,
-          price: intPrice,
+          price: numericPrice,
           stock: intStock,
           is_available: isAvailableBoolean,
-          category_id: parseInt(category_id), // Convert to number
-          warehouse_id: parseInt(warehouse_id), // Convert to number
+          category_id: parseInt(category_id),
+          warehouse_id: parseInt(warehouse_id),
           weight: intWeight,
         },
       });
-  
+
       res.json(updatedProduct);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+
 
   deleteProduct: async (req, res) => {
     try {
