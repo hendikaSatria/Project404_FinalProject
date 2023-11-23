@@ -1,8 +1,7 @@
-// loginController.js
+// adminController.js
 const { PrismaClient } = require("../../prisma/generated/client");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { serialize, parse } = require('cookie');
 
 const prisma = new PrismaClient();
 
@@ -25,16 +24,8 @@ async function loginController(req, res) {
       expiresIn: '1d',
     });
 
-    // Buat cookie yang berisi token
-    const serialized = serialize('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      path: '/',
-    });
-
-    // Kirim respons dengan token dan set-cookie header
-    res.status(200).json({ token }).header('Set-Cookie', serialized);
+    // Kirim respons dengan token
+    res.status(200).json({ token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -64,17 +55,7 @@ async function registerController(req, res) {
 }
 
 function logoutController(req, res) {
-  // Hapus cookie dengan nama 'token'
-  const serialized = serialize('token', '', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    expires: new Date(0),
-    path: '/',
-  });
-
-  // Kirim respons dengan menghapus cookie
-  res.status(200).header('Set-Cookie', serialized).json({ message: 'Logout successful' });
+  res.status(200).json({ message: 'Logout successful' });
 }
 
 module.exports = {
