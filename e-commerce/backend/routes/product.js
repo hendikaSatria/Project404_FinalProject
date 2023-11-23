@@ -15,6 +15,6 @@ router.get("/:id", authMiddleware, productController.getByID);
 router.post('/', authMiddleware, mtr.upload.single('image'), productController.createProduct);
 router.put('/:id', authMiddleware, productController.updateProduct);
 router.delete('/:id', authMiddleware, productController.deleteProduct);
-
+router.get("/category/:category_id", authMiddleware, productController.getByCategory);
 
 module.exports = router;

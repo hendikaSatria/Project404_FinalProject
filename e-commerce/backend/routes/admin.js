@@ -4,6 +4,8 @@ const {
     registerController,
     logoutController,
   } = require('../controllers/admin/adminController');
+const warehouseController = require('../controllers/warehouseController');
+const categoryController = require("../controllers/categoryCotroller");
 const router = express.Router();
 
 router.post('/login', loginController);
