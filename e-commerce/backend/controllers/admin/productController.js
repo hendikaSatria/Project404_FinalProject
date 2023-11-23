@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 
 const productController = {
+
   getAllProduct: async (req, res) => {
     const products = await prisma.product.findMany();
     res.json(products || {});
@@ -122,4 +123,5 @@ const productController = {
   },
 
 }
+
 module.exports = productController;   
