@@ -163,7 +163,7 @@ model OrderItem {
 
   // Relationships
   product        Product @relation(fields: [product_id], references: [product_id])
-  Orders         Orders? @relation(fields: [ordersOrder_id], references: [order_id])
+  orders         Orders? @relation(fields: [ordersOrder_id], references: [order_id])
   ordersOrder_id Int?
 }
 
