@@ -4,6 +4,7 @@ const router = express.Router();
 const adminRouter = require("./admin");
 const productRouter = require("./product");
 
+
 router.use("/", userRouter);
 router.use("/admin", adminRouter);
 router.use("/product", productRouter);
