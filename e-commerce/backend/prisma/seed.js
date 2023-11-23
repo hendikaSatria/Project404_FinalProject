@@ -2,13 +2,14 @@ const { PrismaClient } = require("./generated/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  //Seeding Admin
+  //seeding Admin
   const admin = await prisma.admin.create({
     data: {
       username: "admin",
       password: "admin",
     },
   });
+  //end of seeding Admin
 
   //Seeding Warehouse
   const warehouse = await prisma.warehouse.createMany({
@@ -31,6 +32,7 @@ async function main() {
       },
     ],
   });
+  //end of seeding Warehouse
 
   //Seeding Category
   const category = await prisma.category.createMany({
@@ -52,6 +54,7 @@ async function main() {
       },
     ],
   });
+  //end of seeding Category
 
   //Seeding Product
   const product = await prisma.product.createMany({
@@ -167,6 +170,169 @@ async function main() {
         weight: 1.5,
       },
     ],
+  });
+  // end of seeding Product
+
+  //seeding User
+  const user = await prisma.user.createMany({
+    data: [
+      {
+        full_name: "John Doe",
+        password: "securepassword1",
+        email: "john.doe@example.com",
+        affiliate_code: "ABC123",
+        billing_address: "123 Main Street, Cityville",
+        affiliate_usage: true,
+      },
+      {
+        full_name: "Jane Smith",
+        password: "strongpass2023",
+        email: "jane.smith@example.com",
+        affiliate_code: "XYZ789",
+        billing_address: "456 Oak Avenue, Townsville",
+        affiliate_usage: false,
+      },
+      {
+        full_name: "Mike Johnson",
+        password: "mypassword123",
+        email: "mike.johnson@example.com",
+        affiliate_code: "DEF456",
+        billing_address: "789 Pine Road, Villagetown",
+        affiliate_usage: true,
+      },
+      {
+        full_name: "Emily Brown",
+        password: "secretword321",
+        email: "emily.brown@example.com",
+        affiliate_code: "GHI789",
+        billing_address: "101 Elm Street, Hamletville",
+        affiliate_usage: false,
+      },
+      {
+        full_name: "Alex Turner",
+        password: "pass1234word",
+        email: "alex.turner@example.com",
+        affiliate_code: "JKL012",
+        billing_address: "202 Birch Lane, Boroughburg",
+        affiliate_usage: true,
+      },
+      {
+        full_name: "Grace Wilson",
+        password: "gracefulpass",
+        email: "grace.wilson@example.com",
+        affiliate_code: "MNO345",
+        billing_address: "303 Cedar Street, Township",
+        affiliate_usage: false,
+      },
+      {
+        full_name: "Daniel Lee",
+        password: "danielpass456",
+        email: "daniel.lee@example.com",
+        affiliate_code: "PQR678",
+        billing_address: "404 Maple Avenue, Citytown",
+        affiliate_usage: true,
+      },
+      {
+        full_name: "Olivia Moore",
+        password: "oliviapass789",
+        email: "olivia.moore@example.com",
+        affiliate_code: "STU901",
+        billing_address: "505 Walnut Road, Villagetown",
+        affiliate_usage: false,
+      },
+      {
+        full_name: "William Davis",
+        password: "william123pass",
+        email: "william.davis@example.com",
+        affiliate_code: "VWX234",
+        billing_address: "606 Oak Lane, Hamletville",
+        affiliate_usage: true,
+      },
+      {
+        full_name: "Sophia Rodriguez",
+        password: "sophiapass567",
+        email: "sophia.rodriguez@example.com",
+        affiliate_code: "YZA567",
+        billing_address: "707 Pine Street, Boroughburg",
+        affiliate_usage: false,
+      },
+    ],
+  });
+  //end of seeding User
+
+  //seeding Orders
+  const order1 = await prisma.orders.upsert({
+    where: {
+      order_id: 1, // ID order yang diinginkan
+    },
+    create: {
+      user_id: 1,
+      order_date: "2023-11-23T05:41:21.924Z",
+      delivery_time: "2023-11-23T05:41:21.924Z",
+      deliver_fee: "100000",
+      total_price: "100149.95",
+      payment_status: "Pending",
+      order_status: "Processing",
+      admin_id: 1,
+      order_items: {
+        create: {
+          order_item_id: 17,
+          product_id: 1, // sesuaikan id dengan id product yang tersedia di database
+          quantity: 5,
+          price: "29.99",
+        },
+      },
+    },
+    update: {},
+  });
+  const order2 = await prisma.orders.upsert({
+    where: {
+      order_id: 2, // ID order yang diinginkan
+    },
+    create: {
+      user_id: 2,
+      order_date: "2023-11-23T05:41:21.924Z",
+      delivery_time: "2023-11-23T05:41:21.924Z",
+      deliver_fee: "100000",
+      total_price: "100149.95",
+      payment_status: "Pending",
+      order_status: "Processing",
+      admin_id: 1,
+      order_items: {
+        create: {
+          order_item_id: 17,
+          product_id: 1, // sesuaikan id dengan id product yang tersedia di database
+          quantity: 5,
+          price: "29.99",
+        },
+      },
+    },
+    update: {},
+  });
+  const order3 = await prisma.orders.upsert({
+    where: {
+      order_id: 3, // ID order yang diinginkan
+    },
+    create: {
+      user_id: 3,
+      order_date: "2023-11-23T05:41:21.924Z",
+      delivery_time: "2023-11-23T05:41:21.924Z",
+      deliver_fee: "100000",
+      total_price: "100149.95",
+      payment_status: "Pending",
+      order_status: "Processing",
+      admin_id: 1,
+      order_items: {
+        create: {
+          order_item_id: 17,
+          product_id: 1, // sesuaikan id dengan id product yang tersedia di database
+          quantity: 5,
+          price: "29.99",
+        },
+      },
+    },
+    update: {},
+    // end of seeding Orders
   });
 }
 
