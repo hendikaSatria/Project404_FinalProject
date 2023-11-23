@@ -5,8 +5,6 @@ const adminRouter = require("./admin");
 const productRouter = require("./product");
 
 
-
-
 router.get("/", homeController.home);
 router.use("/admin", adminRouter);
 router.use("/product", productRouter);
