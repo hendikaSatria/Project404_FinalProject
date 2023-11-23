@@ -113,7 +113,6 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   email: 'email',
   affiliate_code: 'affiliate_code',
-  billing_address: 'billing_address',
   affiliate_usage: 'affiliate_usage',
   created_at: 'created_at',
   updated_at: 'updated_at'
@@ -164,7 +163,8 @@ exports.Prisma.PromotionScalarFieldEnum = {
   amount: 'amount',
   remaining_usage: 'remaining_usage',
   admin_id: 'admin_id',
-  product_id: 'product_id'
+  product_id: 'product_id',
+  promo_code: 'promo_code'
 };
 
 exports.Prisma.UserPromoUsageScalarFieldEnum = {
@@ -175,12 +175,21 @@ exports.Prisma.UserPromoUsageScalarFieldEnum = {
   order_id: 'order_id'
 };
 
+exports.Prisma.ShoppingCartItemScalarFieldEnum = {
+  cart_item_id: 'cart_item_id',
+  cart_id: 'cart_id',
+  product_id: 'product_id',
+  quantity: 'quantity',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.ShoppingCartScalarFieldEnum = {
   cart_id: 'cart_id',
   user_id: 'user_id',
-  product_id: 'product_id',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  productProduct_id: 'productProduct_id'
 };
 
 exports.Prisma.OrdersScalarFieldEnum = {
@@ -192,7 +201,10 @@ exports.Prisma.OrdersScalarFieldEnum = {
   total_price: 'total_price',
   payment_status: 'payment_status',
   order_status: 'order_status',
-  admin_id: 'admin_id'
+  admin_id: 'admin_id',
+  promo_code: 'promo_code',
+  promo_discount_amount: 'promo_discount_amount',
+  affiliate_discount_amount: 'affiliate_discount_amount'
 };
 
 exports.Prisma.OrderItemScalarFieldEnum = {
@@ -262,6 +274,7 @@ exports.Prisma.ModelName = {
   Admin: 'Admin',
   Promotion: 'Promotion',
   UserPromoUsage: 'UserPromoUsage',
+  ShoppingCartItem: 'ShoppingCartItem',
   ShoppingCart: 'ShoppingCart',
   Orders: 'Orders',
   OrderItem: 'OrderItem',
