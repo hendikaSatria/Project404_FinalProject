@@ -81,8 +81,89 @@ const registerUser = async (req, res) => {
     }
   };
   
+  const logoutUser = async (req, res) => {
+    try {
+      res.json({ message: 'Logout successful' });
+    } catch (error) {
+      console.error('Logout error:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+
+  
+  const viewProfile = async (req, res) => {
+    try {
+      const userId = req.user.userId; 
+  
+      // Retrieve the user's profile information from the database
+      const userProfile = await prisma.user.findFirst({
+        where: { user_id: userId },
+        include: {
+          user_addresses: true,
+        },
+      });
+  
+      if (!userProfile) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      res.json({ user_profile: userProfile });
+    } catch (error) {
+      console.error('View profile error:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+  
+const updateAddress = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { province_id, province_name, city_id, city_name, postal_code } = req.body;
+
+    // Find the user existing address
+    const existingAddress = await prisma.userAddress.findFirst({
+      where: {
+        user_id: userId,
+      },
+    });
+
+    // If the user has an existing address, update it if not create a new one
+    const updatedAddress = existingAddress
+      ? await prisma.userAddress.update({
+          where: {
+            user_address_id: existingAddress.user_address_id,
+          },
+          data: {
+            province_id,
+            province_name,
+            city_id,
+            city_name,
+            postal_code,
+            updated_at: new Date(),
+          },
+        })
+      : await prisma.userAddress.create({
+          data: {
+            user_id: userId,
+            province_id,
+            province_name,
+            city_id,
+            city_name,
+            postal_code,
+          },
+        });
+
+    res.json({ user_address: updatedAddress, message: 'Address updated successfully' });
+  } catch (error) {
+    console.error('Update address error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
+  updateAddress,
+  viewProfile,
 };
+

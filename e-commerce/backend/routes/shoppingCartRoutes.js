@@ -15,7 +15,7 @@ router.post('/add-to-cart', async (req, res) => {
   }
 });
 
-// Get the user's shopping cart
+// Get the user shopping cart
 router.get('/get-shopping-cart/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId, 10);
 

@@ -134,7 +134,7 @@ async function main() {
         // Fetch admin ID for associating with promotions
         const admin = await prisma.admin.findUnique({
           where: {
-            admin_id: 1, // Replace 1 with the actual admin_id you want to fetch
+            admin_id: 1, 
           },
         });
     
