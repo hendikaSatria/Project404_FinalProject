@@ -136,6 +136,7 @@ model ShoppingCart {
 model Orders {
   order_id       Int      @id @default(autoincrement())
   user_id        Int
+  order_item_id  Int       @default(1)
   order_date     DateTime
   delivery_time  DateTime
   deliver_fee    Decimal
@@ -143,6 +144,8 @@ model Orders {
   payment_status String
   order_status   String
   admin_id       Int
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt @default(now())
 
   // Relationships
   user            User              @relation(fields: [user_id], references: [user_id])
