@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const affiliateController = require('../controllers/affiliateController');
 
-router.get('/', affiliateController.getAllAffiliate)
-router.get('/:id', affiliateController.getAffiliateById)
-router.post('/create', affiliateController.createAffiliate)
+router.get('/', affiliateController.getAllAffiliate);
+router.get('/:id', affiliateController.getAffiliateById);
+router.post('/create', affiliateController.createAffiliate);
 router.put('/:id', affiliateController.updateAffiliate);
-router.delete('/:id', affiliateController.deleteAffiliate)
+router.delete('/:id', affiliateController.deleteAffiliate);
 
 module.exports = router;
+    

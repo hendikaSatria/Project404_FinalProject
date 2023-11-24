@@ -2,7 +2,7 @@ const { PrismaClient } = require('../prisma/generated/client');
 const prisma = new PrismaClient();
 
 const affiliateController = {
-    
+  
   //Create affiliate
   createAffiliate: async (req, res) => {
     try {
@@ -38,7 +38,7 @@ const affiliateController = {
         return res.status(404).json({ message: 'Discount not found.' });
       }
 
-      res.json(affiliate);
+      res.status(201).json(affiliate);
     } catch (err) {
       res.status(500).json({ err: err.message });
     }
@@ -58,7 +58,7 @@ const affiliateController = {
           discount_amount,
         },
       });
-      res.json(affiliate);
+      res.status(200).json(affiliate);
     } catch (err) {
       res.status(500).json({ err: err.message });
     }
@@ -71,7 +71,7 @@ const affiliateController = {
       const affiliate = await prisma.affiliateDiscount.delete({
         where: { affiliate_discount_id: parseInt(id) },
       });
-      res.status(200).json({ message: 'Successfully deleted' });
+      res.status(204).json({ message: 'Successfully deleted' });
     } catch (err) {
       res.status(500).json({ err: err.message });
     }

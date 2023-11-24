@@ -9,7 +9,7 @@ const promoController = {
       const promotion = await prisma.promotion.create({
         data: req.body,
       });
-      console.log('New data :', req.body)
+      console.log('New data :', req.body);
       res.status(201).json(promotion);
     } catch (err) {
       res.status(500).json({ err: err.message });
@@ -38,7 +38,7 @@ const promoController = {
         return res.status(404).json({ message: 'Promotion not found.' });
       }
 
-      res.json(promotion);
+      res.status(200).json(promotion);
     } catch (err) {
       res.status(500).json({ err: err.message });
     }
@@ -50,7 +50,7 @@ const promoController = {
     const { type, maximum_usage, amount, remaining_usage, admin_id, product_id } = req.body;
 
     try {
-    console.log('Updated:', req.body);
+      console.log('Updated:', req.body);
       const promotion = await prisma.promotion.update({
         where: { promo_id: parseInt(id) },
         data: {
@@ -62,7 +62,7 @@ const promoController = {
           product_id,
         },
       });
-      res.json(promotion);
+      res.status(200).json(promotion);
     } catch (err) {
       res.status(500).json({ err: err.message });
     }
@@ -75,7 +75,7 @@ const promoController = {
       const promotion = await prisma.promotion.delete({
         where: { promo_id: parseInt(id) },
       });
-      res.status(200).json({ message: "Successfully deleted"});
+      res.status(204).json({ message: 'Successfully deleted' });
     } catch (err) {
       res.status(500).json({ err: err.message });
     }
