@@ -10,6 +10,19 @@ const calculateTotalPrice = (orderItems) => {
     }, 0);
 };
 
+const groupItemsByWarehouse = (cartItems) => {
+    const warehouseGroups = {};
+    cartItems.forEach((cartItem) => {
+        const warehouseId = cartItem.product.warehouse_id;
+        if (!warehouseGroups[warehouseId]) {
+            warehouseGroups[warehouseId] = [];
+        }
+        warehouseGroups[warehouseId].push(cartItem);
+    });
+
+    return Object.values(warehouseGroups);
+};
+
 const calculateTotalWeight = (cartItems) => {
     return cartItems.reduce((totalWeight, cartItem) => {
         const itemWeight = cartItem.product.weight || 0;
@@ -19,36 +32,71 @@ const calculateTotalWeight = (cartItems) => {
 
 const createOrder = async (userId, promoCode = null, courier) => {
     try {
-        // Get the user shopping cart
-        const cartItems = await shoppingCartController.getShoppingCart(userId);
+        const userIdInt = parseInt(userId, 10);
+        const cartItems = await shoppingCartController.getShoppingCart(userIdInt);
 
-        // If the cart is empty, throw an error
         if (cartItems.length === 0) {
             throw new Error('Shopping cart is empty');
         }
 
-        // Calculate total price after getting the cart items
-        const totalPrice = calculateTotalPrice(cartItems);
-        const userIdInt = parseInt(userId, 10);
+        const warehouseGroups = groupItemsByWarehouse(cartItems);
 
-        // Calculate shipping fee
-        const userAddress = await prisma.userAddress.findFirst({
+        let totalPrice = 0;
+        let totalShippingFee = 0;
+
+        const user = await prisma.user.findUnique({
             where: {
                 user_id: userIdInt,
             },
+            include: {
+                user_addresses: {
+                    select: {
+                        city_id: true,
+                    },
+                },
+            },
         });
 
-        if (!userAddress) {
-            console.error('User address not found');
-            throw new Error('User address not found');
+        if (!user) {
+            console.error('User not found');
+            throw new Error('User not found');
         }
 
-        const destinationCityId = userAddress.city_id;
-        const originCityId = userAddress.city_id;
-        const weight = calculateTotalWeight(cartItems);
-        const shippingFee = await shippingController.calculateShippingFee(originCityId, destinationCityId, weight, courier);
+        const userAddresses = user.user_addresses;
 
-        // Apply discount if a promo code is provided
+        if (!userAddresses || userAddresses.length === 0 || !userAddresses[0].city_id) {
+            console.error('User address or city ID not found');
+            throw new Error('User address or city ID not found');
+        }
+
+        const destinationCityId = userAddresses[0].city_id;
+
+        // Iterate over each warehouse group
+        for (const warehouseGroup of warehouseGroups) {
+            // Check if the warehouse group is not empty
+            if (warehouseGroup.length > 0) {
+                // Calculate total weight for the warehouse group
+                const totalWeight = calculateTotalWeight(warehouseGroup);
+
+                // Calculate shipping fee for the warehouse group
+                const warehouseShippingFee = await shippingController.calculateShippingFee(
+                    warehouseGroup[0].product.warehouse_id,
+                    destinationCityId,
+                    totalWeight,
+                    courier
+                );
+
+                // Add the shipping fee to the total shipping fee
+                totalShippingFee += warehouseShippingFee;
+
+                // Calculate total price for the warehouse group
+                const warehouseTotalPrice = calculateTotalPrice(warehouseGroup);
+
+                // Add the total price to the overall total price
+                totalPrice += warehouseTotalPrice;
+            }
+        }
+
         let promoDiscountAmount = 0;
         let affiliateDiscountAmount = 0;
 
@@ -68,7 +116,6 @@ const createOrder = async (userId, promoCode = null, courier) => {
                     promoDiscountAmount = promo.amount;
                 }
 
-                // Decrease the remaining usage of the promo code
                 await prisma.promotion.update({
                     where: { promo_id: promo.promo_id },
                     data: { remaining_usage: promo.remaining_usage - 1 },
@@ -76,28 +123,24 @@ const createOrder = async (userId, promoCode = null, courier) => {
             }
         }
 
-        // Check if the user has affiliate usage and apply discount
-        const user = await prisma.user.findUnique({
+        const userAffiliate = await prisma.user.findUnique({
             where: {
                 user_id: userIdInt,
             },
         });
 
-        if (user && user.affiliate_usage) {
-            // Assuming affiliate discount is 50%
+        if (userAffiliate && userAffiliate.affiliate_usage) {
             affiliateDiscountAmount = totalPrice * 0.5;
 
-            // Update the user's affiliate usage to false
             await prisma.user.update({
                 where: { user_id: userIdInt },
                 data: { affiliate_usage: false },
             });
         }
 
-        // Update total price with discounfs
         const totalPriceWithDiscounts = totalPrice - promoDiscountAmount - affiliateDiscountAmount;
+        const totalPriceWithShipping = totalPriceWithDiscounts + totalShippingFee;
 
-        // Create a new order in the Orders table with shipping fee and promo discount included
         const order = await prisma.orders.create({
             data: {
                 user: {
@@ -107,8 +150,8 @@ const createOrder = async (userId, promoCode = null, courier) => {
                 },
                 order_date: new Date(),
                 delivery_time: new Date(),
-                deliver_fee: shippingFee,
-                total_price: parseFloat((totalPriceWithDiscounts + shippingFee).toFixed(2)),
+                deliver_fee: totalShippingFee,
+                total_price: parseFloat(totalPriceWithShipping.toFixed(2)),
                 payment_status: 'Pending',
                 order_status: 'Processing',
                 admin: {
@@ -120,32 +163,31 @@ const createOrder = async (userId, promoCode = null, courier) => {
                 promo_discount_amount: promoDiscountAmount,
                 affiliate_discount_amount: affiliateDiscountAmount,
                 order_items: {
-                    create: cartItems.map((cartItem) => ({
-                        product: {
-                            connect: {
-                                product_id: cartItem.product.product_id,
+                    create: warehouseGroups.flatMap((group) =>
+                        group.map((cartItem) => ({
+                            product: {
+                                connect: {
+                                    product_id: cartItem.product.product_id,
+                                },
                             },
-                        },
-                        quantity: cartItem.quantity,
-                        price: cartItem.product.price, 
-                    })),
+                            quantity: cartItem.quantity,
+                            price: cartItem.product.price,
+                        }))
+                    ),
                 },
             },
         });
 
-        // Get the user shopping cart again
         const userCart = await prisma.shoppingCart.findFirst({
             where: {
                 user_id: userIdInt,
             },
         });
 
-        // Delete the related shopping cart items
         await prisma.shoppingCartItem.deleteMany({
             where: { cart_id: userCart.cart_id },
         });
 
-        // Delete the entire shopping cart entry
         await prisma.shoppingCart.delete({
             where: { cart_id: userCart.cart_id },
         });
@@ -157,14 +199,10 @@ const createOrder = async (userId, promoCode = null, courier) => {
     }
 };
 
-
-
-// Get orders for a specific user
 const getOrdersForUser = async (userId) => {
     try {
         const userIdInt = parseInt(userId, 10);
 
-        // Retrieve orders for the specified user
         const orders = await prisma.orders.findMany({
             where: {
                 user_id: userIdInt,
