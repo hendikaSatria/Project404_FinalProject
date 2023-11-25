@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:5432/e-commerce"
+  url      = "postgresql://postgres:121904@localhost:5432/e-commerce"
 }
 
 // User Table
@@ -17,7 +17,6 @@ model User {
   password        String
   email           String
   affiliate_code  String
-  billing_address String
   affiliate_usage Boolean
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt

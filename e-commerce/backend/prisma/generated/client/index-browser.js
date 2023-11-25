@@ -113,7 +113,6 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   email: 'email',
   affiliate_code: 'affiliate_code',
-  billing_address: 'billing_address',
   affiliate_usage: 'affiliate_usage',
   created_at: 'created_at',
   updated_at: 'updated_at'

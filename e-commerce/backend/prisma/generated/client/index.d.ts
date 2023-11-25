@@ -2213,7 +2213,6 @@ export namespace Prisma {
     password: string | null
     email: string | null
     affiliate_code: string | null
-    billing_address: string | null
     affiliate_usage: boolean | null
     created_at: Date | null
     updated_at: Date | null
@@ -2225,7 +2224,6 @@ export namespace Prisma {
     password: string | null
     email: string | null
     affiliate_code: string | null
-    billing_address: string | null
     affiliate_usage: boolean | null
     created_at: Date | null
     updated_at: Date | null
@@ -2237,7 +2235,6 @@ export namespace Prisma {
     password: number
     email: number
     affiliate_code: number
-    billing_address: number
     affiliate_usage: number
     created_at: number
     updated_at: number
@@ -2259,7 +2256,6 @@ export namespace Prisma {
     password?: true
     email?: true
     affiliate_code?: true
-    billing_address?: true
     affiliate_usage?: true
     created_at?: true
     updated_at?: true
@@ -2271,7 +2267,6 @@ export namespace Prisma {
     password?: true
     email?: true
     affiliate_code?: true
-    billing_address?: true
     affiliate_usage?: true
     created_at?: true
     updated_at?: true
@@ -2283,7 +2278,6 @@ export namespace Prisma {
     password?: true
     email?: true
     affiliate_code?: true
-    billing_address?: true
     affiliate_usage?: true
     created_at?: true
     updated_at?: true
@@ -2382,7 +2376,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at: Date
     updated_at: Date
@@ -2413,7 +2406,6 @@ export namespace Prisma {
     password?: boolean
     email?: boolean
     affiliate_code?: boolean
-    billing_address?: boolean
     affiliate_usage?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -2431,7 +2423,6 @@ export namespace Prisma {
     password?: boolean
     email?: boolean
     affiliate_code?: boolean
-    billing_address?: boolean
     affiliate_usage?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -2462,7 +2453,6 @@ export namespace Prisma {
       password: string
       email: string
       affiliate_code: string
-      billing_address: string
       affiliate_usage: boolean
       created_at: Date
       updated_at: Date
@@ -2874,7 +2864,6 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly affiliate_code: FieldRef<"User", 'String'>
-    readonly billing_address: FieldRef<"User", 'String'>
     readonly affiliate_usage: FieldRef<"User", 'Boolean'>
     readonly created_at: FieldRef<"User", 'DateTime'>
     readonly updated_at: FieldRef<"User", 'DateTime'>
@@ -15595,7 +15584,6 @@ export namespace Prisma {
     password: 'password',
     email: 'email',
     affiliate_code: 'affiliate_code',
-    billing_address: 'billing_address',
     affiliate_usage: 'affiliate_usage',
     created_at: 'created_at',
     updated_at: 'updated_at'
@@ -15877,7 +15865,6 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     affiliate_code?: StringFilter<"User"> | string
-    billing_address?: StringFilter<"User"> | string
     affiliate_usage?: BoolFilter<"User"> | boolean
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
@@ -15894,7 +15881,6 @@ export namespace Prisma {
     password?: SortOrder
     email?: SortOrder
     affiliate_code?: SortOrder
-    billing_address?: SortOrder
     affiliate_usage?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -15914,7 +15900,6 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     affiliate_code?: StringFilter<"User"> | string
-    billing_address?: StringFilter<"User"> | string
     affiliate_usage?: BoolFilter<"User"> | boolean
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
@@ -15931,7 +15916,6 @@ export namespace Prisma {
     password?: SortOrder
     email?: SortOrder
     affiliate_code?: SortOrder
-    billing_address?: SortOrder
     affiliate_usage?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -15951,7 +15935,6 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
     affiliate_code?: StringWithAggregatesFilter<"User"> | string
-    billing_address?: StringWithAggregatesFilter<"User"> | string
     affiliate_usage?: BoolWithAggregatesFilter<"User"> | boolean
     created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -16818,7 +16801,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -16835,7 +16817,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -16851,7 +16832,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16868,7 +16848,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16885,7 +16864,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -16896,7 +16874,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16908,7 +16885,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17843,7 +17819,6 @@ export namespace Prisma {
     password?: SortOrder
     email?: SortOrder
     affiliate_code?: SortOrder
-    billing_address?: SortOrder
     affiliate_usage?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -17859,7 +17834,6 @@ export namespace Prisma {
     password?: SortOrder
     email?: SortOrder
     affiliate_code?: SortOrder
-    billing_address?: SortOrder
     affiliate_usage?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -17871,7 +17845,6 @@ export namespace Prisma {
     password?: SortOrder
     email?: SortOrder
     affiliate_code?: SortOrder
-    billing_address?: SortOrder
     affiliate_usage?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -20387,7 +20360,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -20403,7 +20375,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -20434,7 +20405,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20450,7 +20420,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20936,7 +20905,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -20952,7 +20920,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -21039,7 +21006,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21055,7 +21021,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21138,7 +21103,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -21154,7 +21118,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -21223,7 +21186,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21239,7 +21201,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21298,7 +21259,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -21314,7 +21274,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -21446,7 +21405,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21462,7 +21420,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21954,7 +21911,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -21970,7 +21926,6 @@ export namespace Prisma {
     password: string
     email: string
     affiliate_code: string
-    billing_address: string
     affiliate_usage: boolean
     created_at?: Date | string
     updated_at?: Date | string
@@ -22001,7 +21956,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22017,7 +21971,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     affiliate_code?: StringFieldUpdateOperationsInput | string
-    billing_address?: StringFieldUpdateOperationsInput | string
     affiliate_usage?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
