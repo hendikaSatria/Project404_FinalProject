@@ -171,10 +171,6 @@ async function main() {
       },
     ],
   });
-<<<<<<< Updated upstream
-  // end of seeding Product
-=======
->>>>>>> Stashed changes
 
   //seeding User
   const user = await prisma.user.createMany({

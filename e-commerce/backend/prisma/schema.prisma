@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:5432/e-commerce"
+  url      = "postgresql://postgres:password@localhost:5432/e-commerce"
 }
 
 // User Table
@@ -17,7 +17,6 @@ model User {
   password        String
   email           String
   affiliate_code  String
-  billing_address String
   affiliate_usage Boolean
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt
@@ -46,11 +45,12 @@ model Product {
   updated_at   DateTime @updatedAt
 
   // Relationships
-  category     Category       @relation(fields: [category_id], references: [category_id])
-  warehouse    Warehouse      @relation(fields: [warehouse_id], references: [warehouse_id])
-  promotions   Promotion[]
-  order_items  OrderItem[]
-  ShoppingCart ShoppingCart[]
+  category         Category           @relation(fields: [category_id], references: [category_id])
+  warehouse        Warehouse          @relation(fields: [warehouse_id], references: [warehouse_id])
+  promotions       Promotion[]
+  order_items      OrderItem[]
+  ShoppingCart     ShoppingCart[]
+  ShoppingCartItem ShoppingCartItem[]
 }
 
 // AffiliateDiscount Model
@@ -98,6 +98,7 @@ model Promotion {
   remaining_usage Int
   admin_id        Int
   product_id      Int?
+  promo_code      String? 
 
   // Relationships
   admin          Admin            @relation(fields: [admin_id], references: [admin_id])
@@ -119,41 +120,58 @@ model UserPromoUsage {
   order Orders?   @relation(fields: [order_id], references: [order_id])
 }
 
+// Shopping Cart Items Table
+model ShoppingCartItem {
+  cart_item_id Int      @id @default(autoincrement())
+  cart_id      Int
+  product_id   Int
+  quantity     Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  // Relationships
+  cart    ShoppingCart @relation(fields: [cart_id], references: [cart_id])
+  product Product      @relation(fields: [product_id], references: [product_id])
+}
+
 // Shopping Cart Table
 model ShoppingCart {
   cart_id    Int      @id @default(autoincrement())
   user_id    Int
-  product_id Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   // Relationships
-  user    User    @relation(fields: [user_id], references: [user_id])
-  product Product @relation(fields: [product_id], references: [product_id])
+  user              User               @relation(fields: [user_id], references: [user_id])
+  cart_items        ShoppingCartItem[]
+  Product           Product?           @relation(fields: [productProduct_id], references: [product_id])
+  productProduct_id Int?
 }
 
 // Orders Table
 model Orders {
-  order_id       Int      @id @default(autoincrement())
-  user_id        Int
-  order_item_id  Int       @default(1)
-  order_date     DateTime
-  delivery_time  DateTime
-  deliver_fee    Decimal
-  total_price    Decimal
-  payment_status String
-  order_status   String
-  admin_id       Int
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt @default(now())
+  order_id               Int      @id @default(autoincrement())
+  user_id                Int
+  order_date             DateTime
+  delivery_time          DateTime
+  deliver_fee            Decimal
+  total_price            Decimal
+  payment_status         String
+  order_status           String
+  admin_id               Int
+  promo_code             String?
+  promo_discount_amount  Decimal? 
+  affiliate_discount_amount Float @default(0.0)
+
 
   // Relationships
-  user            User              @relation(fields: [user_id], references: [user_id])
-  admin           Admin             @relation(fields: [admin_id], references: [admin_id])
-  order_items     OrderItem[]
-  UserPromoUsage  UserPromoUsage[]
-  ProofsOfPayment ProofsOfPayment[]
+  user                   User              @relation(fields: [user_id], references: [user_id])
+  admin                  Admin             @relation(fields: [admin_id], references: [admin_id])
+  order_items            OrderItem[]
+  UserPromoUsage         UserPromoUsage[]
+  ProofsOfPayment        ProofsOfPayment[]
 }
+
 
 // Order Items Table
 model OrderItem {
