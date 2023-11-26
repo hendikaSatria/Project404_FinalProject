@@ -16,7 +16,7 @@ router.post("/register", registerController);
 router.post("/logout", logoutController);
 
 //midlewareAdmin
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 //warehouse
 router
