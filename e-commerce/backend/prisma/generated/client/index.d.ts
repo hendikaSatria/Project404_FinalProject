@@ -10438,6 +10438,7 @@ export namespace Prisma {
   export type OrdersAvgAggregateOutputType = {
     order_id: number | null
     user_id: number | null
+    order_item_id: number | null
     deliver_fee: Decimal | null
     total_price: Decimal | null
     admin_id: number | null
@@ -10446,6 +10447,7 @@ export namespace Prisma {
   export type OrdersSumAggregateOutputType = {
     order_id: number | null
     user_id: number | null
+    order_item_id: number | null
     deliver_fee: Decimal | null
     total_price: Decimal | null
     admin_id: number | null
@@ -10454,6 +10456,7 @@ export namespace Prisma {
   export type OrdersMinAggregateOutputType = {
     order_id: number | null
     user_id: number | null
+    order_item_id: number | null
     order_date: Date | null
     delivery_time: Date | null
     deliver_fee: Decimal | null
@@ -10461,11 +10464,14 @@ export namespace Prisma {
     payment_status: string | null
     order_status: string | null
     admin_id: number | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type OrdersMaxAggregateOutputType = {
     order_id: number | null
     user_id: number | null
+    order_item_id: number | null
     order_date: Date | null
     delivery_time: Date | null
     deliver_fee: Decimal | null
@@ -10473,11 +10479,14 @@ export namespace Prisma {
     payment_status: string | null
     order_status: string | null
     admin_id: number | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type OrdersCountAggregateOutputType = {
     order_id: number
     user_id: number
+    order_item_id: number
     order_date: number
     delivery_time: number
     deliver_fee: number
@@ -10485,6 +10494,8 @@ export namespace Prisma {
     payment_status: number
     order_status: number
     admin_id: number
+    created_at: number
+    updated_at: number
     _all: number
   }
 
@@ -10492,6 +10503,7 @@ export namespace Prisma {
   export type OrdersAvgAggregateInputType = {
     order_id?: true
     user_id?: true
+    order_item_id?: true
     deliver_fee?: true
     total_price?: true
     admin_id?: true
@@ -10500,6 +10512,7 @@ export namespace Prisma {
   export type OrdersSumAggregateInputType = {
     order_id?: true
     user_id?: true
+    order_item_id?: true
     deliver_fee?: true
     total_price?: true
     admin_id?: true
@@ -10508,6 +10521,7 @@ export namespace Prisma {
   export type OrdersMinAggregateInputType = {
     order_id?: true
     user_id?: true
+    order_item_id?: true
     order_date?: true
     delivery_time?: true
     deliver_fee?: true
@@ -10515,11 +10529,14 @@ export namespace Prisma {
     payment_status?: true
     order_status?: true
     admin_id?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type OrdersMaxAggregateInputType = {
     order_id?: true
     user_id?: true
+    order_item_id?: true
     order_date?: true
     delivery_time?: true
     deliver_fee?: true
@@ -10527,11 +10544,14 @@ export namespace Prisma {
     payment_status?: true
     order_status?: true
     admin_id?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type OrdersCountAggregateInputType = {
     order_id?: true
     user_id?: true
+    order_item_id?: true
     order_date?: true
     delivery_time?: true
     deliver_fee?: true
@@ -10539,6 +10559,8 @@ export namespace Prisma {
     payment_status?: true
     order_status?: true
     admin_id?: true
+    created_at?: true
+    updated_at?: true
     _all?: true
   }
 
@@ -10631,6 +10653,7 @@ export namespace Prisma {
   export type OrdersGroupByOutputType = {
     order_id: number
     user_id: number
+    order_item_id: number
     order_date: Date
     delivery_time: Date
     deliver_fee: Decimal
@@ -10638,6 +10661,8 @@ export namespace Prisma {
     payment_status: string
     order_status: string
     admin_id: number
+    created_at: Date
+    updated_at: Date
     _count: OrdersCountAggregateOutputType | null
     _avg: OrdersAvgAggregateOutputType | null
     _sum: OrdersSumAggregateOutputType | null
@@ -10662,6 +10687,7 @@ export namespace Prisma {
   export type OrdersSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     order_id?: boolean
     user_id?: boolean
+    order_item_id?: boolean
     order_date?: boolean
     delivery_time?: boolean
     deliver_fee?: boolean
@@ -10669,6 +10695,8 @@ export namespace Prisma {
     payment_status?: boolean
     order_status?: boolean
     admin_id?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     admin?: boolean | AdminDefaultArgs<ExtArgs>
     order_items?: boolean | Orders$order_itemsArgs<ExtArgs>
@@ -10680,6 +10708,7 @@ export namespace Prisma {
   export type OrdersSelectScalar = {
     order_id?: boolean
     user_id?: boolean
+    order_item_id?: boolean
     order_date?: boolean
     delivery_time?: boolean
     deliver_fee?: boolean
@@ -10687,6 +10716,8 @@ export namespace Prisma {
     payment_status?: boolean
     order_status?: boolean
     admin_id?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }
 
   export type OrdersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10711,6 +10742,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       order_id: number
       user_id: number
+      order_item_id: number
       order_date: Date
       delivery_time: Date
       deliver_fee: Prisma.Decimal
@@ -10718,6 +10750,8 @@ export namespace Prisma {
       payment_status: string
       order_status: string
       admin_id: number
+      created_at: Date
+      updated_at: Date
     }, ExtArgs["result"]["orders"]>
     composites: {}
   }
@@ -11123,6 +11157,7 @@ export namespace Prisma {
   interface OrdersFieldRefs {
     readonly order_id: FieldRef<"Orders", 'Int'>
     readonly user_id: FieldRef<"Orders", 'Int'>
+    readonly order_item_id: FieldRef<"Orders", 'Int'>
     readonly order_date: FieldRef<"Orders", 'DateTime'>
     readonly delivery_time: FieldRef<"Orders", 'DateTime'>
     readonly deliver_fee: FieldRef<"Orders", 'Decimal'>
@@ -11130,6 +11165,8 @@ export namespace Prisma {
     readonly payment_status: FieldRef<"Orders", 'String'>
     readonly order_status: FieldRef<"Orders", 'String'>
     readonly admin_id: FieldRef<"Orders", 'Int'>
+    readonly created_at: FieldRef<"Orders", 'DateTime'>
+    readonly updated_at: FieldRef<"Orders", 'DateTime'>
   }
     
 
@@ -15692,13 +15729,16 @@ export namespace Prisma {
   export const OrdersScalarFieldEnum: {
     order_id: 'order_id',
     user_id: 'user_id',
+    order_item_id: 'order_item_id',
     order_date: 'order_date',
     delivery_time: 'delivery_time',
     deliver_fee: 'deliver_fee',
     total_price: 'total_price',
     payment_status: 'payment_status',
     order_status: 'order_status',
-    admin_id: 'admin_id'
+    admin_id: 'admin_id',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
   };
 
   export type OrdersScalarFieldEnum = (typeof OrdersScalarFieldEnum)[keyof typeof OrdersScalarFieldEnum]
@@ -16438,6 +16478,7 @@ export namespace Prisma {
     NOT?: OrdersWhereInput | OrdersWhereInput[]
     order_id?: IntFilter<"Orders"> | number
     user_id?: IntFilter<"Orders"> | number
+    order_item_id?: IntFilter<"Orders"> | number
     order_date?: DateTimeFilter<"Orders"> | Date | string
     delivery_time?: DateTimeFilter<"Orders"> | Date | string
     deliver_fee?: DecimalFilter<"Orders"> | Decimal | DecimalJsLike | number | string
@@ -16445,6 +16486,8 @@ export namespace Prisma {
     payment_status?: StringFilter<"Orders"> | string
     order_status?: StringFilter<"Orders"> | string
     admin_id?: IntFilter<"Orders"> | number
+    created_at?: DateTimeFilter<"Orders"> | Date | string
+    updated_at?: DateTimeFilter<"Orders"> | Date | string
     user?: XOR<UserRelationFilter, UserWhereInput>
     admin?: XOR<AdminRelationFilter, AdminWhereInput>
     order_items?: OrderItemListRelationFilter
@@ -16455,6 +16498,7 @@ export namespace Prisma {
   export type OrdersOrderByWithRelationInput = {
     order_id?: SortOrder
     user_id?: SortOrder
+    order_item_id?: SortOrder
     order_date?: SortOrder
     delivery_time?: SortOrder
     deliver_fee?: SortOrder
@@ -16462,6 +16506,8 @@ export namespace Prisma {
     payment_status?: SortOrder
     order_status?: SortOrder
     admin_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
     user?: UserOrderByWithRelationInput
     admin?: AdminOrderByWithRelationInput
     order_items?: OrderItemOrderByRelationAggregateInput
@@ -16475,6 +16521,7 @@ export namespace Prisma {
     OR?: OrdersWhereInput[]
     NOT?: OrdersWhereInput | OrdersWhereInput[]
     user_id?: IntFilter<"Orders"> | number
+    order_item_id?: IntFilter<"Orders"> | number
     order_date?: DateTimeFilter<"Orders"> | Date | string
     delivery_time?: DateTimeFilter<"Orders"> | Date | string
     deliver_fee?: DecimalFilter<"Orders"> | Decimal | DecimalJsLike | number | string
@@ -16482,6 +16529,8 @@ export namespace Prisma {
     payment_status?: StringFilter<"Orders"> | string
     order_status?: StringFilter<"Orders"> | string
     admin_id?: IntFilter<"Orders"> | number
+    created_at?: DateTimeFilter<"Orders"> | Date | string
+    updated_at?: DateTimeFilter<"Orders"> | Date | string
     user?: XOR<UserRelationFilter, UserWhereInput>
     admin?: XOR<AdminRelationFilter, AdminWhereInput>
     order_items?: OrderItemListRelationFilter
@@ -16492,6 +16541,7 @@ export namespace Prisma {
   export type OrdersOrderByWithAggregationInput = {
     order_id?: SortOrder
     user_id?: SortOrder
+    order_item_id?: SortOrder
     order_date?: SortOrder
     delivery_time?: SortOrder
     deliver_fee?: SortOrder
@@ -16499,6 +16549,8 @@ export namespace Prisma {
     payment_status?: SortOrder
     order_status?: SortOrder
     admin_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
     _count?: OrdersCountOrderByAggregateInput
     _avg?: OrdersAvgOrderByAggregateInput
     _max?: OrdersMaxOrderByAggregateInput
@@ -16512,6 +16564,7 @@ export namespace Prisma {
     NOT?: OrdersScalarWhereWithAggregatesInput | OrdersScalarWhereWithAggregatesInput[]
     order_id?: IntWithAggregatesFilter<"Orders"> | number
     user_id?: IntWithAggregatesFilter<"Orders"> | number
+    order_item_id?: IntWithAggregatesFilter<"Orders"> | number
     order_date?: DateTimeWithAggregatesFilter<"Orders"> | Date | string
     delivery_time?: DateTimeWithAggregatesFilter<"Orders"> | Date | string
     deliver_fee?: DecimalWithAggregatesFilter<"Orders"> | Decimal | DecimalJsLike | number | string
@@ -16519,6 +16572,8 @@ export namespace Prisma {
     payment_status?: StringWithAggregatesFilter<"Orders"> | string
     order_status?: StringWithAggregatesFilter<"Orders"> | string
     admin_id?: IntWithAggregatesFilter<"Orders"> | number
+    created_at?: DateTimeWithAggregatesFilter<"Orders"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"Orders"> | Date | string
   }
 
   export type OrderItemWhereInput = {
@@ -17368,12 +17423,15 @@ export namespace Prisma {
   }
 
   export type OrdersCreateInput = {
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
     total_price: Decimal | DecimalJsLike | number | string
     payment_status: string
     order_status: string
+    created_at?: Date | string
+    updated_at?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
     admin: AdminCreateNestedOneWithoutOrdersInput
     order_items?: OrderItemCreateNestedManyWithoutOrdersInput
@@ -17384,6 +17442,7 @@ export namespace Prisma {
   export type OrdersUncheckedCreateInput = {
     order_id?: number
     user_id: number
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
@@ -17391,18 +17450,23 @@ export namespace Prisma {
     payment_status: string
     order_status: string
     admin_id: number
+    created_at?: Date | string
+    updated_at?: Date | string
     order_items?: OrderItemUncheckedCreateNestedManyWithoutOrdersInput
     UserPromoUsage?: UserPromoUsageUncheckedCreateNestedManyWithoutOrderInput
     ProofsOfPayment?: ProofsOfPaymentUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrdersUpdateInput = {
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     total_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     admin?: AdminUpdateOneRequiredWithoutOrdersNestedInput
     order_items?: OrderItemUpdateManyWithoutOrdersNestedInput
@@ -17413,6 +17477,7 @@ export namespace Prisma {
   export type OrdersUncheckedUpdateInput = {
     order_id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -17420,6 +17485,8 @@ export namespace Prisma {
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
     admin_id?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     order_items?: OrderItemUncheckedUpdateManyWithoutOrdersNestedInput
     UserPromoUsage?: UserPromoUsageUncheckedUpdateManyWithoutOrderNestedInput
     ProofsOfPayment?: ProofsOfPaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -17428,6 +17495,7 @@ export namespace Prisma {
   export type OrdersCreateManyInput = {
     order_id?: number
     user_id: number
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
@@ -17435,20 +17503,26 @@ export namespace Prisma {
     payment_status: string
     order_status: string
     admin_id: number
+    created_at?: Date | string
+    updated_at?: Date | string
   }
 
   export type OrdersUpdateManyMutationInput = {
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     total_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrdersUncheckedUpdateManyInput = {
     order_id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -17456,6 +17530,8 @@ export namespace Prisma {
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
     admin_id?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderItemCreateInput = {
@@ -18373,6 +18449,7 @@ export namespace Prisma {
   export type OrdersCountOrderByAggregateInput = {
     order_id?: SortOrder
     user_id?: SortOrder
+    order_item_id?: SortOrder
     order_date?: SortOrder
     delivery_time?: SortOrder
     deliver_fee?: SortOrder
@@ -18380,11 +18457,14 @@ export namespace Prisma {
     payment_status?: SortOrder
     order_status?: SortOrder
     admin_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type OrdersAvgOrderByAggregateInput = {
     order_id?: SortOrder
     user_id?: SortOrder
+    order_item_id?: SortOrder
     deliver_fee?: SortOrder
     total_price?: SortOrder
     admin_id?: SortOrder
@@ -18393,6 +18473,7 @@ export namespace Prisma {
   export type OrdersMaxOrderByAggregateInput = {
     order_id?: SortOrder
     user_id?: SortOrder
+    order_item_id?: SortOrder
     order_date?: SortOrder
     delivery_time?: SortOrder
     deliver_fee?: SortOrder
@@ -18400,11 +18481,14 @@ export namespace Prisma {
     payment_status?: SortOrder
     order_status?: SortOrder
     admin_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type OrdersMinOrderByAggregateInput = {
     order_id?: SortOrder
     user_id?: SortOrder
+    order_item_id?: SortOrder
     order_date?: SortOrder
     delivery_time?: SortOrder
     deliver_fee?: SortOrder
@@ -18412,11 +18496,14 @@ export namespace Prisma {
     payment_status?: SortOrder
     order_status?: SortOrder
     admin_id?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type OrdersSumOrderByAggregateInput = {
     order_id?: SortOrder
     user_id?: SortOrder
+    order_item_id?: SortOrder
     deliver_fee?: SortOrder
     total_price?: SortOrder
     admin_id?: SortOrder
@@ -19892,12 +19979,15 @@ export namespace Prisma {
   }
 
   export type OrdersCreateWithoutUserInput = {
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
     total_price: Decimal | DecimalJsLike | number | string
     payment_status: string
     order_status: string
+    created_at?: Date | string
+    updated_at?: Date | string
     admin: AdminCreateNestedOneWithoutOrdersInput
     order_items?: OrderItemCreateNestedManyWithoutOrdersInput
     UserPromoUsage?: UserPromoUsageCreateNestedManyWithoutOrderInput
@@ -19906,6 +19996,7 @@ export namespace Prisma {
 
   export type OrdersUncheckedCreateWithoutUserInput = {
     order_id?: number
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
@@ -19913,6 +20004,8 @@ export namespace Prisma {
     payment_status: string
     order_status: string
     admin_id: number
+    created_at?: Date | string
+    updated_at?: Date | string
     order_items?: OrderItemUncheckedCreateNestedManyWithoutOrdersInput
     UserPromoUsage?: UserPromoUsageUncheckedCreateNestedManyWithoutOrderInput
     ProofsOfPayment?: ProofsOfPaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -20058,6 +20151,7 @@ export namespace Prisma {
     NOT?: OrdersScalarWhereInput | OrdersScalarWhereInput[]
     order_id?: IntFilter<"Orders"> | number
     user_id?: IntFilter<"Orders"> | number
+    order_item_id?: IntFilter<"Orders"> | number
     order_date?: DateTimeFilter<"Orders"> | Date | string
     delivery_time?: DateTimeFilter<"Orders"> | Date | string
     deliver_fee?: DecimalFilter<"Orders"> | Decimal | DecimalJsLike | number | string
@@ -20065,6 +20159,8 @@ export namespace Prisma {
     payment_status?: StringFilter<"Orders"> | string
     order_status?: StringFilter<"Orders"> | string
     admin_id?: IntFilter<"Orders"> | number
+    created_at?: DateTimeFilter<"Orders"> | Date | string
+    updated_at?: DateTimeFilter<"Orders"> | Date | string
   }
 
   export type AffiliateDiscountUpsertWithWhereUniqueWithoutUserInput = {
@@ -20567,12 +20663,15 @@ export namespace Prisma {
   }
 
   export type OrdersCreateWithoutAdminInput = {
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
     total_price: Decimal | DecimalJsLike | number | string
     payment_status: string
     order_status: string
+    created_at?: Date | string
+    updated_at?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
     order_items?: OrderItemCreateNestedManyWithoutOrdersInput
     UserPromoUsage?: UserPromoUsageCreateNestedManyWithoutOrderInput
@@ -20582,12 +20681,15 @@ export namespace Prisma {
   export type OrdersUncheckedCreateWithoutAdminInput = {
     order_id?: number
     user_id: number
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
     total_price: Decimal | DecimalJsLike | number | string
     payment_status: string
     order_status: string
+    created_at?: Date | string
+    updated_at?: Date | string
     order_items?: OrderItemUncheckedCreateNestedManyWithoutOrdersInput
     UserPromoUsage?: UserPromoUsageUncheckedCreateNestedManyWithoutOrderInput
     ProofsOfPayment?: ProofsOfPaymentUncheckedCreateNestedManyWithoutOrderInput
@@ -20992,12 +21094,15 @@ export namespace Prisma {
   }
 
   export type OrdersCreateWithoutUserPromoUsageInput = {
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
     total_price: Decimal | DecimalJsLike | number | string
     payment_status: string
     order_status: string
+    created_at?: Date | string
+    updated_at?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
     admin: AdminCreateNestedOneWithoutOrdersInput
     order_items?: OrderItemCreateNestedManyWithoutOrdersInput
@@ -21007,6 +21112,7 @@ export namespace Prisma {
   export type OrdersUncheckedCreateWithoutUserPromoUsageInput = {
     order_id?: number
     user_id: number
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
@@ -21014,6 +21120,8 @@ export namespace Prisma {
     payment_status: string
     order_status: string
     admin_id: number
+    created_at?: Date | string
+    updated_at?: Date | string
     order_items?: OrderItemUncheckedCreateNestedManyWithoutOrdersInput
     ProofsOfPayment?: ProofsOfPaymentUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -21107,12 +21215,15 @@ export namespace Prisma {
   }
 
   export type OrdersUpdateWithoutUserPromoUsageInput = {
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     total_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     admin?: AdminUpdateOneRequiredWithoutOrdersNestedInput
     order_items?: OrderItemUpdateManyWithoutOrdersNestedInput
@@ -21122,6 +21233,7 @@ export namespace Prisma {
   export type OrdersUncheckedUpdateWithoutUserPromoUsageInput = {
     order_id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -21129,6 +21241,8 @@ export namespace Prisma {
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
     admin_id?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     order_items?: OrderItemUncheckedUpdateManyWithoutOrdersNestedInput
     ProofsOfPayment?: ProofsOfPaymentUncheckedUpdateManyWithoutOrderNestedInput
   }
@@ -21591,12 +21705,15 @@ export namespace Prisma {
   }
 
   export type OrdersCreateWithoutOrder_itemsInput = {
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
     total_price: Decimal | DecimalJsLike | number | string
     payment_status: string
     order_status: string
+    created_at?: Date | string
+    updated_at?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
     admin: AdminCreateNestedOneWithoutOrdersInput
     UserPromoUsage?: UserPromoUsageCreateNestedManyWithoutOrderInput
@@ -21606,6 +21723,7 @@ export namespace Prisma {
   export type OrdersUncheckedCreateWithoutOrder_itemsInput = {
     order_id?: number
     user_id: number
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
@@ -21613,6 +21731,8 @@ export namespace Prisma {
     payment_status: string
     order_status: string
     admin_id: number
+    created_at?: Date | string
+    updated_at?: Date | string
     UserPromoUsage?: UserPromoUsageUncheckedCreateNestedManyWithoutOrderInput
     ProofsOfPayment?: ProofsOfPaymentUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -21678,12 +21798,15 @@ export namespace Prisma {
   }
 
   export type OrdersUpdateWithoutOrder_itemsInput = {
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     total_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     admin?: AdminUpdateOneRequiredWithoutOrdersNestedInput
     UserPromoUsage?: UserPromoUsageUpdateManyWithoutOrderNestedInput
@@ -21693,6 +21816,7 @@ export namespace Prisma {
   export type OrdersUncheckedUpdateWithoutOrder_itemsInput = {
     order_id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -21700,17 +21824,22 @@ export namespace Prisma {
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
     admin_id?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     UserPromoUsage?: UserPromoUsageUncheckedUpdateManyWithoutOrderNestedInput
     ProofsOfPayment?: ProofsOfPaymentUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrdersCreateWithoutProofsOfPaymentInput = {
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
     total_price: Decimal | DecimalJsLike | number | string
     payment_status: string
     order_status: string
+    created_at?: Date | string
+    updated_at?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
     admin: AdminCreateNestedOneWithoutOrdersInput
     order_items?: OrderItemCreateNestedManyWithoutOrdersInput
@@ -21720,6 +21849,7 @@ export namespace Prisma {
   export type OrdersUncheckedCreateWithoutProofsOfPaymentInput = {
     order_id?: number
     user_id: number
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
@@ -21727,6 +21857,8 @@ export namespace Prisma {
     payment_status: string
     order_status: string
     admin_id: number
+    created_at?: Date | string
+    updated_at?: Date | string
     order_items?: OrderItemUncheckedCreateNestedManyWithoutOrdersInput
     UserPromoUsage?: UserPromoUsageUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -21774,12 +21906,15 @@ export namespace Prisma {
   }
 
   export type OrdersUpdateWithoutProofsOfPaymentInput = {
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     total_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     admin?: AdminUpdateOneRequiredWithoutOrdersNestedInput
     order_items?: OrderItemUpdateManyWithoutOrdersNestedInput
@@ -21789,6 +21924,7 @@ export namespace Prisma {
   export type OrdersUncheckedUpdateWithoutProofsOfPaymentInput = {
     order_id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -21796,6 +21932,8 @@ export namespace Prisma {
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
     admin_id?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     order_items?: OrderItemUncheckedUpdateManyWithoutOrdersNestedInput
     UserPromoUsage?: UserPromoUsageUncheckedUpdateManyWithoutOrderNestedInput
   }
@@ -22043,6 +22181,7 @@ export namespace Prisma {
 
   export type OrdersCreateManyUserInput = {
     order_id?: number
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
@@ -22050,6 +22189,8 @@ export namespace Prisma {
     payment_status: string
     order_status: string
     admin_id: number
+    created_at?: Date | string
+    updated_at?: Date | string
   }
 
   export type AffiliateDiscountCreateManyUserInput = {
@@ -22111,12 +22252,15 @@ export namespace Prisma {
   }
 
   export type OrdersUpdateWithoutUserInput = {
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     total_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     admin?: AdminUpdateOneRequiredWithoutOrdersNestedInput
     order_items?: OrderItemUpdateManyWithoutOrdersNestedInput
     UserPromoUsage?: UserPromoUsageUpdateManyWithoutOrderNestedInput
@@ -22125,6 +22269,7 @@ export namespace Prisma {
 
   export type OrdersUncheckedUpdateWithoutUserInput = {
     order_id?: IntFieldUpdateOperationsInput | number
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -22132,6 +22277,8 @@ export namespace Prisma {
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
     admin_id?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     order_items?: OrderItemUncheckedUpdateManyWithoutOrdersNestedInput
     UserPromoUsage?: UserPromoUsageUncheckedUpdateManyWithoutOrderNestedInput
     ProofsOfPayment?: ProofsOfPaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -22139,6 +22286,7 @@ export namespace Prisma {
 
   export type OrdersUncheckedUpdateManyWithoutUserInput = {
     order_id?: IntFieldUpdateOperationsInput | number
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -22146,6 +22294,8 @@ export namespace Prisma {
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
     admin_id?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AffiliateDiscountUpdateWithoutUserInput = {
@@ -22372,12 +22522,15 @@ export namespace Prisma {
   export type OrdersCreateManyAdminInput = {
     order_id?: number
     user_id: number
+    order_item_id?: number
     order_date: Date | string
     delivery_time: Date | string
     deliver_fee: Decimal | DecimalJsLike | number | string
     total_price: Decimal | DecimalJsLike | number | string
     payment_status: string
     order_status: string
+    created_at?: Date | string
+    updated_at?: Date | string
   }
 
   export type ProofsOfPaymentCreateManyAdminInput = {
@@ -22428,12 +22581,15 @@ export namespace Prisma {
   }
 
   export type OrdersUpdateWithoutAdminInput = {
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     total_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     order_items?: OrderItemUpdateManyWithoutOrdersNestedInput
     UserPromoUsage?: UserPromoUsageUpdateManyWithoutOrderNestedInput
@@ -22443,12 +22599,15 @@ export namespace Prisma {
   export type OrdersUncheckedUpdateWithoutAdminInput = {
     order_id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     total_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     order_items?: OrderItemUncheckedUpdateManyWithoutOrdersNestedInput
     UserPromoUsage?: UserPromoUsageUncheckedUpdateManyWithoutOrderNestedInput
     ProofsOfPayment?: ProofsOfPaymentUncheckedUpdateManyWithoutOrderNestedInput
@@ -22457,12 +22616,15 @@ export namespace Prisma {
   export type OrdersUncheckedUpdateManyWithoutAdminInput = {
     order_id?: IntFieldUpdateOperationsInput | number
     user_id?: IntFieldUpdateOperationsInput | number
+    order_item_id?: IntFieldUpdateOperationsInput | number
     order_date?: DateTimeFieldUpdateOperationsInput | Date | string
     delivery_time?: DateTimeFieldUpdateOperationsInput | Date | string
     deliver_fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     total_price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     payment_status?: StringFieldUpdateOperationsInput | string
     order_status?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProofsOfPaymentUpdateWithoutAdminInput = {

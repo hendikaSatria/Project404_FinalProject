@@ -186,13 +186,16 @@ exports.Prisma.ShoppingCartScalarFieldEnum = {
 exports.Prisma.OrdersScalarFieldEnum = {
   order_id: 'order_id',
   user_id: 'user_id',
+  order_item_id: 'order_item_id',
   order_date: 'order_date',
   delivery_time: 'delivery_time',
   deliver_fee: 'deliver_fee',
   total_price: 'total_price',
   payment_status: 'payment_status',
   order_status: 'order_status',
-  admin_id: 'admin_id'
+  admin_id: 'admin_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.OrderItemScalarFieldEnum = {
