@@ -62,7 +62,9 @@ const productController = {
       const numericPrice = parseFloat(price);
       const intWeight = parseInt(weight);
 
+
       // Pastikan is_available tidak null atau undefined sebelum memanggil toLowerCase
+
       const isAvailableBoolean = typeof is_available === 'string'
         ? is_available.toLowerCase() === 'true'
         : typeof is_available === 'boolean'

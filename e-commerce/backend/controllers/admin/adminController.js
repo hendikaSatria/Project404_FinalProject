@@ -1,7 +1,7 @@
 // adminController.js
 const { PrismaClient } = require("../../prisma/generated/client");
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
 
@@ -16,19 +16,19 @@ async function loginController(req, res) {
 
     // Periksa apakah admin ditemukan dan password sesuai
     if (!admin || !(await bcrypt.compare(password, admin.password))) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     // Buat token JWT
-    const token = jwt.sign({ adminId: admin.admin_id }, 'your-secret-key', {
-      expiresIn: '1d',
+    const token = jwt.sign({ adminId: admin.admin_id }, "your-secret-key", {
+      expiresIn: "1d",
     });
 
     // Kirim respons dengan token
     res.status(200).json({ token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
@@ -47,15 +47,17 @@ async function registerController(req, res) {
       },
     });
 
-    res.status(201).json({ message: 'Admin registered successfully', admin: newAdmin });
+    res
+      .status(201)
+      .json({ message: "Admin registered successfully", admin: newAdmin });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
 function logoutController(req, res) {
-  res.status(200).json({ message: 'Logout successful' });
+  res.status(200).json({ message: "Logout successful" });
 }
 
 module.exports = {
