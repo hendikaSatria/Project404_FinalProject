@@ -20,6 +20,7 @@ const {
 } = validationMiddleware;
 
 const { authenticateToken } = authMiddleware;
+console.log("AAA", authenticateToken);
 
 // Endpoint for user registration
 router.post('/register', registrationValidationRules, validate, registerUser);

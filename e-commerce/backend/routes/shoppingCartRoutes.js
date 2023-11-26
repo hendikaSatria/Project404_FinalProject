@@ -16,7 +16,7 @@ router.post('/add-to-cart', async (req, res) => {
 });
 
 // Get the user shopping cart
-router.get('/get-shopping-cart/:userId', async (req, res) => {
+router.get('/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId, 10);
 
   try {
@@ -28,7 +28,7 @@ router.get('/get-shopping-cart/:userId', async (req, res) => {
 });
 
 // Remove a product from the shopping cart
-router.delete('/remove-from-cart/:cartItemId/:userId/:productId', async (req, res) => {
+router.delete('/removeFromCart/:cartItemId/:userId/:productId', async (req, res) => {
   const { cartItemId, userId, productId } = req.params;
 
   try {

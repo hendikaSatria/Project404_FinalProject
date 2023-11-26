@@ -7,8 +7,9 @@ const proofOfPaymentRoutes = require('./routes/proofOfPaymentRoutes');
 const app = express();
 
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 app.use(router);
+
 app.use('/shoppingCart', shoppingCartRoutes);
 app.use('/userauth', userAuthRoutes);  
 app.use('/user/orders', orderRoutes);
