@@ -1,37 +1,44 @@
-
 const { PrismaClient } = require("../../prisma/generated/client");
 const prisma = new PrismaClient();
 
-
 const productController = {
-
   getAllProduct: async (req, res) => {
     const products = await prisma.product.findMany();
     res.json(products || {});
   },
 
   getByID: async (req, res) => {
-    const param = req.params.id
+    const param = req.params.id;
     try {
-      const id = parseInt(param)
-      const product = await prisma.product.findUnique({ where: { product_id: id } });
+      const id = parseInt(param);
+      const product = await prisma.product.findUnique({
+        where: { product_id: id },
+      });
       return res.json(product || {});
     } catch (e) {
-      res.status(400).json({ message: "id must be a number" })
-
-    };
-
+      res.status(400).json({ message: "id must be a number" });
+    }
   },
 
   createProduct: async (req, res) => {
     try {
-      if (!req.file) return res.status(400).json({ message: "Please upload the image" });
+      if (!req.file)
+        return res.status(400).json({ message: "Please upload the image" });
 
-      const { name, description, price, stock, is_available, category_id, warehouse_id, weight } = req.body;
+      const {
+        name,
+        description,
+        price,
+        stock,
+        is_available,
+        category_id,
+        warehouse_id,
+        weight,
+      } = req.body;
       const intStock = parseInt(stock);
       const intPrice = parseInt(price);
       const intWeight = parseInt(weight);
-      const isAvailableBoolean = is_available.toLowerCase() === 'true';
+      const isAvailableBoolean = is_available.toLowerCase() === "true";
 
       const product = await prisma.product.create({
         data: {
@@ -53,21 +60,30 @@ const productController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
-  
+
   updateProduct: async (req, res) => {
     try {
       const { id } = req.params;
-      const { name, description, price, stock, is_available, category_id, warehouse_id, weight } = req.body;
+      const {
+        name,
+        description,
+        price,
+        stock,
+        is_available,
+        category_id,
+        warehouse_id,
+        weight,
+      } = req.body;
       const intStock = parseInt(stock);
       const numericPrice = parseFloat(price);
       const intWeight = parseInt(weight);
 
-
       // Pastikan is_available tidak null atau undefined sebelum memanggil toLowerCase
 
-      const isAvailableBoolean = typeof is_available === 'string'
-        ? is_available.toLowerCase() === 'true'
-        : typeof is_available === 'boolean'
+      const isAvailableBoolean =
+        typeof is_available === "string"
+          ? is_available.toLowerCase() === "true"
+          : typeof is_available === "boolean"
           ? is_available
           : undefined;
 
@@ -93,7 +109,6 @@ const productController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
-
 
   deleteProduct: async (req, res) => {
     try {
@@ -126,7 +141,6 @@ const productController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+};
 
-}
-
-module.exports = productController;   
+module.exports = productController;
