@@ -95,7 +95,7 @@ const registerUser = async (req, res) => {
     try {
       const userId = req.user.userId; 
   
-      // Retrieve the user's profile information from the database
+      // Retrieve the user profile information from the database
       const userProfile = await prisma.user.findFirst({
         where: { user_id: userId },
         include: {
