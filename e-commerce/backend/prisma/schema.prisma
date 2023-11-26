@@ -162,7 +162,8 @@ model Orders {
   promo_code             String?
   promo_discount_amount  Decimal? 
   affiliate_discount_amount Float @default(0.0)
-
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt @default(now())
 
   // Relationships
   user                   User              @relation(fields: [user_id], references: [user_id])
@@ -184,7 +185,7 @@ model OrderItem {
 
   // Relationships
   product        Product @relation(fields: [product_id], references: [product_id])
-  Orders         Orders? @relation(fields: [ordersOrder_id], references: [order_id])
+  orders         Orders? @relation(fields: [ordersOrder_id], references: [order_id])
   ordersOrder_id Int?
 }
 
