@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userAuthenticationController = require('../controllers/userAuthenticationController');
 const validationMiddleware = require('../middleware/validationMiddleWare');
-const authMiddleware = require('../middleware/authMiddleWare');
+const {authenticateToken} = require('../middleware/authMiddleWare');
 
 // Destructure functions from the imported modules
 const {
@@ -19,14 +19,12 @@ const {
   validate,
 } = validationMiddleware;
 
-const { authenticateToken } = authMiddleware;
-console.log("AAA", authenticateToken);
 
 // Endpoint for user registration
-router.post('/register', registrationValidationRules, validate, registerUser);
+router.post('/register',  validate, registerUser);
 
 // Endpoint for user login
-router.post('/login', loginValidationRules, validate, loginUser);
+router.post('/login', validate, loginUser);
 
 // Endpoint for user logout, requires authentication
 router.post('/logout', authenticateToken, logoutUser);
