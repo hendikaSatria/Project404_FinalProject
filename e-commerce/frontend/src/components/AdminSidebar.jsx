@@ -71,7 +71,7 @@ const AdminSidebar = () => {
             <Text as="b">Warehouse</Text>
           </Box>
         </Link>
-        <Link to={"/"}>
+        <Link to={"/admin/order"}>
           {" "}
           <Box
             size="md"
@@ -91,7 +91,7 @@ const AdminSidebar = () => {
             <Text as="b">Order</Text>
           </Box>
         </Link>
-        <Link to={"/"}>
+        <Link to={"/admin/promo"}>
           {" "}
           <Box
             size="md"

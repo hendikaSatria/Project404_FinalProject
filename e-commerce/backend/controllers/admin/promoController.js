@@ -47,7 +47,7 @@ const promoController = {
   //Update promo
   updatePromo: async (req, res) => {
     const { id } = req.params;
-    const { type, maximum_usage, amount, remaining_usage, admin_id, product_id } = req.body;
+    const { type, maximum_usage, amount, remaining_usage, admin_id, product_id, promo_code } = req.body;
 
     try {
       console.log('Updated:', req.body);
