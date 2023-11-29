@@ -5,7 +5,6 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "affiliate_code" TEXT NOT NULL,
-    "billing_address" TEXT NOT NULL,
     "affiliate_usage" BOOLEAN NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -72,6 +71,7 @@ CREATE TABLE "Promotion" (
     "remaining_usage" INTEGER NOT NULL,
     "admin_id" INTEGER NOT NULL,
     "product_id" INTEGER,
+    "promo_code" TEXT,
 
     CONSTRAINT "Promotion_pkey" PRIMARY KEY ("promo_id")
 );
@@ -88,12 +88,24 @@ CREATE TABLE "UserPromoUsage" (
 );
 
 -- CreateTable
+CREATE TABLE "ShoppingCartItem" (
+    "cart_item_id" SERIAL NOT NULL,
+    "cart_id" INTEGER NOT NULL,
+    "product_id" INTEGER NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ShoppingCartItem_pkey" PRIMARY KEY ("cart_item_id")
+);
+
+-- CreateTable
 CREATE TABLE "ShoppingCart" (
     "cart_id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
-    "product_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "productProduct_id" INTEGER,
 
     CONSTRAINT "ShoppingCart_pkey" PRIMARY KEY ("cart_id")
 );
@@ -109,6 +121,9 @@ CREATE TABLE "Orders" (
     "payment_status" TEXT NOT NULL,
     "order_status" TEXT NOT NULL,
     "admin_id" INTEGER NOT NULL,
+    "promo_code" TEXT,
+    "promo_discount_amount" DECIMAL(65,30),
+    "affiliate_discount_amount" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
 
     CONSTRAINT "Orders_pkey" PRIMARY KEY ("order_id")
 );
@@ -141,6 +156,7 @@ CREATE TABLE "ProofsOfPayment" (
 -- CreateTable
 CREATE TABLE "Warehouse" (
     "warehouse_id" SERIAL NOT NULL,
+    "warehouse_name" TEXT NOT NULL,
     "province_id" INTEGER NOT NULL,
     "province_name" TEXT NOT NULL,
     "city_id" INTEGER NOT NULL,
@@ -193,10 +209,16 @@ ALTER TABLE "UserPromoUsage" ADD CONSTRAINT "UserPromoUsage_promo_id_fkey" FOREI
 ALTER TABLE "UserPromoUsage" ADD CONSTRAINT "UserPromoUsage_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "Orders"("order_id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "ShoppingCartItem" ADD CONSTRAINT "ShoppingCartItem_cart_id_fkey" FOREIGN KEY ("cart_id") REFERENCES "ShoppingCart"("cart_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ShoppingCartItem" ADD CONSTRAINT "ShoppingCartItem_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("product_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "ShoppingCart" ADD CONSTRAINT "ShoppingCart_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ShoppingCart" ADD CONSTRAINT "ShoppingCart_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("product_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ShoppingCart" ADD CONSTRAINT "ShoppingCart_productProduct_id_fkey" FOREIGN KEY ("productProduct_id") REFERENCES "Product"("product_id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Orders" ADD CONSTRAINT "Orders_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
