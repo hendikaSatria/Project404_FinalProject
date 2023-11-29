@@ -1,4 +1,5 @@
 import {
+  Button,
   Heading,
   FormControl,
   FormLabel,
@@ -73,6 +74,15 @@ export default function Promopage(promoData) {
                 </HStack>
               </Box>
             </FormControl>
+            <FormControl>
+              <Box p="10px">
+                <HStack>
+                  <FormLabel w="100px"> Code : </FormLabel>
+                  <Input name="code" required defaultValue={promoData?.promo_code} />
+                </HStack>
+              </Box>
+            </FormControl>
+            <Button type='submit'> Create Promo </Button>
           </Box>
         </VStack>
       </Box>
