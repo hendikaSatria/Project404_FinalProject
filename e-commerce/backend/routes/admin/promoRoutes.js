@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const promoController = require('../controllers/admin/promoController');
+const promoController = require('../../controllers/admin/promoController');
 
 router.get('/', promoController.getAllPromo)
 router.get('/:id', promoController.getPromoById)

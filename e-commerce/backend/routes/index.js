@@ -1,19 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const prisma = require("../prisma/generated/client");
-const adminRouter = require("./admin");
-
+const adminRouter = require("./admin/admin");
 
 const productRouter = require("./product");
-const userRouter = require("./user");
-const orderRouter = require("./order");
-const promotionRouter = require("./promoRoutes");
-const affiliateRouter = require("./affiliateRoutes");
+const userRouter = require("./admin/user");
+const orderRouter = require("./admin/order");
+const promotionRouter = require("./admin/promoRoutes");
+const affiliateRouter = require("./admin/affiliateRoutes");
 
-const shoppingCartRoutes = require('./shoppingCartRoutes');
-const userAuthRoutes = require('./userAuthenticationRoutes'); 
-const orderRoutes = require('./orderRoutes');
-const proofOfPaymentRoutes = require('./proofOfPaymentRoutes');
+const shoppingCartRoutes = require('./user/shoppingCartRoutes');
+const userAuthRoutes = require('./user/userAuthenticationRoutes'); 
+const orderRoutes = require('./user/orderRoutes');
+const proofOfPaymentRoutes = require('./user/proofOfPaymentRoutes');
+const userProductRoutes = require('./user/productRoutes')
+
 
 router.use((req, res, next) => {
     req.prisma = prisma;
@@ -31,5 +32,6 @@ router.use('/shoppingCart', shoppingCartRoutes);
 router.use('/userauth', userAuthRoutes);  
 router.use('/user/orders', orderRoutes);
 router.use('/user', proofOfPaymentRoutes);
+router.use('/users', userProductRoutes);
 
 module.exports = router;

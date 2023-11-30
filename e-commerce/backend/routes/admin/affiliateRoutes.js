@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const affiliateController = require('../controllers/admin/affiliateController');
+const affiliateController = require('../../controllers/admin/affiliateController');
 
 router.get('/', affiliateController.getAllAffiliate);
 router.get('/:id', affiliateController.getAffiliateById);

@@ -1,4 +1,4 @@
-const { PrismaClient } = require('../prisma/generated/client');
+const { PrismaClient } = require('../../prisma/generated/client');
 const prisma = new PrismaClient();
 
 // Function to add a product to the shopping cart

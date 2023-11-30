@@ -54,9 +54,15 @@ async function main() {
       },
     ],
   });
-  //end of seeding Category
+    // Delete all existing OrderItems
+    await prisma.orderItem.deleteMany();
 
-  //Seeding Product
+    // Delete all existing ShoppingCartItems
+    await prisma.shoppingCartItem.deleteMany();
+
+    // Delete all existing products
+    await prisma.product.deleteMany();
+
   const product = await prisma.product.createMany({
     data: [
       {
@@ -168,6 +174,115 @@ async function main() {
         warehouse_id: 2,
         image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
         weight: 1.5,
+      },{
+        name: "Product 11",
+        description: "Description for Product 1",
+        price: 29.99,
+        stock: 100,
+        is_available: true,
+        category_id: 1,
+        warehouse_id: 1,
+        image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
+        weight: 0.5,
+      },
+      {
+        name: "Product 12",
+        description: "Description for Product 2",
+        price: 49.99,
+        stock: 50,
+        is_available: true,
+        category_id: 1,
+        warehouse_id: 1,
+        image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
+        weight: 0.7,
+      },
+      {
+        name: "Product 13",
+        description: "Description for Product 3",
+        price: 19.99,
+        stock: 75,
+        is_available: true,
+        category_id: 2,
+        warehouse_id: 2,
+        image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
+        weight: 0.3,
+      },
+      {
+        name: "Product 14",
+        description: "Description for Product 4",
+        price: 39.99,
+        stock: 120,
+        is_available: false,
+        category_id: 2,
+        warehouse_id: 2,
+        image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
+        weight: 0.6,
+      },
+      {
+        name: "Product 15",
+        description: "Description for Product 5",
+        price: 59.99,
+        stock: 90,
+        is_available: true,
+        category_id: 3,
+        warehouse_id: 1,
+        image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
+        weight: 0.8,
+      },
+      {
+        name: "Product 16",
+        description: "Description for Product 6",
+        price: 29.99,
+        stock: 60,
+        is_available: true,
+        category_id: 3,
+        warehouse_id: 1,
+        image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
+        weight: 0.4,
+      },
+      {
+        name: "Product 17",
+        description: "Description for Product 7",
+        price: 79.99,
+        stock: 30,
+        is_available: false,
+        category_id: 4,
+        warehouse_id: 2,
+        image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
+        weight: 1.2,
+      },
+      {
+        name: "Product 18",
+        description: "Description for Product 8",
+        price: 89.99,
+        stock: 80,
+        is_available: true,
+        category_id: 4,
+        warehouse_id: 1,
+        image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
+        weight: 0.9,
+      },
+      {
+        name: "Product 19",
+        description: "Description for Product 9",
+        price: 69.99,
+        stock: 40,
+        is_available: true,
+        category_id: 5,
+        warehouse_id: 1,
+        image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
+        weight: 1.0,
+      },
+      {
+        name: "Product 20",
+        description: "Description for Product 10",
+        price: 99.99,
+        stock: 110,
+        is_available: true,
+        category_id: 5,
+        warehouse_id: 2,
+        image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
+        weight: 1.5,
       },
     ],
   });
@@ -180,7 +295,6 @@ async function main() {
         password: "securepassword1",
         email: "john.doe@example.com",
         affiliate_code: "ABC123",
-        billing_address: "123 Main Street, Cityville",
         affiliate_usage: true,
       },
       {
@@ -188,7 +302,6 @@ async function main() {
         password: "strongpass2023",
         email: "jane.smith@example.com",
         affiliate_code: "XYZ789",
-        billing_address: "456 Oak Avenue, Townsville",
         affiliate_usage: false,
       },
       {
@@ -196,7 +309,6 @@ async function main() {
         password: "mypassword123",
         email: "mike.johnson@example.com",
         affiliate_code: "DEF456",
-        billing_address: "789 Pine Road, Villagetown",
         affiliate_usage: true,
       },
       {
@@ -204,7 +316,6 @@ async function main() {
         password: "secretword321",
         email: "emily.brown@example.com",
         affiliate_code: "GHI789",
-        billing_address: "101 Elm Street, Hamletville",
         affiliate_usage: false,
       },
       {
@@ -212,7 +323,6 @@ async function main() {
         password: "pass1234word",
         email: "alex.turner@example.com",
         affiliate_code: "JKL012",
-        billing_address: "202 Birch Lane, Boroughburg",
         affiliate_usage: true,
       },
       {
@@ -220,7 +330,6 @@ async function main() {
         password: "gracefulpass",
         email: "grace.wilson@example.com",
         affiliate_code: "MNO345",
-        billing_address: "303 Cedar Street, Township",
         affiliate_usage: false,
       },
       {
@@ -228,7 +337,6 @@ async function main() {
         password: "danielpass456",
         email: "daniel.lee@example.com",
         affiliate_code: "PQR678",
-        billing_address: "404 Maple Avenue, Citytown",
         affiliate_usage: true,
       },
       {
@@ -236,7 +344,6 @@ async function main() {
         password: "oliviapass789",
         email: "olivia.moore@example.com",
         affiliate_code: "STU901",
-        billing_address: "505 Walnut Road, Villagetown",
         affiliate_usage: false,
       },
       {
@@ -244,7 +351,6 @@ async function main() {
         password: "william123pass",
         email: "william.davis@example.com",
         affiliate_code: "VWX234",
-        billing_address: "606 Oak Lane, Hamletville",
         affiliate_usage: true,
       },
       {
@@ -252,12 +358,10 @@ async function main() {
         password: "sophiapass567",
         email: "sophia.rodriguez@example.com",
         affiliate_code: "YZA567",
-        billing_address: "707 Pine Street, Boroughburg",
         affiliate_usage: false,
       },
     ],
   });
-  //end of seeding User
 
   //seeding Orders
   const order1 = await prisma.orders.upsert({
@@ -331,7 +435,6 @@ async function main() {
       },
     },
     update: {},
-    // end of seeding Orders
   });
 }
 

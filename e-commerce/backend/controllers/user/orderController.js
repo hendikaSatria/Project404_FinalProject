@@ -1,4 +1,4 @@
-const { PrismaClient } = require('../prisma/generated/client');
+const { PrismaClient } = require('../../prisma/generated/client');
 const prisma = new PrismaClient();
 const shoppingCartController = require('./shoppingCartController');
 const shippingController = require('./shippingController');

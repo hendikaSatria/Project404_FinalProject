@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const orderController = require('../controllers/orderController');
+const orderController = require('../../controllers/user/orderController');
 
 // Create an order
 router.post('/:userId', async (req, res) => {

@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { PrismaClient } = require("../prisma/generated/client");
+const { PrismaClient } = require("../../prisma/generated/client");
 const prisma = new PrismaClient();
 
 function generateAffiliateCode(length) {
@@ -27,11 +27,13 @@ const registerUser = async (req, res) => {
   try {
     // Validate password length
     if (password.length < 6) {
+      console.log('Password validation failed');
       return res.status(422).json({ message: "Password must be at least 6 characters long" });
     }
 
     // Validate email format
     if (!isValidEmail(email)) {
+      console.log('Email validation failed');
       return res.status(422).json({ message: "Invalid email format" });
     }
 
@@ -41,6 +43,7 @@ const registerUser = async (req, res) => {
     });
 
     if (existingUser) {
+      console.log('User with email already exists');
       return res.status(400).json({ message: "Email is already in use" });
     }
 
@@ -59,6 +62,7 @@ const registerUser = async (req, res) => {
         affiliateCode = affiliateCodeInput;
         affiliateUsage = true;
       } else {
+        console.log('Invalid affiliate code');
         return res.status(400).json({ message: "Invalid affiliate code" });
       }
     }
@@ -67,6 +71,8 @@ const registerUser = async (req, res) => {
     if (!affiliateCode) {
       affiliateCode = generateAffiliateCode(6);
     }
+
+    console.log('Creating user with the following data:', { full_name, email, affiliateCode, affiliateUsage });
 
     const user = await prisma.user.create({
       data: {
@@ -78,9 +84,11 @@ const registerUser = async (req, res) => {
       },
     });
 
+    console.log('User created successfully:', user);
+
     res.json({ user });
   } catch (error) {
-    console.error(error);
+    console.error('Error in registerUser:', error);
 
     // Check for specific Prisma validation errors
     if (error.code === 'P2025') {
@@ -94,6 +102,7 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 
   

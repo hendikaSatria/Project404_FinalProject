@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const userAuthenticationController = require('../controllers/userAuthenticationController');
-const validationMiddleware = require('../middleware/validationMiddleWare');
-const {authenticateToken} = require('../middleware/authMiddleWare');
+const userAuthenticationController = require('../../controllers/user/userAuthenticationController');
+const validationMiddleware = require('../../middleware/validationMiddleWare');
+const {authenticateToken} = require('../../middleware/authMiddleWare');
 
 // Destructure functions from the imported modules
 const {

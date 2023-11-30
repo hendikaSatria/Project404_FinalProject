@@ -3,12 +3,12 @@ const {
   loginController,
   registerController,
   logoutController,
-} = require("../controllers/admin/adminController");
-const warehouseController = require("../controllers/warehouseController");
-const categoryController = require("../controllers/categoryCotroller");
-const productController = require("../controllers/admin/productController");
-const authMiddleware = require("../middleware/authMiddleWare");
-const mtr = require("../middleware/upload");
+} = require("../../controllers/admin/adminController");
+const warehouseController = require("../../controllers/admin/warehouseController");
+const categoryController = require("../../controllers/admin/categoryCotroller");
+const productController = require("../../controllers/admin/productController");
+const authMiddleware = require("../../middleware/authMiddleWare");
+const mtr = require("../../middleware/upload");
 const router = express.Router();
 
 router.post("/login", loginController);
