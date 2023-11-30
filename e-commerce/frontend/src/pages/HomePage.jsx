@@ -1,39 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import FilterBar from '../component/FilterBar';
 import ProductGrid from '../component/ProductGrid/ProductGrid';
-import { getAllProducts } from '../api/api';
+import { getAllProducts, getProducts } from '../api/api';
 
 const HomePage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sortingOption, setSortingOption] = useState(null);
   const [allProducts, setAllProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchAllProducts();
-  }, []);
+    fetchProducts();
+  }, [currentPage, sortingOption, selectedCategory]);
 
-  const fetchAllProducts = async () => {
+  const fetchProducts = async () => {
     try {
-      const response = await getAllProducts();
-      console.log('Full API Response:', response);
-  
+      const response = await getProducts({
+        page: currentPage,
+        limit: 12,
+        filter: selectedCategory,
+        sort: sortingOption
+      });
       // Check if response is an array
-      if (Array.isArray(response)) {
-        const products = response;
-  
-        setAllProducts((prevProducts) => [...prevProducts, ...products]);
-        setFilteredProducts((prevProducts) => [...prevProducts, ...products]);
-  
-        console.log('All Products:', allProducts); // Log the state variable correctly
-        console.log('Filtered Products:', filteredProducts); // Log the state variable correctly
-      } else {
-        console.error('Response is not an array:', response);
-      }
+      setAllProducts(response.data)
+      setTotalPages(Math.ceil(response.length / 12));
     } catch (error) {
       console.error('Error fetching all products:', error);
     }
   };
+
+  const fetchTotalProducts = async () => {
+    try {
+      const response = await getAllProducts();
+      // Check if response is an array
+      setTotalPages(Math.ceil(response.length / 12));
+     
+    } catch (error) {
+      console.error('Error fetching all products:', error);
+    }
+  }
   
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -46,20 +52,22 @@ const HomePage = () => {
       : [];
   
     // Log all products, the category, and the filtered products to the console
-    console.log('All Products:', allProducts);
-    console.log('Selected Category:', category);
-    console.log('Filtered Products:', newFilteredProducts);
-  
-    setFilteredProducts(newFilteredProducts);
+    console.log('Filtered Products1:', newFilteredProducts);
+    setAllProducts(newFilteredProducts);
   };
-  
-  
-  
-  
 
   const handleSortingChange = (option) => {
+    console.log(option);
     setSortingOption(option);
     // You can add sorting logic here if needed
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
 
   return (
@@ -76,7 +84,11 @@ const HomePage = () => {
       <ProductGrid
         selectedCategory={selectedCategory}
         sortingOption={sortingOption}
-        products={filteredProducts}
+        products={allProducts}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePrevPage={handlePrevPage}
+        handleNextPage={handleNextPage}
       />
     </div>
   );

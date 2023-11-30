@@ -40,15 +40,13 @@ export const registerUser = async (userData) => {
   }
 };
 
-export const getProducts = async ({ page, limit }) => {
+export const getProducts = async ({ page, limit, sort, filter }) => {
   try {
-    const response = await api.get('/users/products', {
-      params: { page, limit },
+    const { data } = await api.get('/users/products', {
+      params: { page, limit, sort, filter },
     });
-    const totalProductsResponse = await api.get('/users/totalProducts');
-    const totalProducts = totalProductsResponse.data.totalProducts;
 
-    return { products: response.data, totalProducts };
+    return data;
   } catch (error) {
     throw error.response ? error.response.data.message : error.message;
   }

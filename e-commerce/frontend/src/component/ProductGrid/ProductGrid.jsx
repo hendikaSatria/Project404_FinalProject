@@ -4,47 +4,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { getProducts } from '../../api/api';
 import ProductCard from './ProductCard';
 
-const ProductGrid = ({ selectedCategory, sortingOption, products: initialProducts }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+const ProductGrid = ({ selectedCategory, sortingOption, products, currentPage, totalPages, handleNextPage, handlePrevPage }) => {
   const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [currentPage, selectedCategory, sortingOption]);
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-
-      const response = await getProducts({
-        page: currentPage,
-        limit: 12,
-        category: selectedCategory,
-        sort: sortingOption,
-      });
-
-      console.log('API Response:', response);
-
-      const { products: fetchedProducts, totalProducts } = response;
-
-      setProducts(fetchedProducts);
-      setTotalPages(Math.ceil(totalProducts / 12));
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  };
 
   return (
     <Box p={4}>

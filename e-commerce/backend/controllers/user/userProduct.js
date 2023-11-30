@@ -2,15 +2,45 @@ const { PrismaClient } = require("../../prisma/generated/client");
 const prisma = new PrismaClient();
 
 const getProducts = async (req, res) => {
-    const { page = 1, limit = 12 } = req.query;
+    const { page = 1, limit = 12, sort = null, filter = null } = req.query;
 
     try {
-        const products = await prisma.product.findMany({
+        let options = {
             take: +limit,
             skip: (+page - 1) * +limit,
-        });
+        }
 
-        res.json(products);
+        if (!!filter)
+            options.where = {
+                category_id: parseInt(filter)
+            }
+
+        // TODO: options.sort for price (asc, desc) and name (a-z and z-a)
+        
+        const totalProducts = await prisma.product.count();
+        let products = await prisma.product.findMany(options);
+
+        if (!!sort) {
+            switch (sort) {
+                case "lowToHigh":
+                    products = products.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                    break;
+                case "highToLow":
+                    products = products.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+                    break;
+                case "byNameAsc":
+                    products = products.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case "byNameDesc":
+                    products = products.sort((a, b) => b.name.localeCompare(a.name));
+                    break;
+                default:
+                    products = products.sort((a, b) => a.product_id - b.product_id);
+                    break;
+            }
+        }
+
+        res.status(200).json({ success: true, data: products, length: !!filter ? products.length : totalProducts });
     } catch (error) {
         console.error('Error fetching products:', error);
         res.status(500).json({ error: 'Internal Server Error' });

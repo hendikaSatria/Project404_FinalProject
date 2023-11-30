@@ -8,7 +8,8 @@ const FilterBar = ({ onCategoryChange, onSortingChange }) => {
   const [sortOptions] = useState([
     { label: 'Sort by Price: Low to High', value: 'lowToHigh' },
     { label: 'Sort by Price: High to Low', value: 'highToLow' },
-    { label: 'Sort by Name', value: 'byName' },
+    { label: 'Sort by Name (A-Z)', value: 'byNameAsc' },
+    { label: 'Sort by Name (Z-A)', value: 'byNameDesc' },
   ]);
 
   useEffect(() => {
