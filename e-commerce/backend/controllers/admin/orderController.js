@@ -1,4 +1,4 @@
-const { PrismaClient } = require("../../prisma/generated/client");
+const { PrismaClient } = require('../../prisma/generated/client');
 const prisma = new PrismaClient();
 
 const OrderController = {
@@ -42,9 +42,7 @@ const OrderController = {
 
     res.json({ message: 'Order deleted successfully' });
   },
-};
-
- getOrderDetails: async (req, res) => {
+  getOrderDetails: async (req, res) => {
     try {
       const orderDetails = await prisma.orders.findMany({
         select: {
