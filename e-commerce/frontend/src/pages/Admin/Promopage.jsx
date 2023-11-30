@@ -8,20 +8,26 @@ import {
   Button,
   Input,
   WrapItem,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import { getAllPromo } from '../../modules/fetch';
 import { Link } from 'react-router-dom';
 
 export default function Promopage() {
-  const [promo, setPromo] = useState([]);
+  const [promotions, setPromotions] = useState([]);
+
   useEffect(() => {
-    const fetchPromo = async () => {
-      const promo = await getAllPromo();
-      setPromo(promo);
+    const fetchpromotions = async () => {
+      const promotions = await getAllPromo();
+      setPromotions(promotions);
     };
-    fetchPromo();
-  });
+
+    fetchpromotions();
+  }, []);
+
   const handleClick = () => {};
 
   return (
@@ -36,25 +42,57 @@ export default function Promopage() {
         <VStack spacing={4} align="stretch" p={12}>
           {/* search bar */}
           <Box>
-            <HStack w="full">
+            <HStack w="750px">
               <InputGroup size="md">
-                <Input pr="100px" placeholder="Promo name" />
-                <InputRightElement width="4.5rem">
-                  <Button h="1.75rem" size="sm" onClick={handleClick}></Button>
+                <Input pr="100px" placeholder="Search Promo" />
+                <InputRightElement>
+                  <Button size="sm" onClick={handleClick} bg={'transparent'}>
+                    <SearchIcon />{' '}
+                  </Button>
                 </InputRightElement>
               </InputGroup>
-              <Button as={Link} to="create" colorScheme='blue'>
+              <Button as={Link} to="create" colorScheme="blue">
                 Add Promo
               </Button>
             </HStack>
           </Box>
 
-          {promo?.promo?.map((promo) => (
-            <WrapItem bg="blue.200" w="full" round="lg" key={`${promo.promo_id}`}>
-              <Box>
-              </Box>
-            </WrapItem>
-          ))}
+          <Box align="center">
+            {promotions?.map((promotion) => (
+              <WrapItem
+                h="120px"
+                w="750px"
+                bg="blue.100"
+                rounded={'20px'}
+                key={`${promotion.promo_id}`}>
+                <Grid w="full" templateColumns="repeat(3,1fr)" templateRows="repeat(1,1fr)">
+                  <GridItem>
+                    <Box
+                      w="80%"
+                      p="20px"
+                      bg="white"
+                      rounded="lg"
+                      mt="25px"
+                      align="center">{`${promotion.type}`}</Box>
+                  </GridItem>
+                  <GridItem>
+                    <Box align="left" p="3px" mt="10px" bg="blue.200" rounded="10px">
+                      <Text ml="8px"> Type: {`${promotion.type}`}</Text>
+                      <Text ml="8px"> Amount: {`${promotion.amount}`}</Text>
+                      <Text ml="8px"> Usage: {`${promotion.remaining_usage}`}</Text>
+                      <Text ml="8px"> Code: {`${promotion.promo_code}`}</Text>
+                    </Box>
+                  </GridItem>
+                  <GridItem>
+                    <VStack mt="15px">
+                      <Button w="80%"> Manage </Button>
+                      <Button w="80%"> Delete </Button>
+                    </VStack>
+                  </GridItem>
+                </Grid>
+              </WrapItem>
+            ))}
+          </Box>
         </VStack>
       </Box>
     </>

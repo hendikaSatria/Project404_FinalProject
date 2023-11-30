@@ -14,9 +14,10 @@ async function getAllWarehouses() {
 async function getAllPromo() {
   try {
     const response = await instance.get('/promo');
+    console.log(response.data);
     return response.data;
   } catch (error) {
-    throw new Error(error.response.data.message || 'Something went wrong');
+    throw new Error(error.response?.data.message || 'Something went wrong');
   }
 }
 
@@ -26,9 +27,10 @@ async function createPromo(formData) {
     const response = await instance.post('/promo/create', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
+    console.log('Response:', response.data);
     return response.data;
   } catch (error) {
-    throw new Error(error.response.data.message || 'Something went wrong');
+    throw new Error(error.response?.data.message || 'Something went wrong');
   }
 }
 

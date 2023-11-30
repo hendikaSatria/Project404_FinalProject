@@ -9,6 +9,7 @@ import {
   Box,
   HStack,
   Input,
+  Link,
 } from '@chakra-ui/react';
 import { createPromo } from '../modules/fetch';
 
@@ -31,7 +32,7 @@ export default function Promopage(promoData) {
     } catch (error) {
       toast({
         title: 'Error',
-        description: error.response.data.message || 'Something went wrong',
+        description: error.response?.data.message || 'Something went wrong',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -51,7 +52,7 @@ export default function Promopage(promoData) {
               <Box w="400px" p="10px">
                 <HStack>
                   <FormLabel w="80px"> Type : </FormLabel>
-                  <Select varriant="filled" placeholder="Promo Type" isRequired>
+                  <Select variant="filled" placeholder="Promo Type" isRequired>
                     <option value="option1"> Percentage </option>
                     <option value="option2"> Fixed </option>
                   </Select>
@@ -62,7 +63,7 @@ export default function Promopage(promoData) {
               <Box p="10px">
                 <HStack>
                   <FormLabel w="100px"> Amount : </FormLabel>
-                  <Input name="amount" required defaultValue={promoData?.amount} />
+                  <Input name="amount" required defaultValues={{ amount: promoData?.amount }} />
                 </HStack>
               </Box>
             </FormControl>
@@ -70,7 +71,11 @@ export default function Promopage(promoData) {
               <Box p="10px">
                 <HStack>
                   <FormLabel w="100px"> Usage : </FormLabel>
-                  <Input name="usage" required defaultValue={promoData?.maximum_usage} />
+                  <Input
+                    name="usage"
+                    required
+                    defaultValues={{ usage: promoData?.maximum_usage }}
+                  />
                 </HStack>
               </Box>
             </FormControl>
@@ -78,11 +83,11 @@ export default function Promopage(promoData) {
               <Box p="10px">
                 <HStack>
                   <FormLabel w="100px"> Code : </FormLabel>
-                  <Input name="code" required defaultValue={promoData?.promo_code} />
+                  <Input name="code" required defaultValues={{ code: promoData?.promo_code }} />
                 </HStack>
               </Box>
             </FormControl>
-            <Button type='submit'> Create Promo </Button>
+            <Button type="submit"> Create Promo </Button>
           </Box>
         </VStack>
       </Box>
