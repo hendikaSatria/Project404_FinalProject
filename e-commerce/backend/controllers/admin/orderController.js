@@ -44,4 +44,34 @@ const OrderController = {
   },
 };
 
+ getOrderDetails: async (req, res) => {
+    try {
+      const orderDetails = await prisma.orders.findMany({
+        select: {
+          order_id: true,
+          order_date: true,
+          total_price: true,
+          order_items: {
+            select: {
+              product: {
+                select: {
+                  name: true,
+                },
+              },
+              quantity: true,
+              price: true,
+            },
+          },
+          order_status: true,
+        },
+      });
+
+      res.json(orderDetails);
+    } catch (error) {
+      console.error('Error retrieving order details:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+};
+
 module.exports = OrderController;
