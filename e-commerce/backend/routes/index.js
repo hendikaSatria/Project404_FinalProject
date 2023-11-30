@@ -39,7 +39,7 @@ router.get("/rajaongkir/province", async (req, res) => {
       "https://api.rajaongkir.com/starter/province",
       {
         headers: {
-          key: "ae0828a345b0ca66f2e0de4a84341cfa",
+          key: "5985d7433b5faf58ae6933d9876eddf1",
         },
       }
     );
@@ -63,7 +63,29 @@ router.get("/rajaongkir/city", async (req, res) => {
       `https://api.rajaongkir.com/starter/city?province=${provinceId}`,
       {
         headers: {
-          key: "ae0828a345b0ca66f2e0de4a84341cfa",
+          key: "5985d7433b5faf58ae6933d9876eddf1",
+        },
+      }
+    );
+    res.json(response.data.rajaongkir.results);
+  } catch (error) {
+    console.error("Error fetching cities:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+router.get("/rajaongkir/citydetail", async (req, res) => {
+  const { province, id } = req.query;
+
+  if (!province) {
+    return res.status(400).json({ error: "Province ID is required" });
+  }
+
+  try {
+    const response = await axios.get(
+      `https://api.rajaongkir.com/starter/city?id=${id}&province=${province}`,
+      {
+        headers: {
+          key: "5985d7433b5faf58ae6933d9876eddf1",
         },
       }
     );

@@ -14,6 +14,7 @@ const AdminRouter = () => {
           <Routes>
             <Route path="/warehouse" element={<Warehousepage />} />
             <Route path="/warehouse/create" element={<WarehouseForm />} />
+            <Route path="/warehouse/:id" element={<WarehouseForm />} />
           </Routes>
         </Box>
       </Flex>

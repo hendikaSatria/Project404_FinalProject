@@ -32,7 +32,6 @@ const AdminSidebar = () => {
           </Box>
         </Link>
         <Link to={"/admin/category"}>
-          {" "}
           <Box
             size="md"
             height="60px"
@@ -52,7 +51,6 @@ const AdminSidebar = () => {
           </Box>
         </Link>
         <Link to={"/admin/warehouse"}>
-          {" "}
           <Box
             size="md"
             height="60px"
@@ -72,7 +70,6 @@ const AdminSidebar = () => {
           </Box>
         </Link>
         <Link to={"/"}>
-          {" "}
           <Box
             size="md"
             height="60px"
@@ -92,7 +89,6 @@ const AdminSidebar = () => {
           </Box>
         </Link>
         <Link to={"/"}>
-          {" "}
           <Box
             size="md"
             height="60px"
@@ -112,7 +108,6 @@ const AdminSidebar = () => {
           </Box>
         </Link>
         <Link to={"/"}>
-          {" "}
           <Box
             size="md"
             height="60px"
@@ -132,7 +127,6 @@ const AdminSidebar = () => {
           </Box>
         </Link>
         <Link to={"/"}>
-          {" "}
           <Box
             size="md"
             height="60px"
@@ -152,7 +146,6 @@ const AdminSidebar = () => {
           </Box>
         </Link>
         <Link to={"/"}>
-          {" "}
           <Box
             size="md"
             height="60px"

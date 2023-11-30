@@ -22,16 +22,25 @@ const warehouseController = {
 
   addWarehouse: async (req, res) => {
     try {
-      const { province_id, province_name, city_id, city_name, postal_code } =
-        req.body;
+      const adminId = req.admin.admin_id;
+      const {
+        warehouse_name,
+        province_id,
+        province_name,
+        city_id,
+        city_name,
+        postal_code,
+      } = req.body;
+
       const warehouse = await prisma.warehouse.create({
         data: {
+          warehouse_name,
           province_id: parseInt(province_id),
           province_name,
           city_id: parseInt(city_id),
           city_name,
           postal_code: parseInt(postal_code),
-          admin_id: 1, // harus di sesuaikan
+          admin_id: adminId,
         },
       });
       res
@@ -45,18 +54,26 @@ const warehouseController = {
 
   editWarehouse: async (req, res) => {
     try {
+      const adminId = req.admin.admin_id;
       const { id } = req.params;
-      const { province_id, province_name, city_id, city_name, postal_code } =
-        req.body;
+      const {
+        warehouse_name,
+        province_id,
+        province_name,
+        city_id,
+        city_name,
+        postal_code,
+      } = req.body;
       const warehouse = await prisma.warehouse.update({
         where: { warehouse_id: Number(id) },
         data: {
+          warehouse_name,
           province_id: parseInt(province_id),
           province_name,
           city_id: parseInt(city_id),
           city_name,
           postal_code: parseInt(postal_code),
-          admin_id: 1, // harus di sesuaikan
+          admin_id: adminId, // harus di sesuaikan
           updated_at: new Date(),
         },
       });

@@ -50,30 +50,37 @@ export default function Warehousepage() {
           </Box>
           {/* end of search bar */}
 
-          {warehouses?.warehouses?.map((warehouse) => (
-            <WrapItem
-              bg="blue.200"
-              w="full"
-              rounded="lg"
-              key={`${warehouse.warehouse_id} `}
-            >
-              <Box w="80%" rounded="lg">
-                <Text>{`${warehouse.warehouse_name}`}</Text>
-                <Text>{`${warehouse.city_name}`}</Text>
-                <Text>{`${warehouse.province_name}`}</Text>
-              </Box>
-              <Box p={2}>
-                <VStack spacing={2}>
-                  <Button w="full" colorScheme="yellow">
-                    Edit
-                  </Button>
-                  <Button w="full" colorScheme="red">
-                    Delete
-                  </Button>
-                </VStack>
-              </Box>
-            </WrapItem>
-          ))}
+          <VStack overflowY="auto" h="70vh" bg="gray.200" p={4}>
+            {warehouses?.warehouses?.map((warehouse) => (
+              <WrapItem
+                bg="blue.200"
+                w="full"
+                rounded="lg"
+                key={`${warehouse.warehouse_id} `}
+              >
+                <Box w="80%" rounded="lg">
+                  <Text>{`${warehouse.warehouse_name}`}</Text>
+                  <Text>{`${warehouse.city_name}`}</Text>
+                  <Text>{`${warehouse.province_name}`}</Text>
+                </Box>
+                <Box p={2}>
+                  <VStack spacing={2}>
+                    <Button
+                      w="full"
+                      colorScheme="yellow"
+                      as={Link}
+                      to={`/admin/warehouse/${warehouse.warehouse_id}`}
+                    >
+                      Edit
+                    </Button>
+                    <Button w="full" colorScheme="red">
+                      Delete
+                    </Button>
+                  </VStack>
+                </Box>
+              </WrapItem>
+            ))}
+          </VStack>
         </VStack>
       </Box>
     </>
