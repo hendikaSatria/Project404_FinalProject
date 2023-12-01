@@ -89,14 +89,21 @@ const warehouseController = {
   deleteWarehouse: async (req, res) => {
     try {
       const { id } = req.params;
+      const product = await prisma.product.deleteMany({
+        where: {
+          warehouse_id: Number(id),
+        },
+      });
       const warehouse = await prisma.warehouse.delete({
         where: {
           warehouse_id: Number(id),
         },
       });
-      res
-        .status(200)
-        .json({ message: "Warehouse data successfuly deleted", warehouse });
+      res.status(200).json({
+        message: "Warehouse data successfuly deleted",
+        warehouse,
+        product,
+      });
     } catch (err) {
       console.log(err);
       res.status(400).json({ message: "Something went wrong" });

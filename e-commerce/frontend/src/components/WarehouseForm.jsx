@@ -37,7 +37,7 @@ const WarehouseForm = () => {
       setPostalCode(warehouseData.postal_code); // Assuming the server response has a 'postalCode' field
 
       //   console.log(selectedProvinceID);
-      console.log(warehouseData);
+      //   console.log(warehouseData);
     } catch (error) {
       setError("Error fetching warehouse by id");
       console.log(error);
@@ -62,7 +62,7 @@ const WarehouseForm = () => {
         `http://localhost:3000/rajaongkir/city?provinceId=${provinceId}`
       );
       setCities(response.data);
-      console.log(cities);
+      //   console.log(cities);
       if (response.data.length > 0) {
         setPostalCode(response.data[0].postal_code);
       }
@@ -86,8 +86,9 @@ const WarehouseForm = () => {
     if (selectedProvinceID) {
       fetchCitiesByProvince(selectedProvinceID);
     }
-    console.log(selectedProvinceID, selectedProvince);
+    // console.log(selectedProvinceID, selectedProvince);
   }, [selectedProvinceID]);
+
   //   useEffect(() => {
   //     if (selectedProvinceID) {
   //       fetchCitiesByProvince(selectedProvinceID);
@@ -101,14 +102,39 @@ const WarehouseForm = () => {
       );
       const detail = res.data;
       const data = {
+        warehouse_name: warehouseName,
         province_id: parseInt(detail.province_id),
         province_name: detail.province,
         city_id: parseInt(detail.city_id),
         city_name: detail.city_name,
         postal_code: parseInt(detail.postal_code),
       };
+
+      await createWarehouse(data);
       //   console.log(data);
-      const response = await createWarehouse(data);
+    } catch (error) {
+      setError(`Error fetching citydetail data: ${error.message}`);
+      console.error("Error fetching citydetail data:", error);
+    }
+  };
+
+  const handleEdit = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/rajaongkir/citydetail?id=${selectedCity}&province=${selectedProvinceID}`
+      );
+      const detail = res.data;
+      const data = {
+        warehouse_name: warehouseName,
+        province_id: parseInt(detail.province_id),
+        province_name: detail.province,
+        city_id: parseInt(detail.city_id),
+        city_name: detail.city_name,
+        postal_code: parseInt(detail.postal_code),
+      };
+
+      await createWarehouse(data);
+      //   console.log(data);
     } catch (error) {
       setError(`Error fetching citydetail data: ${error.message}`);
       console.error("Error fetching citydetail data:", error);
@@ -223,7 +249,11 @@ const WarehouseForm = () => {
             )}
 
             {/* Tombol Edit */}
-            {id && <Button bg="blue.100">Edit</Button>}
+            {id && (
+              <Button bg="blue.100" onClick={handleEdit}>
+                Edit
+              </Button>
+            )}
           </Stack>
         </Box>
       </Stack>

@@ -13,6 +13,7 @@ import {
 import { getAllWarehouses } from "../../modules/fetch";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { deleteWarehouse } from "../../modules/fetch/index";
 
 export default function Warehousepage() {
   const [warehouses, setWarehouses] = useState([]);
@@ -24,7 +25,28 @@ export default function Warehousepage() {
     fetchWarehouses();
   }, []);
 
-  const handleClick = () => {};
+  //search
+  const handleSearch = () => {};
+
+  //Delete
+  const handleDelete = async (warehouseId) => {
+    try {
+      // Panggil fungsi deleteWarehouse dari modul fetch/index.js
+      await deleteWarehouse(warehouseId);
+
+      // Update state warehouses setelah penghapusan
+      const updatedWarehouses = warehouses.warehouses.filter(
+        (warehouse) => warehouse.warehouse_id !== warehouseId
+      );
+      setWarehouses({ warehouses: updatedWarehouses });
+
+      // Tampilkan notifikasi atau pesan sukses jika diperlukan
+      console.log("Warehouse deleted successfully!");
+    } catch (error) {
+      // Tangani error jika terjadi kesalahan saat penghapusan
+      console.error("Error deleting warehouse:", error.message);
+    }
+  };
 
   return (
     <>
@@ -40,7 +62,7 @@ export default function Warehousepage() {
               <InputGroup size="md">
                 <Input pr="4.5rem" placeholder="Warehouse Name" />
                 <InputRightElement width="4.5rem">
-                  <Button h="1.75rem" size="sm" onClick={handleClick}></Button>
+                  <Button h="1.75rem" size="sm" onClick={handleSearch}></Button>
                 </InputRightElement>
               </InputGroup>
               <Button as={Link} to="create" colorScheme="blue">
@@ -73,7 +95,12 @@ export default function Warehousepage() {
                     >
                       Edit
                     </Button>
-                    <Button w="full" colorScheme="red">
+                    <Button
+                      w="full"
+                      colorScheme="red"
+                      onClick={() => handleDelete(warehouse.warehouse_id)}
+                      key={warehouse.warehouse_id}
+                    >
                       Delete
                     </Button>
                   </VStack>

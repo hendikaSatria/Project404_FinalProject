@@ -300,8 +300,8 @@ async function main() {
       admin_id: 1,
       order_items: {
         create: {
-          order_item_id: 17,
-          product_id: 1, // sesuaikan id dengan id product yang tersedia di database
+          order_item_id: 18,
+          product_id: 2, // sesuaikan id dengan id product yang tersedia di database
           quantity: 5,
           price: "29.99",
         },
