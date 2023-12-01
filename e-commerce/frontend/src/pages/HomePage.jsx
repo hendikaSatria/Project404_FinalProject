@@ -22,7 +22,6 @@ const HomePage = () => {
         filter: selectedCategory,
         sort: sortingOption
       });
-      // Check if response is an array
       setAllProducts(response.data)
       setTotalPages(Math.ceil(response.length / 12));
     } catch (error) {
@@ -33,7 +32,6 @@ const HomePage = () => {
   const fetchTotalProducts = async () => {
     try {
       const response = await getAllProducts();
-      // Check if response is an array
       setTotalPages(Math.ceil(response.length / 12));
      
     } catch (error) {
@@ -44,14 +42,12 @@ const HomePage = () => {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   
-    // Filter products based on the selected category if allProducts is defined
     const newFilteredProducts = allProducts
       ? allProducts.filter(
           (product) => !category || String(product.category_id) === String(category)
         )
       : [];
   
-    // Log all products, the category, and the filtered products to the console
     console.log('Filtered Products1:', newFilteredProducts);
     setAllProducts(newFilteredProducts);
   };
@@ -59,7 +55,6 @@ const HomePage = () => {
   const handleSortingChange = (option) => {
     console.log(option);
     setSortingOption(option);
-    // You can add sorting logic here if needed
   };
 
   const handlePrevPage = () => {
@@ -72,7 +67,6 @@ const HomePage = () => {
 
   return (
     <div>
-      {/* FilterBar */}
       <FilterBar
         selectedCategory={selectedCategory}
         sortingOption={sortingOption}
@@ -80,7 +74,6 @@ const HomePage = () => {
         onSortingChange={handleSortingChange}
       />
 
-      {/* ProductGrid */}
       <ProductGrid
         selectedCategory={selectedCategory}
         sortingOption={sortingOption}

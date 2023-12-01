@@ -13,7 +13,7 @@ async function authMiddleware(req, res, next) {
     const token = authHeader.split(' ')[1];
   
     try {
-      const decoded = jwt.verify(token, 'your-secret-key');
+      const decoded = jwt.verify(token, 'your-default-key');
       const adminId = decoded.adminId;
   
       // Cek apakah admin dengan ID sesuai ada di database
@@ -36,7 +36,7 @@ async function authMiddleware(req, res, next) {
     }
   }
 
-function authenticateToken(req, res, next) {
+async function authenticateToken(req, res, next) {
   const token = req.header('Authorization');
 
   if (!token) {

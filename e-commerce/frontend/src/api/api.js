@@ -23,11 +23,12 @@ const handleRequestError = (error) => {
 export const loginUser = async (email, password) => {
   try {
     const response = await api.post('/userauth/login', { email, password });
-    return response.data.token;
+    return response.data;  
   } catch (error) {
     throw handleRequestError(error);
   }
 };
+
 
 export const registerUser = async (userData) => {
   try {
@@ -52,10 +53,22 @@ export const getProducts = async ({ page, limit, sort, filter }) => {
   }
 };
 
+export const getProductById = async (productId) => {
+  console.log('Function called with productId:', productId);
+
+  try {
+    const response = await api.get(`/users/products/${productId}`);
+    console.log('getProductById Response:', response);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data.message : error.message;
+  }
+};
+
 export const getAllProducts = async () => {
   try {
     const response = await api.get('/users/allProducts'); 
-    console.log('getAllProducts Response:', response); // Log the entire response
+    console.log('getAllProducts Response:', response); 
     return response.data;
   } catch (error) {
     console.error('Error in getAllProducts:', error);
@@ -64,14 +77,33 @@ export const getAllProducts = async () => {
 };
 
 
-
-
 export const getCategories = async () => {
   try {
     const response = await api.get('/users/categories');
     return response.data;
   } catch (error) {
     throw handleRequestError(error);
+  }
+};
+
+export const fetchUserData = async (token) => {
+  try {
+    const tokenString = typeof token === 'object' ? token.token : token;
+    console.log('Token in fetchUserData:', tokenString);
+
+    const response = await api.get('/userauth/view-profile', {
+      headers: {
+        Authorization: `Bearer ${tokenString}`,
+      },
+    });
+
+    const userData = response.data.user_profile;
+    console.log('Fetch User Data:', userData);
+
+    return userData;
+  } catch (error) {
+    console.error('Fetch User Data Error:', error.response ? error.response.data : error.message);
+    throw error;
   }
 };
 

@@ -1,6 +1,7 @@
 import React, { useState} from 'react';
 import './LoginPage.css'; 
 import ToastMessage from '../component/toast';
+import { useNavigate } from 'react-router-dom'; 
 import { useToast } from '@chakra-ui/react';
 import { loginUser, registerUser } from '../api/api'; 
 import { useAuth } from '../context/AuthContext'; 
@@ -41,6 +42,8 @@ const LoginPage = () => {
     setActiveTab(index);
   };
 
+  const navigate = useNavigate(); 
+
   const handleLogin = async (email, password) => {
     try {
       if (!email || !password) {
@@ -51,13 +54,21 @@ const LoginPage = () => {
         return;
       }
 
-      const token = await loginUser(email, password);
+      const tokenObject = await loginUser(email, password);
+      console.log('Received token:', { tokenObject });
+
+      const token = tokenObject.token;
+
+      // Log the extracted token string for debugging
+      console.log('Extracted token:', token);
+
+
       login(token);
 
       // Clear form fields
       setEmail('');
       setPassword('');
-
+      navigate('/');
       setToastStatus('success');
       setToastMessage('Login successful!');
       setShowToast(true);

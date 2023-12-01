@@ -103,60 +103,66 @@ const registerUser = async (req, res) => {
   }
 };
 
-
-
-  
-
 const loginUser = async (req, res) => {
   try {
     const { password, email } = req.body;
     const user = await prisma.user.findFirst({ where: { email } });
+
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
+
     const passwordMatch = await bcrypt.compare(password, user.password);
+
     if (!passwordMatch) {
       return res.status(400).json({ message: "Invalid password" });
-      }
+    }
+
     const token = jwt.sign({ userId: user.user_id }, process.env.JWT_SECRET || 'your-default-secret');
-    res.json({ token });
+    res.json({ token, user }); // Include user data in the response
   } catch (error) {
-      console.error("Login error:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-    }
-  };
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
   
-  const logoutUser = async (req, res) => {
-    try {
-      res.json({ message: 'Logout successful' });
-    } catch (error) {
-      console.error('Logout error:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
-    }
+const logoutUser = async (req, res) => {
+  try {
+    res.json({ message: 'Logout successful' });
+  } catch (error) {
+    console.error('Logout error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 };
 
   
 const viewProfile = async (req, res) => {
   try {
-    const userId = req.user.userId;  
-      // Retrieve the user profile information 
-      const userProfile = await prisma.user.findFirst({
-        where: { user_id: userId },
-        include: {
-          user_addresses: true,
-        },
-      });
-  
-      if (!userProfile) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      res.json({ user_profile: userProfile });
-    } catch (error) {
-      console.error('View profile error:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+    if (!req.user || !req.user.userId) {
+      return res.status(401).json({ message: 'Unauthorized' });
     }
-  };
+
+    const userId = req.user.userId;
+
+    const userProfile = await prisma.user.findUnique({
+      where: { user_id: userId },
+      include: {
+        user_addresses: true,
+      },
+    });
+
+    if (!userProfile) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ user_profile: userProfile });
+  } catch (error) {
+    console.error('View profile error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
   
 const updateAddress = async (req, res) => {
   try {

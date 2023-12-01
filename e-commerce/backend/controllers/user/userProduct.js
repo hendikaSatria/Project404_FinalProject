@@ -14,8 +14,6 @@ const getProducts = async (req, res) => {
             options.where = {
                 category_id: parseInt(filter)
             }
-
-        // TODO: options.sort for price (asc, desc) and name (a-z and z-a)
         
         const totalProducts = await prisma.product.count();
         let products = await prisma.product.findMany(options);
@@ -62,7 +60,7 @@ const getProductById = async (req, res) => {
 
     try {
         const product = await prisma.product.findUnique({
-            where: { product_id: +productId },
+            where: { product_id: Number(productId) }, 
         });
 
         if (!product) {
@@ -75,6 +73,7 @@ const getProductById = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
 
 const getTotalProducts = async (req, res) => {
     try {

@@ -46,7 +46,6 @@ const FilterBar = ({ onCategoryChange, onSortingChange }) => {
       width="100%"
       marginX="auto"
     >
-      {/* Sorting Section */}
       <Flex align="center">
         <Text fontWeight="bold" mr={2}>
           Sort:
@@ -65,7 +64,6 @@ const FilterBar = ({ onCategoryChange, onSortingChange }) => {
         </Select>
       </Flex>
 
-      {/* Category Section */}
       <Flex align="center">
         <Text fontWeight="bold" mr={2}>
           Category:

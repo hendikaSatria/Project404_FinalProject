@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Flex, Input, Text, IconButton, CSSReset, ChakraProvider } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { Flex, Text, IconButton, CSSReset, ChakraProvider, Input, Avatar } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 
 const CustomInput = styled(Input)`
   &:focus {
@@ -14,6 +16,8 @@ const CustomInput = styled(Input)`
 `;
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearchChange = (event) => {
@@ -24,6 +28,17 @@ const Navbar = () => {
     event.preventDefault();
     console.log('Search term:', searchTerm);
   };
+
+  const handleLinkClick = (path) => {
+    if (user && path === '/profile') {
+      navigate('/profile');
+    } else if (user) {
+      navigate('/');
+    } else {
+      navigate('/login');
+    }
+  };
+  
 
   return (
     <ChakraProvider>
@@ -52,14 +67,33 @@ const Navbar = () => {
         </Flex>
 
         <Flex align="center">
-          <Link to="/" as={Text} mr={4} textDecoration="none" color="white">
+          <Text
+            as="span"
+            mr={4}
+            textDecoration="none"
+            color="white"
+            cursor="pointer"
+            onClick={() => handleLinkClick('/cart')}
+          >
             🛒 Cart
-          </Link>
-          <Link to="/" as={Text} mr={4} textDecoration="none" color="white">
+          </Text>
+          <Text
+            as="span"
+            mr={4}
+            textDecoration="none"
+            color="white"
+            cursor="pointer"
+            onClick={() => handleLinkClick('/orders')}
+          >
             📦 Orders
-          </Link>
-          <Link to="/" as={Text} textDecoration="none" color="white">
-            👤 Profile
+          </Text>
+          <Link to={user ? '/login' : '/profile'}>
+            <Flex alignItems="center" cursor="pointer">
+              <Avatar size="sm" name={user?.name} src={user?.avatar} />
+              <Text ml={2} textDecoration="none" color="white">
+                👤 {user ? user.name : 'Profile'}
+              </Text>
+            </Flex>
           </Link>
         </Flex>
       </Flex>
