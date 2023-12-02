@@ -5,6 +5,7 @@ import { Flex, Text, IconButton, CSSReset, ChakraProvider, Input, Avatar } from 
 import { SearchIcon } from '@chakra-ui/icons';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
+import { fetchUserData } from '../api/api';
 
 const CustomInput = styled(Input)`
   &:focus {
@@ -32,8 +33,6 @@ const Navbar = () => {
   const handleLinkClick = (path) => {
     if (user && path === '/profile') {
       navigate('/profile');
-    } else if (user) {
-      navigate('/');
     } else {
       navigate('/login');
     }
@@ -45,7 +44,7 @@ const Navbar = () => {
       <CSSReset />
       <Flex align="center" justify="space-between" p={4} bg="teal.500" color="white">
         <Link to="/" as={Text} fontSize="xl" fontWeight="bold" textDecoration="none" color="white">
-          YourLogo
+          Logo
         </Link>
 
         <Flex as="form" onSubmit={handleSearchSubmit} align="center">

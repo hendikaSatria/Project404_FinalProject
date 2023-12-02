@@ -59,7 +59,6 @@ const LoginPage = () => {
 
       const token = tokenObject.token;
 
-      // Log the extracted token string for debugging
       console.log('Extracted token:', token);
 
 

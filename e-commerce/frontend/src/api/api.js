@@ -25,7 +25,7 @@ export const loginUser = async (email, password) => {
     const response = await api.post('/userauth/login', { email, password });
     return response.data;  
   } catch (error) {
-    throw handleRequestError(error);
+    throw handleRequestError(error);  
   }
 };
 
@@ -89,11 +89,11 @@ export const getCategories = async () => {
 export const fetchUserData = async (token) => {
   try {
     const tokenString = typeof token === 'object' ? token.token : token;
-    console.log('Token in fetchUserData:', tokenString);
+    console.log('Token in fetchUserData:', token);
 
     const response = await api.get('/userauth/view-profile', {
       headers: {
-        Authorization: `Bearer ${tokenString}`,
+        Authorization: token,
       },
     });
 
@@ -103,6 +103,43 @@ export const fetchUserData = async (token) => {
     return userData;
   } catch (error) {
     console.error('Fetch User Data Error:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+export const getProvinceList = async () => {
+  try {
+    const response = await api.get('/api/provinces');
+    return response.data;
+  } catch (error) {
+    console.error('Error getting province list:', error);
+    throw new Error('Failed to get province list');
+  }
+};
+
+
+export const getCityList = async (provinceId) => {
+  try {
+    const url = `/api/cities/${provinceId}`;
+    const response = await api.get(url);
+    return response.data;
+  } catch (error) {
+    console.error('Error getting city list:', error);
+    throw new Error(`Failed to get city list: ${error.message}`);
+  }
+};
+
+export const updateAddress = async (addressData, token) => {
+  try {
+    const response = await api.put('/userauth/update-address', addressData, {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Update address error:', error.response ? error.response.data : error.message);
     throw error;
   }
 };

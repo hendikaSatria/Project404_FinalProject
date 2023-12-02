@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { fetchUserData } from '../api/api'; 
+// import { fetchUserData } from '../api/api'; 
 
 const AuthContext = createContext();
 
@@ -9,17 +9,11 @@ const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
 
   const login = async (userToken) => {
-    if (!userToken || !userToken.token) {
-      console.error('Invalid userToken:', userToken);
-      return;
-    }
-
-    setToken(userToken.token);
-    localStorage.setItem('token', userToken.token);
-
     try {
-      const user = await fetchUserData(userToken.token); 
-      setUserData(user);
+      console.log(userToken)
+      // const user = await fetchUserData(userToken); 
+      setToken(userToken);
+      localStorage.setItem('token', userToken);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
