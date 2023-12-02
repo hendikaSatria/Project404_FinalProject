@@ -22,12 +22,10 @@ async function getAllPromo() {
 }
 
 //Function for create new promo
-async function createPromo(formData) {
+async function createPromo(data) {
   try {
-    const response = await instance.post('/promo/create', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    console.log('Response:', response.data);
+    const response = await instance.post('/promo/create', data);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data.message || 'Something went wrong');

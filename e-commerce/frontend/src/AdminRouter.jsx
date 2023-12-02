@@ -5,6 +5,7 @@ import WarehouseForm from "./components/WarehouseForm";
 import Promopage from "./pages/Admin/Promopage";
 import PromoForm from "./components/PromoForm";
 import AdminSidebar from "./components/AdminSidebar";
+
 import { Box, Flex } from "@chakra-ui/react";
 
 const AdminRouter = () => {
