@@ -10,7 +10,11 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { IoIosBackspace } from "react-icons/io";
-import { createWarehouse, getWarehouseById } from "../modules/fetch";
+import {
+  createWarehouse,
+  getWarehouseById,
+  editWarehouse,
+} from "../modules/fetch";
 import { useParams } from "react-router-dom";
 
 const WarehouseForm = () => {
@@ -35,9 +39,6 @@ const WarehouseForm = () => {
       setSelectedProvinceID(warehouseData.province_id); // Assuming the server response has a 'province' field
       setSelectedCity(warehouseData.city_name); // Assuming the server response has a 'city' field
       setPostalCode(warehouseData.postal_code); // Assuming the server response has a 'postalCode' field
-
-      //   console.log(selectedProvinceID);
-      //   console.log(warehouseData);
     } catch (error) {
       setError("Error fetching warehouse by id");
       console.log(error);
@@ -89,12 +90,6 @@ const WarehouseForm = () => {
     // console.log(selectedProvinceID, selectedProvince);
   }, [selectedProvinceID]);
 
-  //   useEffect(() => {
-  //     if (selectedProvinceID) {
-  //       fetchCitiesByProvince(selectedProvinceID);
-  //     }
-  //   }, []);
-
   const handleSubmit = async () => {
     try {
       const res = await axios.get(
@@ -112,18 +107,20 @@ const WarehouseForm = () => {
 
       await createWarehouse(data);
       //   console.log(data);
+      console.log("Warehouse created successfully!");
     } catch (error) {
       setError(`Error fetching citydetail data: ${error.message}`);
       console.error("Error fetching citydetail data:", error);
     }
   };
 
-  const handleEdit = async () => {
+  const handleEdit = async (warehouseID) => {
     try {
       const res = await axios.get(
         `http://localhost:3000/rajaongkir/citydetail?id=${selectedCity}&province=${selectedProvinceID}`
       );
       const detail = res.data;
+      const id = warehouseID;
       const data = {
         warehouse_name: warehouseName,
         province_id: parseInt(detail.province_id),
@@ -133,8 +130,8 @@ const WarehouseForm = () => {
         postal_code: parseInt(detail.postal_code),
       };
 
-      await createWarehouse(data);
-      //   console.log(data);
+      await editWarehouse(id, data);
+      console.log("data successfully updated", data);
     } catch (error) {
       setError(`Error fetching citydetail data: ${error.message}`);
       console.error("Error fetching citydetail data:", error);
@@ -250,7 +247,7 @@ const WarehouseForm = () => {
 
             {/* Tombol Edit */}
             {id && (
-              <Button bg="blue.100" onClick={handleEdit}>
+              <Button bg="blue.100" onClick={() => handleEdit(id)}>
                 Edit
               </Button>
             )}

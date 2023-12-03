@@ -51,7 +51,9 @@ export default function Warehousepage() {
   return (
     <>
       <Box bg="blue.200" w="full" align="center" height="60px">
-        <Text pt={5}>Warehouse</Text>
+        <Text fontWeight="bold" fontSize={"xx-large"}>
+          Warehouse
+        </Text>
       </Box>
 
       <Box align="center" p="20px">

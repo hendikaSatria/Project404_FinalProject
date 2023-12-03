@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Warehousepage from "./pages/Admin/Warehousepage";
 import WarehouseForm from "./components/WarehouseForm";
 import AdminSidebar from "./components/AdminSidebar";
+import Categorypage from "./pages/Admin/Categorypage";
 import { Box, Flex } from "@chakra-ui/react";
 
 const AdminRouter = () => {
@@ -15,6 +16,7 @@ const AdminRouter = () => {
             <Route path="/warehouse" element={<Warehousepage />} />
             <Route path="/warehouse/create" element={<WarehouseForm />} />
             <Route path="/warehouse/:id" element={<WarehouseForm />} />
+            <Route path="/category" element={<Categorypage />} />
           </Routes>
         </Box>
       </Flex>

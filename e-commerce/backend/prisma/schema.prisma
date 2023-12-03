@@ -37,7 +37,7 @@ model Product {
   price        Decimal
   stock        Int
   is_available Boolean
-  category_id  Int
+  category_id  Int?
   warehouse_id Int?
   image        String
   weight       Decimal
@@ -45,7 +45,7 @@ model Product {
   updated_at   DateTime @updatedAt
 
   // Relationships
-  category         Category           @relation(fields: [category_id], references: [category_id])
+  category         Category?           @relation(fields: [category_id], references: [category_id])
   warehouse        Warehouse?          @relation(fields: [warehouse_id], references: [warehouse_id])
   promotions       Promotion[]
   order_items      OrderItem[]

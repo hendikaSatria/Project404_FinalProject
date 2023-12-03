@@ -20,7 +20,7 @@ CREATE TABLE "Product" (
     "price" DECIMAL(65,30) NOT NULL,
     "stock" INTEGER NOT NULL,
     "is_available" BOOLEAN NOT NULL,
-    "category_id" INTEGER NOT NULL,
+    "category_id" INTEGER,
     "warehouse_id" INTEGER,
     "image" TEXT NOT NULL,
     "weight" DECIMAL(65,30) NOT NULL,
@@ -185,7 +185,7 @@ CREATE TABLE "UserAddress" (
 );
 
 -- AddForeignKey
-ALTER TABLE "Product" ADD CONSTRAINT "Product_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "Category"("category_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Product" ADD CONSTRAINT "Product_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "Category"("category_id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Product" ADD CONSTRAINT "Product_warehouse_id_fkey" FOREIGN KEY ("warehouse_id") REFERENCES "Warehouse"("warehouse_id") ON DELETE SET NULL ON UPDATE CASCADE;
