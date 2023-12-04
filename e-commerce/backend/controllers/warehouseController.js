@@ -22,7 +22,7 @@ const warehouseController = {
 
   addWarehouse: async (req, res) => {
     try {
-      const adminId = req.admin.admin_id;
+      // const adminId = req.admin.admin_id;
       const {
         warehouse_name,
         province_id,
@@ -40,7 +40,7 @@ const warehouseController = {
           city_id: parseInt(city_id),
           city_name,
           postal_code: parseInt(postal_code),
-          admin_id: adminId,
+          admin_id: 1,
         },
       });
       res

@@ -17,16 +17,26 @@ import { deleteWarehouse } from "../../modules/fetch/index";
 
 export default function Warehousepage() {
   const [warehouses, setWarehouses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const fetchWarehouses = async () => {
+    const warehouses = await getAllWarehouses();
+    setWarehouses(warehouses);
+  };
   useEffect(() => {
-    const fetchWarehouses = async () => {
-      const warehouses = await getAllWarehouses();
-      setWarehouses(warehouses);
-    };
     fetchWarehouses();
-  }, []);
+  }, [searchTerm]);
 
   //search
-  const handleSearch = () => {};
+  const handleSearch = () => {
+    // Gunakan filter untuk mencocokkan gudang berdasarkan nama
+    const filteredWarehouses = warehouses.warehouses.filter((warehouse) =>
+      warehouse.warehouse_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Update state dengan daftar gudang yang sesuai
+    setWarehouses({ warehouses: filteredWarehouses });
+  };
 
   //Delete
   const handleDelete = async (warehouseId) => {
@@ -62,9 +72,16 @@ export default function Warehousepage() {
           <Box>
             <HStack w="full">
               <InputGroup size="md">
-                <Input pr="4.5rem" placeholder="Warehouse Name" />
+                <Input
+                  pr="4.5rem"
+                  placeholder="Warehouse Name"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
                 <InputRightElement width="4.5rem">
-                  <Button h="1.75rem" size="sm" onClick={handleSearch}></Button>
+                  <Button h="1.75rem" size="sm" onClick={handleSearch}>
+                    Search
+                  </Button>
                 </InputRightElement>
               </InputGroup>
               <Button as={Link} to="create" colorScheme="blue">

@@ -31,6 +31,7 @@ import {
 const Categorypage = () => {
   const [categories, setCategories] = useState([]);
   //   const [categoryName, setCategoryName] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
   const [categoryData, setCategoryData] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalHeader, setModalHeader] = useState("Add Category");
@@ -40,16 +41,29 @@ const Categorypage = () => {
 
   const fetchCategories = async () => {
     try {
-      const data = await getAllCategories();
-      setCategories(data);
-      // console.log(categories);
+      const response = await getAllCategories();
+      setCategories(response.categorys);
+      // console.log(response.categorys);
     } catch (error) {
       console.error("Gagal mengambil data kategori:", error.message);
     }
   };
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [searchTerm]);
+
+  const handleSearch = () => {
+    // Check if categories is an array
+    if (Array.isArray(categories)) {
+      // Gunakan filter untuk mencocokkan gudang berdasarkan nama
+      const filteredCategories = categories.filter((category) =>
+        category.category_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      // Update state dengan daftar gudang yang sesuai
+      setCategories(filteredCategories);
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -104,9 +118,14 @@ const Categorypage = () => {
           <Box>
             <HStack w="full">
               <InputGroup size="md">
-                <Input pr="4.5rem" placeholder="Category Name" />
+                <Input
+                  pr="4.5rem"
+                  placeholder="Category Name"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
                 <InputRightElement width="4.5rem">
-                  <Button h="1.75rem" size="sm">
+                  <Button h="1.75rem" size="sm" onClick={handleSearch}>
                     Search
                   </Button>
                 </InputRightElement>
@@ -128,7 +147,7 @@ const Categorypage = () => {
           {/* End of search bar */}
 
           <VStack overflowY="auto" h="70vh" bg="gray.200" p={4}>
-            {categories?.categorys?.map((category) => (
+            {categories?.map((category) => (
               <WrapItem
                 bg="blue.200"
                 w="full"
