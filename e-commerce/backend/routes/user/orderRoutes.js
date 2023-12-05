@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const orderController = require('../../controllers/user/orderController');
+const { authenticateToken } = require('../../middleware/authMiddleWare'); 
+
 
 // Create an order
-router.post('/:userId', async (req, res) => {
+router.post('/:userId', authenticateToken, async (req, res) => {
   const userId = req.params.userId;
   const promoCode = req.body.promoCode;
-  const courier = req.body.courier; 
+  const courier = "pos"; 
 
   try {
     const order = await orderController.createOrder(userId, promoCode, courier);
@@ -18,7 +20,7 @@ router.post('/:userId', async (req, res) => {
 });
 
 // Get orders for a user
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', authenticateToken, async (req, res) => {
     const userId = req.params.userId;
 
     try {
@@ -29,4 +31,30 @@ router.get('/:userId', async (req, res) => {
     }
 });
 
+router.post('/calculateTotalPrice', async (req, res) => {
+  try {
+    const orderItems = req.body.orderItems;
+    const totalPrice = orderItems.reduce((total, item) => {
+      const itemPrice = item.product.price || 0;
+      return total + item.quantity * itemPrice;
+    }, 0);
+    res.json({ totalPrice });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to calculate total price' });
+  }
+});
+
+router.get('/getById/:orderId', authenticateToken, async (req, res) => {
+  try {
+      const orderId = req.params.orderId;
+      const order = await orderController.getOrderById(orderId);
+      res.status(200).json(order);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to retrieve order' });
+  }
+});
+
 module.exports = router;
+

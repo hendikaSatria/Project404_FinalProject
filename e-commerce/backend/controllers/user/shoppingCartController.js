@@ -1,8 +1,7 @@
 const { PrismaClient } = require('../../prisma/generated/client');
 const prisma = new PrismaClient();
 
-// Function to add a product to the shopping cart
-async function addToCart(userId, productId) {
+async function addToCart(userId, productId, quantity) {
   try {
     // Check if there's a shopping cart
     let userCart = await prisma.shoppingCart.findFirst({
@@ -10,7 +9,8 @@ async function addToCart(userId, productId) {
         user_id: userId,
       },
     });
-    // If shopping cart not found generate one
+
+    // If shopping cart not found, generate one
     if (!userCart) {
       userCart = await prisma.shoppingCart.create({
         data: {
@@ -19,29 +19,45 @@ async function addToCart(userId, productId) {
       });
     }
 
+    // Check if the item is already in the cart
     const existingCartItem = await prisma.shoppingCartItem.findFirst({
       where: {
         cart_id: userCart.cart_id,
-        product_id: productId,
+        product_id: parseInt(productId, 10),
       },
+      include: { product: true }, // Include product information in the query
     });
 
+    // Retrieve product information
+    const product = await prisma.product.findUnique({
+      where: { product_id: parseInt(productId, 10) },
+    });
+
+    if (!product) {
+      throw new Error('Product not found');
+    }
+
+    // Validate the quantity against the available stock
+    const updatedQuantity = existingCartItem
+      ? existingCartItem.quantity + quantity
+      : quantity;
+
+    if (updatedQuantity > product.stock) {
+      throw new Error('Cannot add more items than available stock');
+    }
+
     if (existingCartItem) {
-      return await prisma.shoppingCartItem.update({
+      // If item exists, update the quantity
+      const updatedCartItem = await prisma.shoppingCartItem.update({
         where: { cart_item_id: existingCartItem.cart_item_id },
-        data: { quantity: existingCartItem.quantity + 1 },
+        data: { quantity: updatedQuantity },
         include: { product: true },
       });
+
+      return updatedCartItem;
     } else {
-      const product = await prisma.product.findUnique({
-        where: { product_id: productId },
-      });
-
-      if (!product) {
-        throw new Error('Product not found');
-      }
-
-      return await prisma.shoppingCartItem.create({
+      // If item doesn't exist, add it to the cart
+      const newCartItem = await prisma.shoppingCartItem.create({
         data: {
           cart: {
             connect: {
@@ -50,19 +66,22 @@ async function addToCart(userId, productId) {
           },
           product: {
             connect: {
-              product_id: productId,
+              product_id: parseInt(productId, 10),
             },
           },
-          quantity: 1,
+          quantity: updatedQuantity,
         },
         include: { product: true },
       });
+
+      return newCartItem;
     }
   } catch (error) {
     console.error(error);
     throw new Error('Internal Server Error');
   }
 }
+
 
 // Function to retrieve the shopping cart for a user
 async function getShoppingCart(userId) {
@@ -125,7 +144,6 @@ async function removeFromCart(cartItemId, userId, productId) {
   }
 }
 
-// Function to update the quantity of a product in the shopping cart
 async function updateCartItemQuantity(cartItemId, newQuantity, userId) {
   try {
     const userCart = await prisma.shoppingCart.findFirst({
@@ -141,6 +159,22 @@ async function updateCartItemQuantity(cartItemId, newQuantity, userId) {
 
     if (!userCart) {
       throw new Error('User cart not found');
+    }
+
+    const existingCartItem = await prisma.shoppingCartItem.findUnique({
+      where: { cart_item_id: parseInt(cartItemId, 10) },
+      include: { product: true },
+    });
+
+    if (!existingCartItem) {
+      throw new Error('Cart item not found');
+    }
+
+    const product = existingCartItem.product;
+
+    // Validate the new quantity against the available stock
+    if (newQuantity > product.stock) {
+      throw new Error('Cannot update quantity to exceed available stock');
     }
 
     const updatedCartItem = await prisma.shoppingCartItem.update({
@@ -173,6 +207,7 @@ async function updateCartItemQuantity(cartItemId, newQuantity, userId) {
     throw new Error('Internal Server Error');
   }
 }
+
 
 module.exports = {
   addToCart,

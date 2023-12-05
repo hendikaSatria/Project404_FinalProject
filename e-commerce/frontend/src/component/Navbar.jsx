@@ -31,13 +31,8 @@ const Navbar = () => {
   };
 
   const handleLinkClick = (path) => {
-    if (user && path === '/profile') {
-      navigate('/profile');
-    } else {
-      navigate('/login');
-    }
+    navigate(path);
   };
-  
 
   return (
     <ChakraProvider>

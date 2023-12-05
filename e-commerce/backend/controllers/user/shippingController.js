@@ -3,6 +3,26 @@ const { PrismaClient } = require('../../prisma/generated/client');
 const prisma = new PrismaClient();
 const shoppingCartController = require('./shoppingCartController');
 
+const calculateTotalWeight = (cartItems) => {
+    return cartItems.reduce((totalWeight, cartItem) => {
+        const itemWeight = cartItem.product.weight || 0;
+        return totalWeight + cartItem.quantity * itemWeight;
+    }, 0);
+};
+
+const groupItemsByWarehouse = (cartItems) => {
+    const warehouseGroups = {};
+    cartItems.forEach((cartItem) => {
+        const warehouseId = cartItem.product.warehouse_id;
+        if (!warehouseGroups[warehouseId]) {
+            warehouseGroups[warehouseId] = [];
+        }
+        warehouseGroups[warehouseId].push(cartItem);
+    });
+
+    return Object.values(warehouseGroups);
+};
+
 const calculateShippingFee = async (originCityId, destinationCityId, weight, courier) => {
     const apiKey = '86ee504db8abb644b6a2324e98e3b5d8';
 
@@ -51,6 +71,68 @@ const calculateShippingFee = async (originCityId, destinationCityId, weight, cou
     }
 };
 
+const getShippingFees = async (userId) => {
+    try {
+        const userIdInt = parseInt(userId, 10);
+        const cartItems = await shoppingCartController.getShoppingCart(userIdInt);
+
+        if (cartItems.length === 0) {
+            throw new Error('Shopping cart is empty');
+        }
+
+        const warehouseGroups = groupItemsByWarehouse(cartItems);
+
+        const user = await prisma.user.findUnique({
+            where: {
+                user_id: userIdInt,
+            },
+            include: {
+                user_addresses: {
+                    select: {
+                        city_id: true,
+                    },
+                },
+            },
+        });
+
+        if (!user || !user.user_addresses || user.user_addresses.length === 0) {
+            console.error('User or user address not found');
+            throw new Error('User or user address not found');
+        }
+
+        const destinationCityId = user.user_addresses[0].city_id;
+
+        let totalShippingFee = 0;
+
+        // Iterate over each warehouse group
+        for (const warehouseGroup of warehouseGroups) {
+            // Check if the warehouse group is not empty
+            if (warehouseGroup.length > 0) {
+                const warehouseCityId = warehouseGroup[0].product.city_id; 
+
+                // Calculate total weight for the warehouse group
+                const totalWeightForGroup = calculateTotalWeight(warehouseGroup);
+
+                // Calculate shipping fee for the warehouse group
+                const shippingFeeForGroup = await calculateShippingFee(
+                    warehouseGroup[0].product.warehouse_id, 
+                    destinationCityId,
+                    totalWeightForGroup,
+                    'pos' 
+                );
+
+                totalShippingFee += shippingFeeForGroup;
+            }
+        }
+
+        return totalShippingFee;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Failed to retrieve total shipping fee');
+    }
+};
+
 module.exports = {
     calculateShippingFee,
+    getShippingFees,
 };

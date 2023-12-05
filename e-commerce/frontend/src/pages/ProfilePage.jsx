@@ -83,11 +83,8 @@ const Profile = () => {
 
   const handleAddAddress = async () => {
     try {
-      const selectedCityDetails = cities.find((city) => city.city_id === selectedCity);
-  
-      // Check if city details are available
+      const selectedCityDetails = cities.find((city) => city.city_id === selectedCity);  
       if (selectedCityDetails) {
-        // Extract relevant details
         const {
           province_id,
           province,
@@ -96,13 +93,10 @@ const Profile = () => {
           postal_code,
         } = selectedCityDetails;
   
-        // Convert province_id and city_id to integers
         const parsedProvinceId = parseInt(province_id, 10);
         const parsedCityId = parseInt(city_id, 10);
         const parsedPostalCode = parseInt(postal_code, 10);
-
   
-        // Call the updateAddress function with relevant details and token
         const response =  await updateAddress({
           province_id: parsedProvinceId,
           province_name: province,
@@ -131,13 +125,11 @@ const Profile = () => {
       <Flex align="center" justify="center" h="100vh">
         <Box p="4" borderWidth="1px" borderRadius="lg" boxShadow="md">
           <Flex>
-            {/* Left Side - Affiliate Code */}
             <Box mr="4">
               <Text fontWeight="bold">Affiliate Code:</Text>
               <Text>{user ? user.affiliate_code : 'N/A'}</Text>
             </Box>
 
-            {/* Right Side - User Info */}
             <Box>
               <Text fontWeight="bold">Name:</Text>
               <Text>{user?.full_name || 'N/A'}</Text>
@@ -145,17 +137,15 @@ const Profile = () => {
               <Text fontWeight="bold">Email:</Text>
               <Text>{user?.email || 'N/A'}</Text>
 
-            {/* Displaying the Addresses */}
             <Text fontWeight="bold">Addresses:</Text>
             {user?.user_addresses?.length > 0 ? (
-            user.user_addresses.map((address) => (
-            <div key={address.user_address_id}>
-            <Text>{`Province: ${address.province_name}, City: ${address.city_name}, Postal Code: ${address.postal_code}`}</Text>
-            </div>
-  ))
-) : (
-  <Text>N/A</Text>
-)}
+              user.user_addresses.map((address) => (
+              <div key={address.user_address_id}>
+              <Text>{`Province: ${address.province_name}, City: ${address.city_name}, Postal Code: ${address.postal_code}`}</Text>
+              </div>))) : (
+              <Text>N/A</Text>
+              )
+            }
 
 
               <Button mt="4" onClick={handleOpenAddAddressModal}>
@@ -170,20 +160,18 @@ const Profile = () => {
         </Box>
       </Flex>
 
-      {/* Add Address Modal */}
       <Modal isOpen={isAddAddressModalOpen} onClose={handleCloseAddAddressModal}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add Address</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* City Dropdown */}
             <Select
               placeholder="Select Province"
               value={selectedProvince}
               onChange={(e) => {
                 setSelectedProvince(e.target.value);
-                fetchCityList(e.target.value); // Fetch city list based on selected province
+                fetchCityList(e.target.value); 
               }}
               mb="4"
             >
@@ -209,8 +197,6 @@ const Profile = () => {
               ))}
             </Select>
 
-
-            {/* Add Address Button */}
             <Button colorScheme="teal" onClick={handleAddAddress}>
               Add Address
             </Button>

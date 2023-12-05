@@ -123,7 +123,7 @@ const LoginPage = () => {
         email: registerEmail,
         password: registerPassword,
         confirmPassword: registerConfirmPassword,
-        affiliateCode: registerAffiliateCode,
+        affiliateCodeInput: registerAffiliateCode,
       };
   
       await registerUser(userData);

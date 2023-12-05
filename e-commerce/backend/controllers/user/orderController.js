@@ -2,6 +2,7 @@ const { PrismaClient } = require('../../prisma/generated/client');
 const prisma = new PrismaClient();
 const shoppingCartController = require('./shoppingCartController');
 const shippingController = require('./shippingController');
+const promoController = require('./promoController');
 
 const calculateTotalPrice = (orderItems) => {
     return orderItems.reduce((total, item) => {
@@ -30,7 +31,7 @@ const calculateTotalWeight = (cartItems) => {
     }, 0);
 };
 
-const createOrder = async (userId, promoCode = null, courier) => {
+const createOrder = async (userId, promoCode, courier) => {
     try {
         const userIdInt = parseInt(userId, 10);
         const cartItems = await shoppingCartController.getShoppingCart(userIdInt);
@@ -101,25 +102,17 @@ const createOrder = async (userId, promoCode = null, courier) => {
         let affiliateDiscountAmount = 0;
 
         if (promoCode) {
-            const promo = await prisma.promotion.findFirst({
-                where: {
-                    promo_code: promoCode,
-                    remaining_usage: { gt: 0 },
-                    product_id: null,
-                },
-            });
+            const isValidPromo = await promoController.validatePromoCodeForUser(promoCode);
 
-            if (promo) {
-                if (promo.type === 'percentage') {
-                    promoDiscountAmount = (totalPrice * promo.amount) / 100;
-                } else if (promo.type === 'fixed') {
-                    promoDiscountAmount = promo.amount;
-                }
+            if (isValidPromo) {
+                const promoAmount = await promoController.calculatePromoAmountForUser(promoCode, totalPrice);
+                promoDiscountAmount = promoAmount;
 
-                await prisma.promotion.update({
-                    where: { promo_id: promo.promo_id },
-                    data: { remaining_usage: promo.remaining_usage - 1 },
-                });
+                // // Reserve the promotion for the user
+                // await promoController.reservePromotion(promoCode);
+            } else {
+                console.error('Invalid promo code');
+                throw new Error('Invalid promo code');
             }
         }
 
@@ -223,7 +216,40 @@ const getOrdersForUser = async (userId) => {
     }
 };
 
+const getOrderById = async (orderId) => {
+    try {
+        const orderIdInt = parseInt(orderId, 10);
+
+        const order = await prisma.orders.findUnique({
+            where: {
+                order_id: orderIdInt,
+            },
+            include: {
+                order_items: {
+                    include: {
+                        product: true,
+                    },
+                },
+            },
+        });
+
+        if (!order) {
+            console.error('Order not found');
+            throw new Error('Order not found');
+        }
+
+        return order;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Failed to retrieve order');
+    }
+};
+
 module.exports = {
     createOrder,
     getOrdersForUser,
+    calculateTotalWeight,
+    calculateTotalPrice,
+    groupItemsByWarehouse,
+    getOrderById, 
 };

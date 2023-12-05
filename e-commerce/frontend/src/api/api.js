@@ -144,4 +144,200 @@ export const updateAddress = async (addressData, token) => {
   }
 };
 
+export const getAllPromo = async (token) => {
+  try {
+    const response = await api.get('/userauth/promotions', {
+      headers: {
+        Authorization: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw handleRequestError(error);
+  }
+};
+
+export const fetchCart = async (userId) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await api.get(`/shoppingCart/${userId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw handleRequestError(error);
+  }
+};
+
+export const addToCart = async (userId, productId, quantity, token) => {
+  try {
+    const response = await api.post('/shoppingCart/add-to-cart', { userId, productId, quantity }, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw handleRequestError(error);
+  }
+};
+
+export const removeFromCart = async (cartItemId, userId, productId) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await api.delete(`/shoppingCart/removeFromCart/${cartItemId}/${userId}/${productId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw handleRequestError(error);
+  }
+};
+
+export const updateCartItemQuantity = async (cartItemId, newQuantity, userId) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await api.put(`/shoppingCart/updateCartItemQuantity/${cartItemId}/${newQuantity}/${userId}`,null, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw handleRequestError(error);
+  }
+};
+
+export const getShippingFee = async (userId) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await api.get(`/shipping/shipping-fees/${userId}` , {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    const shippingFee = response.data.shippingFee;
+
+    return shippingFee;
+  } catch (error) {
+    console.error('Error getting shipping fee:', error);
+    throw new Error('Failed to get shipping fee');
+  }
+};
+
+
+export const calculateTotalPrice = async (orderItems) => {
+  try {
+    const response = await api.post('/user/orders/calculateTotalPrice', { orderItems });
+    return response.data.totalPrice;
+  } catch (error) {
+    throw handleRequestError(error);
+  }
+};
+
+export const createOrder = async (userId, promoCode, courier, token) => {
+  try {
+    const response = await api.post(`/user/orders/${userId}`, { promoCode: promoCode, courier: courier }, {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create order: ${response.status} - ${promoCode}`);
+    }
+
+    const data = response.data;
+
+    // Check if the response contains an error message
+    if (data && data.error) {
+      throw new Error(`Failed to create order: ${data.error}`);
+    }
+
+    console.log('Order creation data:', data);
+
+    // Assuming the response has an 'orderId' property
+    if (data && data.orderId) {
+      return data;
+    } else {
+      throw new Error('Unexpected response format:', data);
+    }
+  } catch (error) {
+    console.error('Error creating order:', error);
+    throw new Error('Failed to create order');
+  }
+};
+
+
+
+export const getOrdersForUser = async (userId) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await api.get(`/user/orders/${userId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    if (response.status !== 200) {
+      throw new Error(`Failed to get user orders: ${response.status} - ${response.statusText}`);
+    }
+
+    const data = response.data;
+    console.log('User orders:', data.orders);
+    return data.orders;
+  } catch (error) {
+    console.error('Error getting user orders:', error);
+    throw new Error('Failed to get user orders');
+  }
+};
+
+export const uploadProofOfPayment = async (orderId, proofOfPaymentFile, token) => {
+  try {
+    const formData = new FormData();
+    formData.append('proofOfPaymentFile', proofOfPaymentFile);
+
+    const response = await api.post(`/user/upload-proof-of-payment/${orderId}`, formData, {
+      headers: {
+        Authorization: token,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response; 
+
+  } catch (error) {
+    console.error('Error uploading proof of payment:', error);
+    throw new Error('Failed to upload proof of payment');
+  }
+};
+
+
+export const getOrderById = async (orderId, token) => {
+  try {
+    const response = await api.get(`/user/orders/getById/${orderId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to get order by ID: ${response.status} - ${response.statusText}`);
+    }
+
+    const data = response.data;
+    console.log('Order by ID:', data.order);
+    return data.order;
+  } catch (error) {
+    console.error('Error getting order by ID:', error);
+    throw new Error('Failed to get order by ID');
+  }
+};
+
+
 export default api;

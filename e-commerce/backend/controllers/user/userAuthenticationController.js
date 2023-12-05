@@ -59,7 +59,7 @@ const registerUser = async (req, res) => {
       });
 
       if (referredUser) {
-        affiliateCode = affiliateCodeInput;
+        affiliateCode = generateAffiliateCode(6);
         affiliateUsage = true;
       } else {
         console.log('Invalid affiliate code');
@@ -169,14 +169,12 @@ const updateAddress = async (req, res) => {
     const userId = req.user.userId;
     const { province_id, province_name, city_id, city_name, postal_code } = req.body;
 
-    // Find the user existing address
     const existingAddress = await prisma.userAddress.findFirst({
       where: {
         user_id: userId,
       },
     });
 
-    // If the user has an existing address updaet it if not create a new one
     const updatedAddress = existingAddress
       ? await prisma.userAddress.update({
           where: {

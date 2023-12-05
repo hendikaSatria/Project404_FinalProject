@@ -15,6 +15,9 @@ const orderRoutes = require('./user/orderRoutes');
 const proofOfPaymentRoutes = require('./user/proofOfPaymentRoutes');
 const userProductRoutes = require('./user/productRoutes')
 
+const rajaOngkirRoutes =  require('./rajaOngkirRoutes');
+const shippingRoutes =  require('./user/shippingRoutes');
+
 
 router.use((req, res, next) => {
     req.prisma = prisma;
@@ -33,5 +36,8 @@ router.use('/userauth', userAuthRoutes);
 router.use('/user/orders', orderRoutes);
 router.use('/user', proofOfPaymentRoutes);
 router.use('/users', userProductRoutes);
+
+router.use('/api', rajaOngkirRoutes);
+router.use('/shipping', shippingRoutes);
 
 module.exports = router;
