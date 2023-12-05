@@ -42,6 +42,7 @@ const OrderController = {
 
     res.json({ message: 'Order deleted successfully' });
   },
+
   getOrderDetails: async (req, res) => {
     try {
       const orderDetails = await prisma.orders.findMany({
