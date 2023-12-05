@@ -78,51 +78,30 @@ const productController = {
       const numericPrice = parseFloat(price);
       const intWeight = parseInt(weight);
 
+      // Pastikan is_available tidak null atau undefined sebelum memanggil toLowerCase
+
       const isAvailableBoolean =
         typeof is_available === "string"
           ? is_available.toLowerCase() === "true"
           : typeof is_available === "boolean"
-            ? is_available
-            : undefined;
+          ? is_available
+          : undefined;
 
-      let updatedProduct;
-
-      if (req.file) {
-        // Jika ada file gambar baru, perbarui juga gambar
-        updatedProduct = await prisma.product.update({
-          where: {
-            product_id: parseInt(id),
-          },
-          data: {
-            name: name,
-            description: description,
-            price: numericPrice,
-            stock: intStock,
-            is_available: isAvailableBoolean,
-            category_id: parseInt(category_id),
-            warehouse_id: parseInt(warehouse_id),
-            weight: intWeight,
-            image: req.file.filename,
-          },
-        });
-      } else {
-        // Jika tidak ada file gambar baru, hanya perbarui informasi produk lainnya
-        updatedProduct = await prisma.product.update({
-          where: {
-            product_id: parseInt(id),
-          },
-          data: {
-            name: name,
-            description: description,
-            price: numericPrice,
-            stock: intStock,
-            is_available: isAvailableBoolean,
-            category_id: parseInt(category_id),
-            warehouse_id: parseInt(warehouse_id),
-            weight: intWeight,
-          },
-        });
-      }
+      const updatedProduct = await prisma.product.update({
+        where: {
+          product_id: parseInt(id),
+        },
+        data: {
+          name: name,
+          description: description,
+          price: numericPrice,
+          stock: intStock,
+          is_available: isAvailableBoolean,
+          category_id: parseInt(category_id),
+          warehouse_id: parseInt(warehouse_id),
+          weight: intWeight,
+        },
+      });
 
       res.json(updatedProduct);
     } catch (error) {
@@ -162,25 +141,6 @@ const productController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
-
-  getAllProductDetails: async (req, res) => {
-    try {
-      const productDetails = await prisma.product.findMany({
-        include: {
-          category: { select: { category_name: true } },
-          warehouse: { select: { city_name: true } },
-        },
-      });
-
-      res.json(productDetails);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal Server Error' });
-    }
-  },
-
 };
-
-
 
 module.exports = productController;

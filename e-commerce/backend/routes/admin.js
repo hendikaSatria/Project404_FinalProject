@@ -43,16 +43,16 @@ router
   .delete(categoryController.deleteCategory);
 
 //product
-// router
-//   .route("/product")
-//   .get(productController.getAllProduct)
-//   .post(mtr.upload.single("image"), productController.createProduct);
+router
+  .route("/product")
+  .get(productController.getAllProduct)
+  .post(mtr.upload.single("image"), productController.createProduct);
 
-// router
-//   .route("/product/:id")
-//   .get(productController.getByID)
-//   .put(productController.updateProduct)
-//   .delete(productController.deleteProduct);
+router
+  .route("/product/:id")
+  .get(productController.getByID)
+  .put(productController.updateProduct)
+  .delete(productController.deleteProduct);
 
 router
   .route("/product/category/:category_id")

@@ -10,7 +10,7 @@ const Home = () => {
     localStorage.removeItem('Token');
 
     // Navigasi ke halaman login setelah logout
-    navigate('/admin/login');
+    navigate('/login');
   };
 
   return (
