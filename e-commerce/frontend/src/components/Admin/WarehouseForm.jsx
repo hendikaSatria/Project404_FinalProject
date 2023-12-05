@@ -14,7 +14,7 @@ import {
   createWarehouse,
   getWarehouseById,
   editWarehouse,
-} from "../modules/fetch";
+} from "../../modules/fetch";
 import { useParams } from "react-router-dom";
 
 const WarehouseForm = () => {
