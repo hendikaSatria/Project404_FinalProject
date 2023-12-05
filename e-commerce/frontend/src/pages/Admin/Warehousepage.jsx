@@ -20,8 +20,9 @@ export default function Warehousepage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetchWarehouses = async () => {
-    const warehouses = await getAllWarehouses();
-    setWarehouses(warehouses);
+    const response = await getAllWarehouses();
+    setWarehouses(response);
+    // console.log(warehouses);
   };
   useEffect(() => {
     fetchWarehouses();
