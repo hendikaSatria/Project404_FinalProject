@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  Heading,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-} from "@chakra-ui/react";
+import { Box, Table, Thead, Tbody, Tr, Th, Td, Heading, Button, HStack, Input, InputGroup, InputLeftElement, IconButton } from '@chakra-ui/react';
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { SearchIcon } from '@chakra-ui/icons';
+import { useNavigate, Link } from "react-router-dom";
 
 const User = () => {
   const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,42 +25,55 @@ const User = () => {
 
     fetchUsers();
   }, []);
+  const handleSearch = () => { };
 
-  const handleLogout = () => {
-    localStorage.removeItem("Token");
-    navigate("/login");
-  };
 
   return (
-    <Box p={4} maxW="md" mx="auto">
-      <Button colorScheme="red" mb={4} onClick={handleLogout}>
-        Logout
-      </Button>
-
-      <Heading mb={4}>Users Details</Heading>
-      <Table variant="simple">
-        <TableCaption>Imperial to metric conversion factors</TableCaption>
-        <Thead>
-          <Tr>
-            <Th>User ID</Th>
-            <Th>Name</Th>
-            <Th>Email</Th>
-            <Th>Affiliate Code</Th>
-            <Th>Total Price</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {users.map((user) => (
-            <Tr key={user.user_id}>
-              <Td>{user.user_id}</Td>
-              <Td>{user.full_name}</Td>
-              <Td>{user.email}</Td>
-              <Td>{user.affiliate_code}</Td>
-              <Td>{user.total_price}</Td>
+    <Box p={4} mx="auto">
+      <Heading my="5" textAlign="center" textTransform="uppercase">
+        User Management
+      </Heading>
+      <InputGroup mb="3" ml="auto" maxW="500px">
+        <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} /> {/* Ikon pencarian */}
+        <Input
+          placeholder="Search Product"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          fontSize="sm"
+        />
+        <IconButton mx="3"
+          colorScheme="blue"
+          h="2.5rem"
+          size="lg"
+          onClick={handleSearch}
+          aria-label="Search"
+          icon={<SearchIcon />}
+        />
+      </InputGroup>
+      <Box border="1px solid" rounded="3xl" overflowX="auto">
+        <Table variant="simple">
+          <Thead>
+            <Tr>
+              <Th textAlign="center" borderBottom="1px solid" p={2}>No.</Th>
+              <Th textAlign="center" borderBottom="1px solid" p={2}>User ID</Th>
+              <Th textAlign="justify" borderBottom="1px solid" p={2}>Name</Th>
+              <Th textAlign="justify" borderBottom="1px solid" p={2}>Email</Th>
+              <Th textAlign="justify" borderBottom="1px solid" p={2}>Affiliate Code</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {users.map((user, index) => (
+              <Tr key={user.user_id}>
+                <Td textAlign="center" p={2}>{index + 1}</Td>
+                <Td textAlign="center" p={2}>{user.user_id}</Td>
+                <Td textAlign="justify" p={2}>{user.full_name}</Td>
+                <Td textAlign="justify" p={2}>{user.email}</Td>
+                <Td textAlign="justify" p={2} color="red">{user.affiliate_code}</Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-const { PrismaClient } = require('../../prisma/generated/client');
+const { PrismaClient } = require("../../prisma/generated/client");
 const prisma = new PrismaClient();
 
 const OrderController = {
@@ -62,9 +62,14 @@ const OrderController = {
             },
           },
           order_status: true,
+          ProofsOfPayment: {
+            select: {
+              image: true,
+            },
+          },
         },
       });
-
+  
       res.json(orderDetails);
     } catch (error) {
       console.error('Error retrieving order details:', error);

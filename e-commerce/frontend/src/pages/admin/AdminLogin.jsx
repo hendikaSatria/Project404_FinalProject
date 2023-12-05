@@ -1,23 +1,13 @@
+import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, Text, useColorModeValue, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
-import {
-  Box,
-  Button,
-  Input,
-  Stack,
-  Alert,
-  AlertIcon,
-  Spinner,
-  Heading,
-} from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
-  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,75 +20,85 @@ const AdminLogin = () => {
       const response = await axios.post('http://localhost:3000/admin/login', credentials);
       const { token } = response.data;
 
-      setError(null);
-
-      // Simpan token di localStorage
       localStorage.setItem('Token', token);
-
-      // Set header Authorization untuk permintaan selanjutnya
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-      // Navigasi ke halaman home setelah login berhasil
-      navigate('/order');
+      // Tampilkan toast ketika login berhasil
+      toast({
+        title: 'Login Berhasil',
+        description: 'Selamat datang kembali!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+
+      navigate('/admin/product');
     } catch (error) {
-      setError('Login gagal. Cek kembali username dan password.');
+      console.error('Login Error:', error);
+
+      // Tampilkan toast ketika login gagal
+      toast({
+        title: 'Login Gagal',
+        description: 'Cek kembali username dan password.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Box d="flex" h="100vh" alignItems="center" justifyContent="center" color = "black">
+    <Box
+      bg={useColorModeValue('gray.200', 'gray.800')}
+      minH="100vh"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
       <Box
         p={4}
         maxW="350px"
-        bg="white"
+        bg={useColorModeValue('white', 'gray.700')}
         shadow="md"
         rounded="lg"
         textAlign="center"
       >
         <Heading mb={6}>Welcome back!</Heading>
-        <Box fontSize="md" color="gray.600" mb={6}>
-          Let's start manage Vislap's website!
-        </Box>
-        <Box>
-          <Stack spacing={4}>
+        <Text fontSize="lg" color="gray.600" mb={6}>
+          Let's start manage 404 website!
+        </Text>
+        <Stack spacing={4}>
+          <FormControl id="username">
+            <FormLabel>Username</FormLabel>
             <Input
               type="text"
               name="username"
               value={credentials.username}
               onChange={handleInputChange}
-              placeholder="Username"
-              size="lg"
+              placeholder="Enter your username"
             />
-
+          </FormControl>
+          <FormControl id="password">
+            <FormLabel>Password</FormLabel>
             <Input
               type="password"
               name="password"
               value={credentials.password}
               onChange={handleInputChange}
-              placeholder="Password"
-              size="lg"
+              placeholder="Enter your password"
             />
-
-            {error && (
-              <Alert status="error">
-                <AlertIcon />
-                {error}
-              </Alert>
-            )}
-
-            <Button
-              colorScheme="blue"
-              onClick={handleLogin}
-              isLoading={isLoading}
-              disabled={isLoading}
-              size="lg"
-            >
-              {isLoading ? <Spinner /> : 'Login'}
-            </Button>
-          </Stack>
-        </Box>
+          </FormControl>
+          <Button
+            colorScheme="blue"
+            onClick={handleLogin}
+            isLoading={isLoading}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Signing in...' : 'Sign in'}
+          </Button>
+        </Stack>
       </Box>
     </Box>
   );
