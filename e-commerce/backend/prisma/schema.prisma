@@ -7,7 +7,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:ilzam3003@localhost:5432/e-commerce"
+
+  url      = "postgresql://postgres:postgres@localhost:5432/e-commerce"
+
 }
 
 // User Table
@@ -37,16 +39,16 @@ model Product {
   price        Decimal
   stock        Int
   is_available Boolean
-  category_id  Int
-  warehouse_id Int
+  category_id  Int?
+  warehouse_id Int?
   image        String
   weight       Decimal
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
   // Relationships
-  category         Category           @relation(fields: [category_id], references: [category_id])
-  warehouse        Warehouse          @relation(fields: [warehouse_id], references: [warehouse_id])
+  category         Category?           @relation(fields: [category_id], references: [category_id])
+  warehouse        Warehouse?          @relation(fields: [warehouse_id], references: [warehouse_id])
   promotions       Promotion[]
   order_items      OrderItem[]
   ShoppingCart     ShoppingCart[]
@@ -176,14 +178,14 @@ model Orders {
 // Order Items Table
 model OrderItem {
   order_item_id Int      @id @default(autoincrement())
-  product_id    Int
+  product_id    Int?
   quantity      Int
   price         Decimal
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 
   // Relationships
-  product        Product @relation(fields: [product_id], references: [product_id])
+  product        Product? @relation(fields: [product_id], references: [product_id])
   orders         Orders? @relation(fields: [ordersOrder_id], references: [order_id])
   ordersOrder_id Int?
 }
@@ -205,6 +207,7 @@ model ProofsOfPayment {
 // Warehouse Table
 model Warehouse {
   warehouse_id  Int    @id @default(autoincrement())
+  warehouse_name  String
   province_id   Int
   province_name String
   city_id       Int

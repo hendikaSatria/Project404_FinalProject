@@ -1,4 +1,30 @@
 import React from "react";
+// <<<<<<< Moza
+// import { Routes, Route } from "react-router-dom";
+// import Warehousepage from "./pages/Admin/Warehousepage";
+// import WarehouseForm from "./components/WarehouseForm";
+// import AdminSidebar from "./components/AdminSidebar";
+// import Categorypage from "./pages/Admin/Categorypage";
+// import { Box, Flex } from "@chakra-ui/react";
+
+// const AdminRouter = () => {
+//   return (
+//     <>
+//       <Flex w="100vw" h="100vh" align="center">
+//         <AdminSidebar />
+//         <Box bg="white" w="full" h="full">
+//           <Routes>
+//             <Route path="/warehouse" element={<Warehousepage />} />
+//             <Route path="/warehouse/create" element={<WarehouseForm />} />
+//             <Route path="/warehouse/:id" element={<WarehouseForm />} />
+//             <Route path="/category" element={<Categorypage />} />
+//           </Routes>
+//         </Box>
+//       </Flex>
+//     </>
+//   );
+// };
+
 import { Routes, Route, Navigate } from "react-router-dom";
 import AdminLogin from "./pages/admin/adminLogin";
 import User from "./pages/admin/User";
@@ -34,5 +60,6 @@ const checkAuthentication = () => {
     );
   };
   
+
 
 export default AdminRouter;

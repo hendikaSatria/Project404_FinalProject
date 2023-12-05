@@ -15,6 +15,7 @@ async function main() {
   const warehouse = await prisma.warehouse.createMany({
     data: [
       {
+        warehouse_name: "Warehouse 1",
         province_id: 31,
         province_name: "DKI Jakarta",
         city_id: 1,
@@ -23,6 +24,7 @@ async function main() {
         admin_id: 1,
       },
       {
+        warehouse_name: "Warehouse 2",
         province_id: 31,
         province_name: "DKI Jakarta",
         city_id: 2,
@@ -178,6 +180,7 @@ async function main() {
         password: "securepassword1",
         email: "john.doe@example.com",
         affiliate_code: "ABC123",
+
         affiliate_usage: true,
       },
       {
@@ -185,6 +188,7 @@ async function main() {
         password: "strongpass2023",
         email: "jane.smith@example.com",
         affiliate_code: "XYZ789",
+
         affiliate_usage: false,
       },
       {
@@ -192,6 +196,7 @@ async function main() {
         password: "mypassword123",
         email: "mike.johnson@example.com",
         affiliate_code: "DEF456",
+
         affiliate_usage: true,
       },
       {
@@ -199,6 +204,7 @@ async function main() {
         password: "secretword321",
         email: "emily.brown@example.com",
         affiliate_code: "GHI789",
+
         affiliate_usage: false,
       },
       {
@@ -206,6 +212,7 @@ async function main() {
         password: "pass1234word",
         email: "alex.turner@example.com",
         affiliate_code: "JKL012",
+
         affiliate_usage: true,
       },
       {
@@ -213,6 +220,7 @@ async function main() {
         password: "gracefulpass",
         email: "grace.wilson@example.com",
         affiliate_code: "MNO345",
+
         affiliate_usage: false,
       },
       {
@@ -220,6 +228,7 @@ async function main() {
         password: "danielpass456",
         email: "daniel.lee@example.com",
         affiliate_code: "PQR678",
+
         affiliate_usage: true,
       },
       {
@@ -227,6 +236,7 @@ async function main() {
         password: "oliviapass789",
         email: "olivia.moore@example.com",
         affiliate_code: "STU901",
+
         affiliate_usage: false,
       },
       {
@@ -241,6 +251,7 @@ async function main() {
         password: "sophiapass567",
         email: "sophia.rodriguez@example.com",
         affiliate_code: "YZA567",
+
         affiliate_usage: false,
       },
     ],
@@ -287,8 +298,8 @@ async function main() {
       admin_id: 1,
       order_items: {
         create: {
-          order_item_id: 2, // Nilai unik untuk order_item_id
-          product_id: 1,
+          order_item_id: 18,
+          product_id: 2, // sesuaikan id dengan id product yang tersedia di database
           quantity: 5,
           price: "29.99",
         },
