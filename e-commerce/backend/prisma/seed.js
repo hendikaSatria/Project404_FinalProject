@@ -56,8 +56,6 @@ async function main() {
       },
     ],
   });
-  //end of seeding Category
-
   //Seeding Product
   const product = await prisma.product.createMany({
     data: [
@@ -258,12 +256,11 @@ async function main() {
       },
     ],
   });
-  //end of seeding User
 
   //seeding Orders
   const order1 = await prisma.orders.upsert({
     where: {
-      order_id: 1, // ID order yang diinginkan
+      order_id: 1,
     },
     create: {
       user_id: 1,
@@ -276,8 +273,8 @@ async function main() {
       admin_id: 1,
       order_items: {
         create: {
-          order_item_id: 17,
-          product_id: 1, // sesuaikan id dengan id product yang tersedia di database
+          order_item_id: 1, // Nilai unik untuk order_item_id
+          product_id: 1,
           quantity: 5,
           price: "29.99",
         },
@@ -285,9 +282,10 @@ async function main() {
     },
     update: {},
   });
+
   const order2 = await prisma.orders.upsert({
     where: {
-      order_id: 2, // ID order yang diinginkan
+      order_id: 2,
     },
     create: {
       user_id: 2,
@@ -309,9 +307,10 @@ async function main() {
     },
     update: {},
   });
+
   const order3 = await prisma.orders.upsert({
     where: {
-      order_id: 3, // ID order yang diinginkan
+      order_id: 3,
     },
     create: {
       user_id: 3,
@@ -324,15 +323,189 @@ async function main() {
       admin_id: 1,
       order_items: {
         create: {
-          order_item_id: 17,
-          product_id: 1, // sesuaikan id dengan id product yang tersedia di database
+          order_item_id: 3, // Nilai unik untuk order_item_id
+          product_id: 1,
           quantity: 5,
           price: "29.99",
         },
       },
     },
     update: {},
-    // end of seeding Orders
+  });
+
+  const order4 = await prisma.orders.upsert({
+    where: {
+      order_id: 4,
+    },
+    create: {
+      user_id: 4,
+      order_date: "2023-11-23T05:41:21.924Z",
+      delivery_time: "2023-11-23T05:41:21.924Z",
+      deliver_fee: "100000",
+      total_price: "100149.95",
+      payment_status: "Pending",
+      order_status: "Processing",
+      admin_id: 1,
+      order_items: {
+        create: {
+          order_item_id: 4, // Nilai unik untuk order_item_id
+          product_id: 1,
+          quantity: 5,
+          price: "29.99",
+        },
+      },
+    },
+    update: {},
+  });
+
+  const order5 = await prisma.orders.upsert({
+    where: {
+      order_id: 5,
+    },
+    create: {
+      user_id: 5,
+      order_date: "2023-11-23T05:41:21.924Z",
+      delivery_time: "2023-11-23T05:41:21.924Z",
+      deliver_fee: "100000",
+      total_price: "100149.95",
+      payment_status: "Pending",
+      order_status: "Processing",
+      admin_id: 1,
+      order_items: {
+        create: {
+          order_item_id: 5, // Nilai unik untuk order_item_id
+          product_id: 1,
+          quantity: 5,
+          price: "29.99",
+        },
+      },
+    },
+    update: {},
+  });
+
+  const order6 = await prisma.orders.upsert({
+    where: {
+      order_id: 6,
+    },
+    create: {
+      user_id: 6,
+      order_date: "2023-11-23T05:41:21.924Z",
+      delivery_time: "2023-11-23T05:41:21.924Z",
+      deliver_fee: "100000",
+      total_price: "100149.95",
+      payment_status: "Pending",
+      order_status: "Processing",
+      admin_id: 1,
+      order_items: {
+        create: {
+          order_item_id: 6, // Nilai unik untuk order_item_id
+          product_id: 1,
+          quantity: 5,
+          price: "29.99",
+        },
+      },
+    },
+    update: {},
+  });
+
+  const order7 = await prisma.orders.upsert({
+    where: {
+      order_id: 7,
+    },
+    create: {
+      user_id: 7,
+      order_date: "2023-11-23T05:41:21.924Z",
+      delivery_time: "2023-11-23T05:41:21.924Z",
+      deliver_fee: "100000",
+      total_price: "100149.95",
+      payment_status: "Pending",
+      order_status: "Processing",
+      admin_id: 1,
+      order_items: {
+        create: {
+          order_item_id: 7, // Nilai unik untuk order_item_id
+          product_id: 1,
+          quantity: 5,
+          price: "29.99",
+        },
+      },
+    },
+    update: {},
+  });
+
+  const order8 = await prisma.orders.upsert({
+    where: {
+      order_id: 8,
+    },
+    create: {
+      user_id: 8,
+      order_date: "2023-11-23T05:41:21.924Z",
+      delivery_time: "2023-11-23T05:41:21.924Z",
+      deliver_fee: "100000",
+      total_price: "100149.95",
+      payment_status: "Pending",
+      order_status: "Processing",
+      admin_id: 1,
+      order_items: {
+        create: {
+          order_item_id: 8, // Nilai unik untuk order_item_id
+          product_id: 1,
+          quantity: 5,
+          price: "29.99",
+        },
+      },
+    },
+    update: {},
+  });
+
+  const order9 = await prisma.orders.upsert({
+    where: {
+      order_id: 9,
+    },
+    create: {
+      user_id: 9,
+      order_date: "2023-11-23T05:41:21.924Z",
+      delivery_time: "2023-11-23T05:41:21.924Z",
+      deliver_fee: "100000",
+      total_price: "100149.95",
+      payment_status: "Pending",
+      order_status: "Processing",
+      admin_id: 1,
+      order_items: {
+        create: {
+          order_item_id: 9, // Nilai unik untuk order_item_id
+          product_id: 1,
+          quantity: 5,
+          price: "29.99",
+        },
+      },
+    },
+    update: {},
+  });
+
+  const order10 = await prisma.orders.upsert({
+    where: {
+      order_id: 10,
+    },
+    create: {
+      user_id: 10,
+      order_date: "2023-11-23T05:41:21.924Z",
+      delivery_time: "2023-11-23T05:41:21.924Z",
+      deliver_fee: "100000",
+      total_price: "100149.95",
+      payment_status: "Pending",
+      order_status: "Processing",
+      admin_id: 1,
+      order_items: {
+        create: {
+          order_item_id: 10, // Nilai unik untuk order_item_id
+          product_id: 1,
+          quantity: 5,
+          price: "29.99",
+        },
+      },
+    },
+    update: {},
   });
 }
 
