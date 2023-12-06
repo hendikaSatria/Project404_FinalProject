@@ -80,11 +80,11 @@ const Categorypage = () => {
           categoryData.category_id,
           categoryData.category_name
         );
-        console.log(
-          "Category Edited Successfully ",
-          categoryData.category_id,
-          categoryData.category_name
-        );
+        // console.log(
+        //   "Category Edited Successfully ",
+        //   categoryData.category_id,
+        //   categoryData.category_name
+        // );
       }
 
       await fetchCategories();
