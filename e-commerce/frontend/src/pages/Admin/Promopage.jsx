@@ -10,25 +10,63 @@ import {
   WrapItem,
   Grid,
   GridItem,
+  useToast,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { getAllPromo } from "../../modules/fetch";
+import { deletePromo, getAllPromo } from "../../modules/fetch";
 import { Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function Promopage() {
+  const { id } = useParams();
+  const toast = useToast()
+
   const [promotions, setPromotions] = useState([]);
+  const [searchTerm, SetsearchTerm] = useState("");
+
+  //Handle Get Promo
+  const fetchpromotions = async () => {
+    const promotions = await getAllPromo();
+    setPromotions(promotions);
+  };
 
   useEffect(() => {
-    const fetchpromotions = async () => {
-      const promotions = await getAllPromo();
-      setPromotions(promotions);
-    };
-
     fetchpromotions();
-  }, []);
+  }, [searchTerm]);
 
-  const handleClick = () => {};
+  //Handle Search
+  const handleSearch = () => {
+    const filteredPromo = promotions.filter(
+      (promotion) =>
+        promotion.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        promotion.promo_code.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setPromotions(filteredPromo);
+  };
+
+  //Handle Delete
+  const handleDelete = async (promoid) => {
+    try {
+      //Calling function from api
+      await deletePromo(promoid);
+
+      const updatedPromo = promotions.filter((promotion) => promotion.promo_id !== promoid);
+      setPromotions(updatedPromo);
+
+      console.log("Promo deleted successfully");
+      toast({
+        title: "Success",
+        description: "Promo deleted successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch {
+      console.error("Error deleting warehouse: ", error.message);
+    }
+  };
 
   return (
     <>
@@ -38,32 +76,50 @@ export default function Promopage() {
         </Text>
       </Box>
       <VStack spacing={4} align="stretch" p={12}>
-
         {/* search bar */}
         <Box align="center">
           <HStack w="750px">
             <InputGroup size="md">
-              <Input pr="100px" placeholder="Search Promo" />
+              <Input
+                pr="100px"
+                placeholder="Search Promo"
+                value={searchTerm}
+                onChange={(e) => SetsearchTerm(e.target.value)}
+              />
               <InputRightElement>
-                <Button size="sm" onClick={handleClick} bg={"transparent"}>
-                  <SearchIcon />{" "}
+                <Button
+                  size="sm"
+                  onClick={handleSearch}
+                  bg={"transparent"}
+                  _hover={{
+                    rounded: "full",
+                    bg: "white",
+                  }}>
+                  <SearchIcon />
                 </Button>
               </InputRightElement>
             </InputGroup>
-            <Button as={Link} to="create" colorScheme="blue">
+            <Button
+              as={Link}
+              to="create"
+              colorScheme="blue"
+              _hover={{
+                bg: "white",
+              }}>
               Add Promo
             </Button>
           </HStack>
         </Box>
 
         <Box align="center">
-          {promotions?.map((promotion) => (
+          {promotions.map((promotion) => (
             <WrapItem
               h="150px"
               w="750px"
               bg="blue.100"
               rounded={"20px"}
               mt="10px"
+              boxShadow="0 3px 5px rgba(0,0,0,0.2)"
               key={`${promotion.promo_id}`}>
               <Grid w="full" templateColumns="repeat(3,1fr)" templateRows="repeat(1,1fr)">
                 <GridItem>
@@ -73,21 +129,50 @@ export default function Promopage() {
                     bg="white"
                     rounded="lg"
                     mt="40px"
-                    align="center">{`${promotion.type}`}</Box>
+                    align="center"> <Text as='b'> {`${promotion.type}`} </Text> </Box>
                 </GridItem>
                 <GridItem>
-                  <Box align="left" p="3px" mt="10px" bg="blue.200" rounded="10px">
-                    <Text ml="8px"> Type: {`${promotion.type}`}</Text>
-                    <Text ml="8px"> Amount: {`${promotion.amount}`}</Text>
-                    <Text ml="8px"> MaxUsage: {`${promotion.maximum_usage}`}</Text>
-                    <Text ml="8px"> Usage: {`${promotion.remaining_usage}`}</Text>
-                    <Text ml="8px"> Code: {`${promotion.promo_code}`}</Text>
+                  <Box p="3px" mt="12px" bg="#E0F4FF" rounded="10px">
+                    <Grid templateColumns="repeat(2,1fr)">
+                      <GridItem align="right">
+                        <Text ml="8px"> Type : </Text>
+                        <Text ml="8px"> Amount : </Text>
+                        <Text ml="8px"> Max Usage : </Text>
+                        <Text ml="8px"> RemainUsage : </Text>
+                        <Text ml="8px"> Code : </Text>
+                      </GridItem>
+                      <GridItem align="left">
+                        <Text ml="8px"> {`${promotion.type}`}</Text>
+                        <Text ml="8px"> {`${promotion.amount}`}</Text>
+                        <Text ml="8px"> {`${promotion.maximum_usage}`}</Text>
+                        <Text ml="8px"> {`${promotion.remaining_usage}`}</Text>
+                        <Text ml="8px"> {`${promotion.promo_code}`}</Text>
+                      </GridItem>
+                    </Grid>
                   </Box>
                 </GridItem>
                 <GridItem>
                   <VStack mt="25px">
-                    <Button w="80%"> Manage </Button>
-                    <Button w="80%"> Delete </Button>
+                    <Button
+                      w="80%"
+                      as={Link}
+                      to={`/admin/promo/${promotion.promo_id}`}
+                      _hover={{
+                        bg: "blue.200",
+                      }}>
+                      Manage
+                    </Button>
+                    <Button
+                      w="80%"
+                      border="none"
+                      onClick={() => handleDelete(promotion.promo_id)}
+                      key={promotion.promo_id}
+                      _hover={{
+                        bg: "red.200",
+                        border: "none",
+                      }}>
+                      Delete
+                    </Button>
                   </VStack>
                 </GridItem>
               </Grid>

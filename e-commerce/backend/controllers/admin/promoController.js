@@ -6,7 +6,7 @@ const promoController = {
   createPromo: async (req, res) => {
     try {
       const { type, amount, maximum_usage, promo_code } = req.body;
-      const remaining_usage = maximum_usage
+      const remaining_usage = maximum_usage;
       const promotion = await prisma.promotion.create({
         data: {
           type,
@@ -55,8 +55,7 @@ const promoController = {
   //Update promo
   updatePromo: async (req, res) => {
     const { id } = req.params;
-    const { type, maximum_usage, amount, remaining_usage, product_id, promo_code } =
-      req.body;
+    const { type, maximum_usage, amount, promo_code } = req.body;
 
     try {
       console.log("Updated:", req.body);
@@ -66,8 +65,6 @@ const promoController = {
           type,
           maximum_usage,
           amount,
-          remaining_usage,
-          product_id,
           promo_code,
         },
       });
@@ -81,9 +78,15 @@ const promoController = {
   deletePromo: async (req, res) => {
     const { id } = req.params;
     try {
+      const promo_id = parseInt(id);
       const promotion = await prisma.promotion.delete({
-        where: { promo_id: parseInt(id) },
+        where: { promo_id: promo_id },
       });
+
+      if (!promotion) {
+        return res.status(404).json({ error: "Promotion not found" });
+      }
+
       res.status(204).json({ message: "Successfully deleted" });
     } catch (err) {
       res.status(500).json({ err: err.message });

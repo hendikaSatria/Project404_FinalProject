@@ -18,6 +18,7 @@ const AdminRouter = () => {
             <Route path="/warehouse" element={<Warehousepage />} />
             <Route path="/warehouse/create" element={<WarehouseForm />} />
             <Route path="/promo" element={<Promopage />} />
+            <Route path="/promo/:id" element={<PromoForm />} />
             <Route path="/promo/create" element={<PromoForm />} />
           </Routes>
         </Box>
