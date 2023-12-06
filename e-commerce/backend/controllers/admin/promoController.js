@@ -5,6 +5,7 @@ const promoController = {
   //Create promo
   createPromo: async (req, res) => {
     try {
+      const adminId = req.admin.admin_id
       const { type, amount, maximum_usage, promo_code } = req.body;
       const remaining_usage = maximum_usage;
       const promotion = await prisma.promotion.create({
@@ -14,7 +15,7 @@ const promoController = {
           maximum_usage,
           promo_code,
           remaining_usage,
-          admin_id: 1, //Harus sesuai admin
+          admin_id: adminId,
         },
       });
       console.log("New data :", req.body);
@@ -54,6 +55,7 @@ const promoController = {
 
   //Update promo
   updatePromo: async (req, res) => {
+    const adminId = req.admin.admin_id
     const { id } = req.params;
     const { type, maximum_usage, amount, promo_code } = req.body;
 
@@ -66,6 +68,7 @@ const promoController = {
           maximum_usage,
           amount,
           promo_code,
+          admin_id: adminId,
         },
       });
       res.status(200).json(promotion);

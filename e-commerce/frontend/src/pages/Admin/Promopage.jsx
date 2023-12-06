@@ -16,9 +16,10 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { deletePromo, getAllPromo } from "../../modules/fetch";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function Promopage() {
+  const navigate = useNavigate()
   const { id } = useParams();
   const toast = useToast()
 
@@ -100,8 +101,7 @@ export default function Promopage() {
               </InputRightElement>
             </InputGroup>
             <Button
-              as={Link}
-              to="create"
+              onClick={() => navigate("/admin/promo/create")}
               colorScheme="blue"
               _hover={{
                 bg: "white",

@@ -19,8 +19,8 @@ import AdminSidebar from "../components/Admin/AdminSidebar";
 import Warehousepage from "../pages/Admin/Warehousepage";
 import WarehouseForm from "../components/Admin/WarehouseForm";
 import Categorypage from "../pages/Admin/Categorypage";
-import Promopage from "./pages/Admin/Promopage";
-import PromoForm from "./components/Admin/PromoForm";
+import Promopage from "../pages/Admin/Promopage";
+import PromoForm from "../components/Admin/PromoForm";
 
 const checkAuthentication = () => {
   // Periksa apakah token ada di localStorage
@@ -110,7 +110,7 @@ const AdminRouter = () => {
                   />
                 <Route 
                   path="/promo/create" 
-                  element={<PrivateRoute element={<PromoForm />} />} 
+                  element={<PrivateRoute element={<PromoForm />} />}
                 />
               </Routes>
             </Box>
