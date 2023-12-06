@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Flex, Text, Button } from '@chakra-ui/react';
-import api, { createOrder, fetchUserData } from '../../api/api'; 
-import { useNavigate } from 'react-router-dom'; 
-import { useAuth } from '../../context/AuthContext';
+import React, { useState, useEffect } from "react";
+import { Box, Flex, Text, Button, VStack, HStack } from "@chakra-ui/react";
+import api, { createOrder, fetchUserData } from "../../api/api";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const RightSection = ({ shippingFee, selectedPromo, onPromoSelect, items }) => {
   const [userId, setUserId] = useState(null);
-  const [userAffiliate, setUserAffiliate] = useState(null); 
+  const [userAffiliate, setUserAffiliate] = useState(null);
   const { token } = useAuth();
-  const navigate = useNavigate(); 
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,10 +16,10 @@ const RightSection = ({ shippingFee, selectedPromo, onPromoSelect, items }) => {
         if (token) {
           const response = await fetchUserData(token);
           setUserId(response.user_id);
-          setUserAffiliate(response.affiliate_usage ? response : null); 
+          setUserAffiliate(response.affiliate_usage ? response : null);
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
 
@@ -41,15 +40,16 @@ const RightSection = ({ shippingFee, selectedPromo, onPromoSelect, items }) => {
       const totalItemPrice = calculateTotalItemPrice();
       const promoAmount = parseInt(selectedPromo.amount, 10);
 
-      if (selectedPromo.type === 'percentage') {
+      if (selectedPromo.type === "percentage") {
         discountAmount += (promoAmount / 100) * totalItemPrice;
-      } else if (selectedPromo.type === 'fixed') {
+      } else if (selectedPromo.type === "fixed") {
         discountAmount += promoAmount;
       }
     }
 
     if (userAffiliate) {
-      discountAmount += (userAffiliate.affiliate_usage ? 0.5 : 0) * calculateTotalItemPrice();
+      discountAmount +=
+        (userAffiliate.affiliate_usage ? 0.5 : 0) * calculateTotalItemPrice();
     }
 
     return discountAmount;
@@ -61,73 +61,86 @@ const RightSection = ({ shippingFee, selectedPromo, onPromoSelect, items }) => {
   const handlePlaceOrder = async () => {
     try {
       if (!userId) {
-        console.error('User ID is not available.');
+        console.error("User ID is not available.");
         return;
       }
-      console.log('Selected Promo Code:', String(selectedPromo?.promo_code));
-  
-      const orderResponse = await createOrder(userId, selectedPromo?.promo_code, 'pos', token);
-      navigate('/Orders');
-      console.log('Order Response:', orderResponse);
-      
+      console.log("Selected Promo Code:", String(selectedPromo?.promo_code));
+
+      const orderResponse = await createOrder(
+        userId,
+        selectedPromo?.promo_code,
+        "pos",
+        token
+      );
+      navigate("/Orders");
+      console.log("Order Response:", orderResponse);
+
       if (orderResponse && orderResponse.orderId) {
-        console.log('Order placed successfully! Order ID:', orderResponse.orderId);
-  
+        console.log(
+          "Order placed successfully! Order ID:",
+          orderResponse.orderId
+        );
+
         if (orderResponse.status === 200) {
-          console.log('Order creation successful. Redirecting to /Orders.');
+          console.log("Order creation successful. Redirecting to /Orders.");
         } else {
-          console.error('Unexpected response format:', orderResponse);
+          console.error("Unexpected response format:", orderResponse);
         }
       } else {
-        console.error('Unexpected response format:', orderResponse);
+        console.error("Unexpected response format:", orderResponse);
       }
     } catch (error) {
-      console.error('Error placing order:', error);
+      console.error("Error placing order:", error);
     }
   };
-  
-  
-  
 
   return (
-    <Box>
-      <Flex justifyContent="space-between" alignItems="center" mb={4}>
-        <Box>
-          <Text>Promo </Text>
-        </Box>
-        <Box>
-          <Button onClick={onPromoSelect}>Select</Button>
-        </Box>
-      </Flex>
-      <Box mb={2}>
-        <Text>Shipping Fee: Rp{shippingFee.toFixed(2)}</Text>
+    <Box w={"20vw"}>
+      <Box spacing={2} mb={4} align={"end"}>
+        <Button onClick={onPromoSelect}>Select Promo</Button>
       </Box>
-      <Box mb={2}>
-        <Text>Promo: {selectedPromo ? selectedPromo.promo_code : 'None selected'}</Text>
-      </Box>
-      <Box mb={2}>
-        <Text>Total Item Price: Rp{totalItemPrice.toFixed(2)}</Text>
-      </Box>
-      <Box mb={2}>
-        <Text>Discount: Rp{discountAmount.toFixed(2)}</Text>
-      </Box>
-      {userAffiliate && userAffiliate.affiliate_usage && (
+
+      <VStack align={"end"}>
         <Box mb={2}>
-          <Text>Affiliate Discount: Rp{(0.5 * totalItemPrice).toFixed(2)}</Text>
+          <Text>Shipping Fee: Rp{shippingFee.toFixed(2)}</Text>
         </Box>
-      )}
-      <Box mb={2}>
-        <Text>Total Price: Rp{(totalItemPrice - discountAmount + shippingFee).toFixed(2)}</Text>
-      </Box>
-      <Box mt={4}>
-      <Button onClick={() => {
-          handlePlaceOrder();
-          navigate('/orders');
-      }}>Place Order</Button>
-      </Box>
+        <Box mb={2}>
+          <Text>
+            Promo: {selectedPromo ? selectedPromo.promo_code : "None selected"}
+          </Text>
+        </Box>
+        <Box mb={2}>
+          <Text>Total Item Price: Rp{totalItemPrice.toFixed(2)}</Text>
+        </Box>
+        <Box mb={2}>
+          <Text>Discount: Rp{discountAmount.toFixed(2)}</Text>
+        </Box>
+        {userAffiliate && userAffiliate.affiliate_usage && (
+          <Box mb={2}>
+            <Text>
+              Affiliate Discount: Rp{(0.5 * totalItemPrice).toFixed(2)}
+            </Text>
+          </Box>
+        )}
+        <Box mb={2}>
+          <Text>
+            Total Price: Rp
+            {(totalItemPrice - discountAmount + shippingFee).toFixed(2)}
+          </Text>
+        </Box>
+        <Box mt={4}>
+          <Button
+            onClick={() => {
+              handlePlaceOrder();
+              navigate("/orders");
+            }}
+          >
+            Place Order
+          </Button>
+        </Box>
+      </VStack>
     </Box>
   );
-  
 };
 
 export default RightSection;

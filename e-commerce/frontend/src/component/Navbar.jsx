@@ -1,25 +1,41 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { Flex, Text, IconButton, CSSReset, ChakraProvider, Input, Avatar } from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
-import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import { fetchUserData } from '../api/api';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import {
+  Flex,
+  Text,
+  IconButton,
+  CSSReset,
+  ChakraProvider,
+  Input,
+  Avatar,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useMediaQuery,
+} from "@chakra-ui/react";
+import { SearchIcon } from "@chakra-ui/icons";
+import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
+import { FaShoppingCart, FaBox } from "react-icons/fa";
+import { MdOutlineMenu } from "react-icons/md";
 
 const CustomInput = styled(Input)`
   &:focus {
     border-color: teal.300;
     box-shadow: none;
     background-color: white;
-    color: black; /* Set text color to black on focus */
+    color: black;
   }
 `;
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -27,7 +43,7 @@ const Navbar = () => {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    console.log('Search term:', searchTerm);
+    console.log("Search term:", searchTerm);
   };
 
   const handleLinkClick = (path) => {
@@ -37,12 +53,33 @@ const Navbar = () => {
   return (
     <ChakraProvider>
       <CSSReset />
-      <Flex align="center" justify="space-between" p={4} bg="teal.500" color="white">
-        <Link to="/" as={Text} fontSize="xl" fontWeight="bold" textDecoration="none" color="white">
-          Logo
-        </Link>
+      <Flex
+        // direction={isSmallerThan800 ? "column" : "row"}
+        align="center"
+        justify="space-between"
+        p={4}
+        bg="teal.300"
+        color="white"
+      >
+        {isSmallerThan800 ? null : ( // Tambahkan kondisi untuk menyembunyikan logo pada layar kecil
+          <Link
+            to="/"
+            as={Text}
+            fontSize="xl"
+            fontWeight="bold"
+            textDecoration="none"
+            color="white"
+          >
+            Logo
+          </Link>
+        )}
 
-        <Flex as="form" onSubmit={handleSearchSubmit} align="center">
+        <Flex
+          as="form"
+          onSubmit={handleSearchSubmit}
+          align={"center"}
+          w={isSmallerThan800 ? "100%" : "50%"}
+        >
           <CustomInput
             type="text"
             placeholder="Search products"
@@ -60,36 +97,115 @@ const Navbar = () => {
           />
         </Flex>
 
-        <Flex align="center">
-          <Text
-            as="span"
-            mr={4}
-            textDecoration="none"
-            color="white"
-            cursor="pointer"
-            onClick={() => handleLinkClick('/cart')}
-          >
-            🛒 Cart
-          </Text>
-          <Text
-            as="span"
-            mr={4}
-            textDecoration="none"
-            color="white"
-            cursor="pointer"
-            onClick={() => handleLinkClick('/orders')}
-          >
-            📦 Orders
-          </Text>
-          <Link to={user ? '/login' : '/profile'}>
-            <Flex alignItems="center" cursor="pointer">
-              <Avatar size="sm" name={user?.name} src={user?.avatar} />
-              <Text ml={2} textDecoration="none" color="white">
-                👤 {user ? user.name : 'Profile'}
+        {isSmallerThan800 ? (
+          <Menu m="auto">
+            <MenuButton
+              m={4}
+              as={IconButton}
+              aria-label="More"
+              icon={<MdOutlineMenu size={30} />}
+              bg="teal"
+              size="sm"
+              p="auto"
+            >
+              More
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => handleLinkClick("/")}>
+                <Text as="b" textColor={"black"} w={"full"} align={"center"}>
+                  Home
+                </Text>
+              </MenuItem>
+              <MenuItem onClick={() => handleLinkClick("/cart")}>
+                <Text as="b" textColor={"black"} w={"full"} align={"center"}>
+                  Cart
+                </Text>
+              </MenuItem>
+              <MenuItem onClick={() => handleLinkClick("/orders")}>
+                <Text as="b" textColor={"black"} w={"full"} align={"center"}>
+                  {" "}
+                  Order
+                </Text>
+              </MenuItem>
+              <MenuItem
+                onClick={() => handleLinkClick(user ? "/profile" : "/login")}
+              >
+                <Text as="b" textColor={"black"} w={"full"} align={"center"}>
+                  {user ? user.full_name : "Profile"}
+                </Text>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        ) : (
+          <HStack align="center" spacing={8}>
+            <Flex
+              cursor="pointer"
+              p={2}
+              rounded="lg"
+              onClick={() => handleLinkClick("/cart")}
+              _hover={{
+                bg: "teal.800",
+                transition: "all 1s cubic-bezier(.08,.52,.52,1)",
+              }}
+            >
+              <FaShoppingCart size={30} />
+              <Text
+                as="b"
+                ml={2}
+                textDecoration="none"
+                color="white"
+                fontSize="xl"
+              >
+                Cart
               </Text>
             </Flex>
-          </Link>
-        </Flex>
+            <Flex
+              cursor="pointer"
+              p={2}
+              rounded="lg"
+              onClick={() => handleLinkClick("/orders")}
+              _hover={{
+                bg: "teal.800",
+                transition: "all 1s cubic-bezier(.08,.52,.52,1)",
+              }}
+            >
+              <FaBox size={30} />
+              <Text
+                as="b"
+                ml={2}
+                textDecoration="none"
+                color="white"
+                fontSize="xl"
+              >
+                Orders
+              </Text>
+            </Flex>
+            <Link to={user ? "/login" : "/profile"}>
+              <Flex
+                alignItems="center"
+                cursor="pointer"
+                p={2}
+                rounded="lg"
+                onClick={() => handleLinkClick("/cart")}
+                _hover={{
+                  bg: "teal.800",
+                  transition: "all 1s cubic-bezier(.08,.52,.52,1)",
+                }}
+              >
+                <Avatar size="sm" name={user?.name} src={user?.avatar} />
+                <Text
+                  ml={2}
+                  textDecoration="none"
+                  color="white"
+                  as="b"
+                  fontSize="xl"
+                >
+                  {user ? user.full_name : "Profile"}
+                </Text>
+              </Flex>
+            </Link>
+          </HStack>
+        )}
       </Flex>
     </ChakraProvider>
   );

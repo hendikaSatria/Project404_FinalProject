@@ -3,7 +3,7 @@ import { Flex, VStack, Text, Button, Box } from "@chakra-ui/react";
 import ItemList from "../component/CartProduct/CartItemList";
 import * as api from "../api/api";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const ShoppingCartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -23,7 +23,7 @@ const ShoppingCartPage = () => {
             setCartItems(cartData);
           }
         } catch (error) {
-          console.error('Error fetching data:', error);
+          console.error("Error fetching data:", error);
         }
       }
     };
@@ -41,7 +41,11 @@ const ShoppingCartPage = () => {
     );
 
     // Call the API to update the cart item quantity
-    api.updateCartItemQuantity(item.cart_item_id, item.quantity + 1, userData.user_id);
+    api.updateCartItemQuantity(
+      item.cart_item_id,
+      item.quantity + 1,
+      userData.user_id
+    );
   };
 
   const handleDecrement = (item) => {
@@ -57,7 +61,11 @@ const ShoppingCartPage = () => {
     );
 
     // Call the API to update the cart item quantity
-    api.updateCartItemQuantity(item.cart_item_id, updatedQuantity, userData.user_id);
+    api.updateCartItemQuantity(
+      item.cart_item_id,
+      updatedQuantity,
+      userData.user_id
+    );
   };
 
   // Fetch the latest cart data after an increment or decrement action
@@ -75,48 +83,64 @@ const ShoppingCartPage = () => {
   const handleRemove = async (item) => {
     try {
       // Call the API to remove the item from the cart
-      await api.removeFromCart(item.cart_item_id, userData.user_id, item.product_id);
+      await api.removeFromCart(
+        item.cart_item_id,
+        userData.user_id,
+        item.product_id
+      );
 
       const latestCartData = await api.fetchCart(userData.user_id);
       setCartItems(latestCartData);
     } catch (error) {
-      console.error('Error removing cart item:', error);
+      console.error("Error removing cart item:", error);
     }
   };
 
-const handleCheckout = async () => {
-  try {
-    const user = await api.fetchUserData(token);
-    const userAddress = user.user_addresses[0] || {};
-    navigate('/checkout', { state: { items: cartItems, userAddress } });
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-  }
-};
+  const handleCheckout = async () => {
+    try {
+      const user = await api.fetchUserData(token);
+      const userAddress = user.user_addresses[0] || {};
+      navigate("/checkout", { state: { items: cartItems, userAddress } });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   return (
-    <Flex direction="column" justify="center" align="center" h="100vh">
+    <Flex
+      direction="column"
+      // justify="center"
+      align="center"
+      h="100vh"
+      bg={"gray.200"}
+    >
       <Text fontSize="2xl" fontWeight="bold" mb={4}>
         Shopping Cart
       </Text>
-      <Flex width="70%" justify="space-between">
+      <Flex
+        width="90%"
+        // justify="space-between"
+        bg={"white"}
+        rounded={"lg"}
+        boxShadow={"lg"}
+      >
         <Box
-          width="48%"
+          width="100%"
           overflowY="auto"
-          maxHeight="80vh"
+          maxHeight="70vw"
           css={{
             overflow: "auto",
-            paddingRight: "10px", 
-            boxSizing: "content-box", 
+            paddingRight: "10px",
+            boxSizing: "content-box",
             "&::-webkit-scrollbar": {
-              width: "0.5em", 
+              width: "0.5em",
             },
             "&::-webkit-scrollbar-thumb": {
-              background: "transparent", 
+              background: "transparent",
             },
           }}
         >
-          <VStack spacing={4}>
+          <VStack spacing={4} w={"100vh"} p={2}>
             <ItemList
               cartItems={cartItems}
               onIncrement={handleIncrement}
@@ -125,9 +149,22 @@ const handleCheckout = async () => {
             />
           </VStack>
         </Box>
-        <VStack spacing={4} align="flex-start" justifyContent="center" width="48%">
+        <VStack
+          spacing={4}
+          align="flex-end"
+          justifyContent="center"
+          width="30%"
+          p={4}
+        >
           <Text fontSize="lg" fontWeight="bold">
-            Total Price: ${cartItems.reduce((total, item) => total + (parseFloat(item.product.price) * item.quantity), 0).toFixed(2)}
+            Total Price: $
+            {cartItems
+              .reduce(
+                (total, item) =>
+                  total + parseFloat(item.product.price) * item.quantity,
+                0
+              )
+              .toFixed(2)}
           </Text>
           <Button colorScheme="teal" size="lg" onClick={handleCheckout}>
             Checkout

@@ -1,42 +1,72 @@
 import React from "react";
-import { VStack, Text, Image, HStack, Button, IconButton } from "@chakra-ui/react";
+import {
+  VStack,
+  Text,
+  Image,
+  HStack,
+  Button,
+  IconButton,
+  Box,
+} from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 
-const ItemCard = React.memo(({ itemName, price, image, quantity, onIncrement, onDecrement, onRemove, isIncrementDisabled }) => {
-  const totalItemPrice = (parseFloat(price) * quantity).toFixed(2);
+const ItemCard = React.memo(
+  ({
+    itemName,
+    price,
+    image,
+    quantity,
+    onIncrement,
+    onDecrement,
+    onRemove,
+    isIncrementDisabled,
+  }) => {
+    const totalItemPrice = (parseFloat(price) * quantity).toFixed(2);
 
-  return (
-    <VStack
-      spacing={4}
-      align="flex-start"
-      justify="flex-start"
-      width="100%"
-      borderBottom="1px solid #ccc"
-      paddingY={4}
-    >
-      <HStack width="100%" justify="space-between">
-        <VStack align="flex-start">
-          <Text fontSize="lg" fontWeight="bold">{itemName}</Text>
-          <Image src={image} alt={itemName} boxSize="100px" objectFit="cover" />
-        </VStack>
-
-        <VStack align="flex-end">
-          <Text fontSize="lg" fontWeight="bold">${totalItemPrice}</Text>
-          <IconButton
-            icon={<FaTrash />}
-            aria-label="Remove Item"
-            onClick={onRemove}
-          />
-          <HStack>
-            <Button onClick={onDecrement} isDisabled={quantity <= 1}>-</Button>
-            <Text fontSize="lg" fontWeight="bold">{quantity}</Text>
-            <Button onClick={onIncrement} isDisabled={isIncrementDisabled}>+</Button>
+    return (
+      <Box borderBottom="1px solid #ccc" paddingY={4} w={"55vw"}>
+        <HStack width="55vw" justify="space-between">
+          <HStack align="start">
+            <Image
+              src={image}
+              alt={itemName}
+              boxSize="100px"
+              objectFit="cover"
+            />
+            <Text fontSize="lg" fontWeight="bold">
+              {itemName}
+            </Text>
           </HStack>
-        </VStack>
-      </HStack>
-    </VStack>
-  );
-});
+
+          <VStack align="flex-end">
+            <Text fontSize="lg" fontWeight="bold">
+              ${totalItemPrice}
+            </Text>
+            <HStack>
+              <IconButton
+                bg={"red.400"}
+                icon={<FaTrash />}
+                aria-label="Remove Item"
+                onClick={onRemove}
+              />
+              <HStack>
+                <Button onClick={onDecrement} isDisabled={quantity <= 1}>
+                  -
+                </Button>
+                <Text fontSize="lg" fontWeight="bold">
+                  {quantity}
+                </Text>
+                <Button onClick={onIncrement} isDisabled={isIncrementDisabled}>
+                  +
+                </Button>
+              </HStack>
+            </HStack>
+          </VStack>
+        </HStack>
+      </Box>
+    );
+  }
+);
 
 // Export the ItemCard component
 export default ItemCard;

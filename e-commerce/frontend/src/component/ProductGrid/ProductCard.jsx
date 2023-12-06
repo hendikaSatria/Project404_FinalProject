@@ -1,43 +1,55 @@
-import React from 'react';
-import { Box, Flex, Image, Text, Button } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom'; 
-import { useAuth } from '../../context/AuthContext';
+import React from "react";
+import {
+  Box,
+  Flex,
+  Image,
+  Text,
+  Button,
+  VStack,
+  Square,
+} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const ProductCard = ({ product }) => {
   const { product_id, name, price, image } = product;
   const navigate = useNavigate();
-  const { token } = useAuth(); 
+  const { token } = useAuth();
 
   const handleDetailsClick = () => {
-    console.log('Token:', token); 
-  
+    console.log("Token:", token);
+
     if (token) {
       navigate(`/product/${product_id}`);
     } else {
-      navigate('/login');
+      navigate("/login");
     }
   };
-  
 
   return (
-    <Box p={2} borderWidth="1px" borderRadius="md" bg="grey">
-      <Flex>
-        <Box mr={2}>
-          <Image src={image} alt={name} boxSize="75px" objectFit="cover" />
+    <Box
+      p={2}
+      borderWidth="1px"
+      borderRadius="md"
+      bg="white"
+      onClick={handleDetailsClick}
+      cursor="pointer"
+      boxShadow="lg"
+    >
+      <VStack>
+        <Box>
+          <Image src={image} alt={name} objectFit="cover" />
         </Box>
-
-        <Box ml={10}>
-          <Text fontSize="md" fontWeight="bold">
+        <Box w="full">
+          <Text fontSize={["sm", "md", "lg", "xl"]} fontWeight="bold">
             {name}
           </Text>
-          <Text fontSize="sm" color="black">
+
+          <Text fontSize="sm" color="black" align="end">
             ${price}
           </Text>
-          <Button size="sm" mt={2} onClick={handleDetailsClick}>
-            View Details
-          </Button>
         </Box>
-      </Flex>
+      </VStack>
     </Box>
   );
 };

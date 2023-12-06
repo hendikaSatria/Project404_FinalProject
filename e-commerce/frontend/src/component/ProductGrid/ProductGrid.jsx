@@ -1,15 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Box, SimpleGrid, Button, IconButton } from '@chakra-ui/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { getProducts } from '../../api/api';
-import ProductCard from './ProductCard';
+import React, { useEffect, useState } from "react";
+import { Box, SimpleGrid, Button, IconButton } from "@chakra-ui/react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { getProducts } from "../../api/api";
+import ProductCard from "./ProductCard";
 
-const ProductGrid = ({ selectedCategory, sortingOption, products, currentPage, totalPages, handleNextPage, handlePrevPage }) => {
+const ProductGrid = ({
+  selectedCategory,
+  sortingOption,
+  products,
+  currentPage,
+  totalPages,
+  handleNextPage,
+  handlePrevPage,
+}) => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <Box p={4}>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={4}>
+    <Box p={2}>
+      <SimpleGrid
+        columns={{ base: 1, md: 2, lg: 4, xl: 6 }}
+        spacing={4}
+        p={6}
+        m={2}
+        bg={"gray.300"}
+        rounded={"lg"}
+      >
         {loading ? (
           <p>Loading...</p>
         ) : products.length > 0 ? (

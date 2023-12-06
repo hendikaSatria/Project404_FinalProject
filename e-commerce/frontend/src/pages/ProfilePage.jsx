@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   ChakraProvider,
   Box,
@@ -13,10 +13,15 @@ import {
   ModalBody,
   ModalCloseButton,
   Select,
-} from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { fetchUserData, getProvinceList, getCityList, updateAddress } from '../api/api';
+} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import {
+  fetchUserData,
+  getProvinceList,
+  getCityList,
+  updateAddress,
+} from "../api/api";
 
 const Profile = () => {
   const { user: contextUser, token, logout } = useAuth();
@@ -25,8 +30,8 @@ const Profile = () => {
   const [provinces, setProvinces] = useState([]);
   const [cities, setCities] = useState([]);
   const [isAddAddressModalOpen, setAddAddressModalOpen] = useState(false);
-  const [selectedCity, setSelectedCity] = useState('');
-  const [selectedProvince, setSelectedProvince] = useState('');
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedProvince, setSelectedProvince] = useState("");
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -36,7 +41,7 @@ const Profile = () => {
           setUser(userData);
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
 
@@ -47,10 +52,10 @@ const Profile = () => {
     const fetchProvinceList = async () => {
       try {
         const provinces = await getProvinceList();
-        console.log('Fetched provinces:', provinces);
+        // console.log("Fetched provinces:", provinces);
         setProvinces(provinces);
       } catch (error) {
-        console.error('Error fetching province list:', error);
+        console.error("Error fetching province list:", error);
       }
     };
 
@@ -60,17 +65,16 @@ const Profile = () => {
   const fetchCityList = async (provinceId) => {
     try {
       const cities = await getCityList(provinceId);
-      console.log('Fetched cities:', cities);
+      // console.log("Fetched cities:", cities);
       setCities(cities);
     } catch (error) {
-      console.error('Error fetching city list:', error);
+      console.error("Error fetching city list:", error);
     }
   };
 
-
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleOpenAddAddressModal = () => {
@@ -83,84 +87,102 @@ const Profile = () => {
 
   const handleAddAddress = async () => {
     try {
-      const selectedCityDetails = cities.find((city) => city.city_id === selectedCity);  
+      const selectedCityDetails = cities.find(
+        (city) => city.city_id === selectedCity
+      );
       if (selectedCityDetails) {
-        const {
-          province_id,
-          province,
-          city_id,
-          city_name,
-          postal_code,
-        } = selectedCityDetails;
-  
+        const { province_id, province, city_id, city_name, postal_code } =
+          selectedCityDetails;
+
         const parsedProvinceId = parseInt(province_id, 10);
         const parsedCityId = parseInt(city_id, 10);
         const parsedPostalCode = parseInt(postal_code, 10);
-  
-        const response =  await updateAddress({
-          province_id: parsedProvinceId,
-          province_name: province,
-          city_id: parsedCityId,
-          city_name,
-          postal_code: parsedPostalCode,
-        }, token);
-     
-        console.log('Update Address API Response:', response);
-        console.log('Address added successfully!');
+
+        const response = await updateAddress(
+          {
+            province_id: parsedProvinceId,
+            province_name: province,
+            city_id: parsedCityId,
+            city_name,
+            postal_code: parsedPostalCode,
+          },
+          token
+        );
+
+        console.log("Update Address API Response:", response);
+        console.log("Address added successfully!");
       } else {
-        console.error('Error: City details not found.');
+        console.error("Error: City details not found.");
       }
-  
+
       // Close the modal after handling the address
       handleCloseAddAddressModal();
     } catch (error) {
-      console.error('Error handling address:', error);
+      console.error("Error handling address:", error);
     }
   };
 
-  console.log('User data in Profile:', user);
+  console.log("User data in Profile:", user);
 
   return (
-    <ChakraProvider>
-      <Flex align="center" justify="center" h="100vh">
-        <Box p="4" borderWidth="1px" borderRadius="lg" boxShadow="md">
-          <Flex>
-            <Box mr="4">
-              <Text fontWeight="bold">Affiliate Code:</Text>
-              <Text>{user ? user.affiliate_code : 'N/A'}</Text>
-            </Box>
+    <>
+      <Flex align="center" justify="center" h="calc(100vh)" bg={"gray.300"}>
+        <Box
+          p="4"
+          h="calc(50vh)"
+          borderWidth="1px"
+          borderRadius="lg"
+          boxShadow="md"
+          bg={"white"}
+          mr={6}
+          align="center"
+        >
+          <Box mr="4">
+            <Text fontWeight="bold">Affiliate Code:</Text>
+            <Text>{user ? user.affiliate_code : "N/A"}</Text>
+          </Box>
+        </Box>
+        <Box
+          p="4"
+          h="calc(50vh)"
+          borderWidth="1px"
+          borderRadius="lg"
+          boxShadow="md"
+          bg={"white"}
+        >
+          <Box>
+            <Text fontWeight="bold">Name:</Text>
+            <Text>{user?.full_name || "N/A"}</Text>
 
-            <Box>
-              <Text fontWeight="bold">Name:</Text>
-              <Text>{user?.full_name || 'N/A'}</Text>
-
-              <Text fontWeight="bold">Email:</Text>
-              <Text>{user?.email || 'N/A'}</Text>
+            <Text fontWeight="bold">Email:</Text>
+            <Text>{user?.email || "N/A"}</Text>
 
             <Text fontWeight="bold">Addresses:</Text>
             {user?.user_addresses?.length > 0 ? (
               user.user_addresses.map((address) => (
-              <div key={address.user_address_id}>
-              <Text>{`Province: ${address.province_name}, City: ${address.city_name}, Postal Code: ${address.postal_code}`}</Text>
-              </div>))) : (
+                <div key={address.user_address_id}>
+                  <Text>{`Province: ${address.province_name}, City: ${address.city_name}, Postal Code: ${address.postal_code}`}</Text>
+                </div>
+              ))
+            ) : (
               <Text>N/A</Text>
-              )
-            }
+            )}
 
+            <Button mt="4" onClick={handleOpenAddAddressModal}>
+              Add address
+            </Button>
 
-              <Button mt="4" onClick={handleOpenAddAddressModal}>
-                Add address
-              </Button>
-
-              <Button mt="4" onClick={handleLogout}>
-                Logout
-              </Button>
-            </Box>
-          </Flex>
+            <Button mt="4" onClick={handleLogout}>
+              Logout
+            </Button>
+          </Box>
         </Box>
       </Flex>
 
-      <Modal isOpen={isAddAddressModalOpen} onClose={handleCloseAddAddressModal}>
+      <Modal
+        isOpen={isAddAddressModalOpen}
+        onClose={handleCloseAddAddressModal}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add Address</ModalHeader>
@@ -171,11 +193,10 @@ const Profile = () => {
               value={selectedProvince}
               onChange={(e) => {
                 setSelectedProvince(e.target.value);
-                fetchCityList(e.target.value); 
+                fetchCityList(e.target.value);
               }}
               mb="4"
             >
-  
               {provinces.map((province) => (
                 <option key={province.province_id} value={province.province_id}>
                   {province.province}
@@ -189,7 +210,6 @@ const Profile = () => {
               onChange={(e) => setSelectedCity(e.target.value)}
               mb="4"
             >
-  
               {cities.map((city) => (
                 <option key={city.city_id} value={city.city_id}>
                   {city.city_name}
@@ -202,13 +222,17 @@ const Profile = () => {
             </Button>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleCloseAddAddressModal}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={handleCloseAddAddressModal}
+            >
               Close
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </ChakraProvider>
+    </>
   );
 };
 
