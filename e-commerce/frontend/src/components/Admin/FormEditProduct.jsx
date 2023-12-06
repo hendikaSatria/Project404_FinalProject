@@ -1,12 +1,13 @@
 // FormEditProduct.jsx
 import React, { useState, useEffect } from 'react';
-import { Box, Heading, Button, Input } from '@chakra-ui/react';
+import { Box, Heading, Button, Input, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
 const FormEditProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -34,7 +35,7 @@ const FormEditProduct = () => {
           category_id: String(productData.category_id),
           warehouse_id: String(productData.warehouse_id),
           weight: String(productData.weight),
-          image: null, // Biarkan null untuk menyimpan gambar yang ada
+          image: null,
         });
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -88,10 +89,21 @@ const FormEditProduct = () => {
 
       console.log('Produk berhasil diubah:', response.data);
 
-      // Setelah berhasil mengubah, arahkan ke halaman produk
+      toast({
+        title: 'Produk berhasil diubah',
+        status: 'success',
+        isClosable: true,
+      });
+
       navigate('/admin/product');
     } catch (error) {
       console.error('Error ubah produk:', error);
+
+      toast({
+        title: 'Gagal mengubah produk',
+        status: 'error',
+        isClosable: true,
+      });
     }
   };
 
@@ -99,7 +111,6 @@ const FormEditProduct = () => {
     <Box p={4}>
       <Box mb={4} display="flex" justifyContent="space-between" alignItems="center">
         <Heading mb={4}>Edit Produk</Heading>
-        {/* Tambahkan tautan untuk kembali ke halaman produk */}
         <Link to="/admin/product">
           <Button colorScheme="blue">Kembali ke Produk</Button>
         </Link>

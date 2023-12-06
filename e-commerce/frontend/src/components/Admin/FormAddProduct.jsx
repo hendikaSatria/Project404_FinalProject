@@ -1,11 +1,11 @@
-// FormAddProduct.jsx
 import React, { useState } from 'react';
-import { Box, Heading, Button, Input } from '@chakra-ui/react';
+import { Box, Heading, Button, Input, useToast, Link } from '@chakra-ui/react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const FormAddProduct = () => {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -59,12 +59,23 @@ const FormAddProduct = () => {
         },
       });
 
-      console.log('Produk berhasil ditambahkan:', response.data);
+      // Setelah berhasil menambahkan, tampilkan Toast sukses dan arahkan ke halaman produk
+      toast({
+        title: 'Produk berhasil ditambahkan',
+        status: 'success',
+        isClosable: true,
+      });
 
-      // Setelah berhasil menambahkan, arahkan ke halaman produk
       navigate('/admin/product');
     } catch (error) {
       console.error('Error tambah produk:', error);
+
+      // Jika terjadi kesalahan, tampilkan Toast error
+      toast({
+        title: 'Gagal menambahkan produk',
+        status: 'error',
+        isClosable: true,
+      });
     }
   };
 
@@ -72,7 +83,6 @@ const FormAddProduct = () => {
     <Box p={4}>
       <Box mb={4} display="flex" justifyContent="space-between" alignItems="center">
         <Heading mb={4}>Tambah Produk</Heading>
-        {/* Tambahkan tautan untuk kembali ke halaman produk */}
         <Link to="/admin/product">
           <Button colorScheme="blue">Kembali ke Produk</Button>
         </Link>

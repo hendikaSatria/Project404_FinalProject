@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import { Box, Flex } from "@chakra-ui/react";
 import AdminLogin from "../pages/Admin/AdminLogin";
 import Home from "../pages/admin/home";
-import Order from "../pages/admin/Order";
+import Order from "../pages/Admin/Order";
 import User from "../pages/Admin/User";
 import Product from "../pages/Admin/Product";
 import FormAddProduct from "../components/Admin/FormAddProduct";
@@ -56,7 +56,7 @@ const AdminRouter = () => {
           element={
             <Flex w="100vw" h="100vh">
               <AdminSidebar />
-              <Box bg="white" w="full" h="full">
+              <Box bg="#F2F2F2" w="full" h="full">
                 <Routes>
                   <Route
                     path="/home"
