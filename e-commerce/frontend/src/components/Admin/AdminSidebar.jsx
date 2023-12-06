@@ -4,9 +4,16 @@ import { FaBox, FaWarehouse, FaMoneyBill, FaUsers } from "react-icons/fa6";
 import { FaClipboardList } from "react-icons/fa";
 import { BiSolidDiscount } from "react-icons/bi";
 import { IoLogOut } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminSidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("Token");
+    navigate("/admin/login");
+  };
+
   return (
     <Box w="250px" h="100%" bg="blue.200" color="black" p="4">
       <VStack align="center" spacing="6">
@@ -71,7 +78,7 @@ const AdminSidebar = () => {
             <Text as="b">Warehouse</Text>
           </Box>
         </Link>
-        <Link to={"/"}>
+        <Link to={"/admin/order"}>
           {" "}
           <Box
             size="md"
@@ -91,7 +98,7 @@ const AdminSidebar = () => {
             <Text as="b">Order</Text>
           </Box>
         </Link>
-        <Link to={"/"}>
+        <Link to={"/admin/promo"}>
           {" "}
           <Box
             size="md"
@@ -111,7 +118,7 @@ const AdminSidebar = () => {
             <Text as="b">Promo</Text>
           </Box>
         </Link>
-        <Link to={"/"}>
+        <Link to={"/admin/payment"}>
           {" "}
           <Box
             size="md"
@@ -131,7 +138,7 @@ const AdminSidebar = () => {
             <Text as="b">Payment</Text>
           </Box>
         </Link>
-        <Link to={"/"}>
+        <Link to={"/admin/user"}>
           {" "}
           <Box
             size="md"
@@ -151,8 +158,7 @@ const AdminSidebar = () => {
             <Text as="b">User</Text>
           </Box>
         </Link>
-        <Link to={"/"}>
-          {" "}
+        <Link to={"/admin/login"} onClick={handleLogout}>
           <Box
             size="md"
             height="60px"

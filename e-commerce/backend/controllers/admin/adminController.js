@@ -20,7 +20,7 @@ async function loginController(req, res) {
     }
 
     // Buat token JWT
-    const token = jwt.sign({ adminId: admin.admin_id }, "your-secret-key", {
+    const token = jwt.sign({ adminId: admin.admin_id }, "secret", {
       expiresIn: "1d",
     });
 
