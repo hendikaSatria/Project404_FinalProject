@@ -29,6 +29,15 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+app.use(
+  cors({
+    origin: "http://localhost:5174",
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+    methods: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+    optionsSuccessStatus: 200,
+  })
+);
 
 app.listen(3000, () => {
   console.log("Server started at http://localhost:3000");

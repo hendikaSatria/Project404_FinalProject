@@ -22,11 +22,15 @@ import Categorypage from "../pages/Admin/Categorypage";
 
 const checkAuthentication = () => {
   // Periksa apakah token ada di localStorage
-  return localStorage.getItem("Token");
+  return localStorage.getItem("Token") !== null;
 };
 
 const PrivateRoute = ({ element }) => {
-  return checkAuthentication() ? element : <Navigate to="/admin/login" />;
+  return checkAuthentication() ? (
+    <>{element}</>
+  ) : (
+    <Navigate to="/admin/login" />
+  );
 };
 
 PrivateRoute.propTypes = {
@@ -50,56 +54,54 @@ const AdminRouter = () => {
       />
       <Route path="/login" element={<AdminLogin />} />
 
-      {isAuthenticated && (
-        <Route
-          path="/*"
-          element={
-            <Flex w="100vw" h="100vh">
-              <AdminSidebar />
-              <Box bg="white" w="full" h="full">
-                <Routes>
-                  <Route
-                    path="/home"
-                    element={<PrivateRoute element={<Home />} />}
-                  />
-                  <Route
-                    path="/order"
-                    element={<PrivateRoute element={<Order />} />}
-                  />
-                  <Route
-                    path="/user"
-                    element={<PrivateRoute element={<User />} />}
-                  />
-                  <Route
-                    path="/product"
-                    element={<PrivateRoute element={<Product />} />}
-                  />
-                  <Route
-                    path="/product/add"
-                    element={<PrivateRoute element={<FormAddProduct />} />}
-                  />
-                  <Route
-                    path="/product/edit/:id"
-                    element={<PrivateRoute element={<FormEditProduct />} />}
-                  />
-                  <Route
-                    path="/category"
-                    element={<PrivateRoute element={<Categorypage />} />}
-                  />
-                  <Route
-                    path="/warehouse"
-                    element={<PrivateRoute element={<Warehousepage />} />}
-                  />
-                  <Route
-                    path="/warehouse/create"
-                    element={<PrivateRoute element={<WarehouseForm />} />}
-                  />
-                </Routes>
-              </Box>
-            </Flex>
-          }
-        />
-      )}
+      <Route
+        path="/*"
+        element={
+          <Flex w="100vw" h="100vh">
+            <AdminSidebar />
+            <Box bg="white" w="full" h="full">
+              <Routes>
+                <Route
+                  path="/home"
+                  element={<PrivateRoute element={<Home />} />}
+                />
+                <Route
+                  path="/order"
+                  element={<PrivateRoute element={<Order />} />}
+                />
+                <Route
+                  path="/user"
+                  element={<PrivateRoute element={<User />} />}
+                />
+                <Route
+                  path="/product"
+                  element={<PrivateRoute element={<Product />} />}
+                />
+                <Route
+                  path="/product/add"
+                  element={<PrivateRoute element={<FormAddProduct />} />}
+                />
+                <Route
+                  path="/product/edit/:id"
+                  element={<PrivateRoute element={<FormEditProduct />} />}
+                />
+                <Route
+                  path="/category"
+                  element={<PrivateRoute element={<Categorypage />} />}
+                />
+                <Route
+                  path="/warehouse"
+                  element={<PrivateRoute element={<Warehousepage />} />}
+                />
+                <Route
+                  path="/warehouse/create"
+                  element={<PrivateRoute element={<WarehouseForm />} />}
+                />
+              </Routes>
+            </Box>
+          </Flex>
+        }
+      />
     </Routes>
   );
 };
