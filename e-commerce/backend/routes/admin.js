@@ -7,7 +7,7 @@ const {
 const warehouseController = require("../controllers/warehouseController");
 const categoryController = require("../controllers/categoryCotroller");
 const productController = require("../controllers/admin/productController");
-const authMiddleware = require("../middleware/authMiddleWare");
+const { authMiddleware } = require("../middleware/authMiddleWare");
 const mtr = require("../middleware/upload");
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.post("/register", registerController);
 router.post("/logout", logoutController);
 
 //midlewareAdmin
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 //warehouse
 router
@@ -43,16 +43,16 @@ router
   .delete(categoryController.deleteCategory);
 
 //product
-router
-  .route("/product")
-  .get(productController.getAllProduct)
-  .post(mtr.upload.single("image"), productController.createProduct);
+// router
+//   .route("/product")
+//   .get(productController.getAllProduct)
+//   .post(mtr.upload.single("image"), productController.createProduct);
 
-router
-  .route("/product/:id")
-  .get(productController.getByID)
-  .put(productController.updateProduct)
-  .delete(productController.deleteProduct);
+// router
+//   .route("/product/:id")
+//   .get(productController.getByID)
+//   .put(productController.updateProduct)
+//   .delete(productController.deleteProduct);
 
 router
   .route("/product/category/:category_id")

@@ -16,7 +16,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { deletePromo, getAllPromo } from "../../modules/fetch";
 import { Link } from "react-router-dom";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function Promopage() {
   const { id } = useParams();
