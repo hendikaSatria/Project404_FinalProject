@@ -111,9 +111,17 @@ export default function WarehousePage() {
                 key={`${warehouse.warehouse_id} `}
               >
                 <Box w="80%" rounded="lg">
-                  <Text>{`${warehouse.warehouse_name}`}</Text>
-                  <Text>{`${warehouse.city_name}`}</Text>
-                  <Text>{`${warehouse.province_name}`}</Text>
+                  <HStack p={6} w={"100%"}>
+                    <Text
+                      w={"100%"}
+                      fontSize={"xl"}
+                      as={"b"}
+                    >{`${warehouse.warehouse_name}`}</Text>
+                    <VStack w={"100%"}>
+                      <Text>{`${warehouse.province_name}`}</Text>
+                      <Text>{`${warehouse.city_name}`}</Text>
+                    </VStack>
+                  </HStack>
                 </Box>
                 <Box p={2}>
                   <VStack spacing={2}>

@@ -28,10 +28,14 @@ const WarehouseForm = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();
 
+  useEffect(() => {
+    console.log(id);
+  }, []);
   const fetchWarehouseById = async (id) => {
     try {
       const response = await getWarehouseById(id);
       const warehouseData = response;
+      console.log(warehouseData);
 
       // Update state variables with the fetched data
       setWarehouseName(warehouseData.warehouse_name);
