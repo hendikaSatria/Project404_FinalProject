@@ -36,7 +36,7 @@ const CustomInput = styled(Input)`
 `;
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
@@ -51,7 +51,7 @@ const Navbar = () => {
   };
 
   const handleLinkClick = (path) => {
-    navigate(path);
+    navigate(token ? path : "/login");
   };
 
   return (

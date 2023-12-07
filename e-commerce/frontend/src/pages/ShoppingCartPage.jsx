@@ -157,7 +157,7 @@ const ShoppingCartPage = () => {
           p={4}
         >
           <Text fontSize="lg" fontWeight="bold">
-            Total Price: $
+            Total Price: Rp
             {cartItems
               .reduce(
                 (total, item) =>

@@ -24,23 +24,23 @@ const ItemCard = React.memo(
     const totalItemPrice = (parseFloat(price) * quantity).toFixed(2);
 
     return (
-      <Box borderBottom="1px solid #ccc" paddingY={4} w={"55vw"}>
-        <HStack width="55vw" justify="space-between">
-          <HStack align="start">
+      <Box borderBottom="1px solid #ccc" paddingY={4} w={{ base: "100%", md: "55vw" }}>
+        <HStack width="100%" justify="space-between" direction={{ base: "column", md: "row" }}>
+          <HStack align="start" ml={{ base: 0, md: 20 }}>
             <Image
               src={image}
               alt={itemName}
-              boxSize="100px"
+              boxSize={{ base: "100%", md: "100px" }}
               objectFit="cover"
             />
-            <Text fontSize="lg" fontWeight="bold">
+            <Text fontSize="lg" fontWeight="bold" ml={{ base: 2, md: 30 }}>
               {itemName}
             </Text>
           </HStack>
 
-          <VStack align="flex-end">
+          <VStack align="flex-end" ml={{ base: 0, md: 4 }}> {/* Adjust margin at different breakpoints */}
             <Text fontSize="lg" fontWeight="bold">
-              ${totalItemPrice}
+              Rp{totalItemPrice}
             </Text>
             <HStack>
               <IconButton
@@ -68,5 +68,6 @@ const ItemCard = React.memo(
   }
 );
 
-// Export the ItemCard component
 export default ItemCard;
+
+

@@ -46,7 +46,7 @@ const ProductCard = ({ product }) => {
           </Text>
 
           <Text fontSize="sm" color="black" align="end">
-            ${price}
+            Rp{price}
           </Text>
         </Box>
       </VStack>

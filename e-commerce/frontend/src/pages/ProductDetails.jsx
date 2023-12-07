@@ -98,7 +98,7 @@ const ProductDetails = () => {
           <Box flex="1" p={4}>
             <Text fontSize="2xl">{product.name}</Text>
             <Text fontSize="lg" fontWeight="bold" mb={2}>
-              ${product.price}
+              Rp{product.price}
             </Text>
             <Text mb={4}>{product.description}</Text>
 

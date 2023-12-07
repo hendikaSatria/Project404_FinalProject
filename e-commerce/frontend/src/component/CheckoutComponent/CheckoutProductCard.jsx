@@ -11,12 +11,12 @@ const CheckoutProductCard = ({ product, quantity }) => {
           <Text fontSize="2xl" fontWeight="bold">
             {product.name}
           </Text>
-          <Text fontSize="xs">Price: ${product.price} each</Text>
+          <Text fontSize="xs">Price: Rp{product.price} each</Text>
         </Box>
         <VStack>
           <Text fontSize="sm">Quantity: {quantity}</Text>
           <Text fontSize="xs">
-            Total: <Text as={"b"}>${total}</Text>
+            Total: <Text as={"b"}>Rp{total}</Text>
           </Text>
         </VStack>
       </HStack>
