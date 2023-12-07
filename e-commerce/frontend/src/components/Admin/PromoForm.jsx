@@ -142,19 +142,16 @@ export default function PromoForm() {
           <VStack spacing="4" w="full">
             <Box w="500px" align="center" bg="gray.200" p="20px" rounded="20px">
               <FormControl>
-                <Box w="400px" p="10px">
+                <Box p="10px">
                   <HStack>
-                    <FormLabel w="80px"> Type : </FormLabel>
-                    <Select
+                    <FormLabel w="100px"> Type : </FormLabel>
+                    <Input
                       bg="white"
-                      variant="filled"
-                      placeholder="Promo Type"
-                      name="type"
-                      isRequired
-                      onChange={(e) => setTypes(e.target.value)}>
-                      <option value="Percentage">Percentage</option>
-                      <option value="Fixed">Fixed</option>
-                    </Select>
+                      type="text"
+                      required
+                      value={types}
+                      onChange={(e) => setTypes(e.target.value)}
+                    />
                   </HStack>
                 </Box>
               </FormControl>

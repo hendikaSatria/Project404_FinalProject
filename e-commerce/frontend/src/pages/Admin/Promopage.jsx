@@ -11,6 +11,14 @@ import {
   Grid,
   GridItem,
   useToast,
+  Popover,
+  PopoverContent,
+  Portal,
+  PopoverTrigger,
+  PopoverArrow,
+  PopoverHeader,
+  PopoverBody,
+  PopoverCloseButton,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
@@ -19,9 +27,9 @@ import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function Promopage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
-  const toast = useToast()
+  const toast = useToast();
 
   const [promotions, setPromotions] = useState([]);
   const [searchTerm, SetsearchTerm] = useState("");
@@ -64,6 +72,7 @@ export default function Promopage() {
         duration: 3000,
         isClosable: true,
       });
+      onClose()
     } catch {
       console.error("Error deleting warehouse: ", error.message);
     }
@@ -105,6 +114,7 @@ export default function Promopage() {
               colorScheme="blue"
               _hover={{
                 bg: "white",
+                textColor: "blue",
               }}>
               Add Promo
             </Button>
@@ -123,13 +133,10 @@ export default function Promopage() {
               key={`${promotion.promo_id}`}>
               <Grid w="full" templateColumns="repeat(3,1fr)" templateRows="repeat(1,1fr)">
                 <GridItem>
-                  <Box
-                    w="80%"
-                    p="20px"
-                    bg="white"
-                    rounded="lg"
-                    mt="40px"
-                    align="center"> <Text as='b'> {`${promotion.type}`} </Text> </Box>
+                  <Box w="80%" p="20px" bg="white" rounded="lg" mt="40px" align="center">
+                    {" "}
+                    <Text as="b"> {`${promotion.type}`} </Text>{" "}
+                  </Box>
                 </GridItem>
                 <GridItem>
                   <Box p="3px" mt="12px" bg="#E0F4FF" rounded="10px">
@@ -158,21 +165,44 @@ export default function Promopage() {
                       as={Link}
                       to={`/admin/promo/${promotion.promo_id}`}
                       _hover={{
-                        bg: "blue.200",
+                        bg: "blue",
+                        textColor: "white",
                       }}>
                       Manage
                     </Button>
-                    <Button
-                      w="80%"
-                      border="none"
-                      onClick={() => handleDelete(promotion.promo_id)}
-                      key={promotion.promo_id}
-                      _hover={{
-                        bg: "red.200",
-                        border: "none",
-                      }}>
-                      Delete
-                    </Button>
+                    <Popover>
+                      <PopoverTrigger>
+                        <Button
+                          w="80%"
+                          border="none"
+                          _hover={{
+                            bg: "red",
+                            textColor: "white",
+                            border: "none",
+                          }}>
+                          Delete
+                        </Button>
+                      </PopoverTrigger>
+                      <Portal>
+                        <PopoverContent >
+                          <PopoverArrow />
+                          <PopoverHeader> Are you sure want to delete this ? </PopoverHeader>
+                          <PopoverBody>
+                            <PopoverCloseButton />
+                            <Button
+                              ml="100px"
+                              mr="5px"
+                              colorScheme="red"
+                              onClick={() => handleDelete(promotion.promo_id)}
+                              key={promotion.promo_id}
+                              closeOnBlur
+                              closeDelay="200">
+                              Delete
+                            </Button>
+                          </PopoverBody>
+                        </PopoverContent>
+                      </Portal>
+                    </Popover>
                   </VStack>
                 </GridItem>
               </Grid>

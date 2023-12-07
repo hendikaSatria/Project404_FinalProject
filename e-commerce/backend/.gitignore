@@ -5,3 +5,5 @@ node_modules
 /prisma/generated
 # Ignore Prisma migration branch files
 /prisma/migrations/20231130163344_branch_abel_migrate
+
+.vscode/*
