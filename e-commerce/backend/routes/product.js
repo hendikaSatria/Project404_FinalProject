@@ -11,5 +11,10 @@ router.route("/:id").get(productController.getByID);
 router.route("/:id").delete(productController.deleteProduct);
 router.route("/:id").put(mtr.upload.single("image"),productController.updateProduct);
 router.route("/category/:category_id").get(productController.getByCategory);
+router.route("/search/:productName").get(productController.searchProductByName);
+router.route("/filter/:categoryName").get(productController.filterProductByCategory);
+// router.route ("/add").post(mtr.upload.single("image"),productController.addProduct);
+
+
 
 module.exports = router;

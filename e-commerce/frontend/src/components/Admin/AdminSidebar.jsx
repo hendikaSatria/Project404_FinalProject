@@ -4,11 +4,7 @@ import { FaBox, FaWarehouse, FaMoneyBill, FaUsers } from "react-icons/fa6";
 import { FaClipboardList } from "react-icons/fa";
 import { BiSolidDiscount } from "react-icons/bi";
 import { IoLogOut } from "react-icons/io5";
-<<<<<<<< HEAD:e-commerce/frontend/src/components/Admin/AdminSidebar.jsx
-import { Link, useNavigate } from "react-router-dom";
-========
 import { Link,useNavigate } from "react-router-dom";
->>>>>>>> ilzam:e-commerce/frontend/src/Components/Admin/AdminSidebar.jsx
 
 const AdminSidebar = () => {
   const navigate = useNavigate();

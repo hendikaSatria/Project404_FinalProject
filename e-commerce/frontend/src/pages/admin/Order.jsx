@@ -8,33 +8,23 @@ import {
   Th,
   Td,
   Heading,
-  Button,
   Select,
   useToast,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
-  useDisclosure,
   IconButton,
   InputGroup,
   InputLeftElement,
   Input,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import { SearchIcon } from '@chakra-ui/icons';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Order = () => {
   const [orderDetails, setOrderDetails] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef();
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -46,6 +36,7 @@ const Order = () => {
         });
 
         setOrderDetails(response.data);
+        setFilteredOrders(response.data);
       } catch (error) {
         console.error('Kesalahan mengambil detail pesanan:', error);
       } finally {
@@ -74,6 +65,12 @@ const Order = () => {
         )
       );
 
+      setFilteredOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.order_id === orderId ? { ...order, order_status: newStatus } : order
+        )
+      );
+
       // Tambahkan alert/toast ketika status order berhasil diubah
       toast({
         title: 'Order Status Updated',
@@ -96,7 +93,19 @@ const Order = () => {
   };
 
   const handleSearch = () => {
-    // Handle search functionality if needed
+    const searchTermLower = searchTerm.toLowerCase();
+    const filtered = orderDetails.filter(
+      (order) =>
+        order.order_items[0]?.product.name.toLowerCase().includes(searchTermLower) &&
+        (statusFilter === '' || order.order_status.includes(statusFilter))
+    );
+    setFilteredOrders(filtered);
+  };
+  const handleKeyDown = (e) => {
+    // Jika tombol yang ditekan adalah "Enter", panggil fungsi handleSearch
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
@@ -113,6 +122,7 @@ const Order = () => {
             placeholder="Search Product"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
             fontSize="sm"
           />
         </InputGroup>
@@ -128,6 +138,30 @@ const Order = () => {
       </Box>
       {/* end of search bar */}
 
+      {/* status filter */}
+      <Select mb="3" ml="auto" maxW="500px" display="flex"
+        size="sm"
+        placeholder="Filter Status"
+        value={statusFilter}
+        onChange={(e) => {
+          const newStatusFilter = e.target.value;
+          setStatusFilter(newStatusFilter);
+          const filtered = orderDetails.filter(
+            (order) =>
+              order.order_items[0]?.product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+              (newStatusFilter === '' || order.order_status.includes(newStatusFilter))
+          );
+          setFilteredOrders(filtered);
+        }}
+      >
+        <option value="">All</option>
+        <option value="pending">Pending</option>
+        <option value="processing">Processing</option>
+        <option value="finish">Finish</option>
+      </Select>
+      {/* end of status filter */}
+
+      {/* order table */}
       <Box border="1px solid" rounded="3xl" overflowX="auto">
         <Table variant="simple">
           <Thead>
@@ -162,7 +196,7 @@ const Order = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {orderDetails.map((order, index) => (
+            {filteredOrders.map((order, index) => (
               <Tr key={order.order_id}>
                 <Td textAlign="center" p={2}>{index + 1}</Td>
                 <Td textAlign="center" p={2}>{order.order_id}</Td>
@@ -181,7 +215,7 @@ const Order = () => {
                       key={proofIndex}
                       src={proof.image}
                       alt={`Proof of Payment ${order.order_id} - ${proofIndex + 1}`}
-                      style={{ maxWidth: '50px', marginRight: '10px' }}
+                      style={{ width: '40px', height: '60px', display: 'block', margin: 'auto', marginBottom: '10px' }}
                     />
                   ))}
                 </Td>
@@ -205,6 +239,7 @@ const Order = () => {
           </Tbody>
         </Table>
       </Box>
+      {/* end of order table */}
     </Box>
   );
 };

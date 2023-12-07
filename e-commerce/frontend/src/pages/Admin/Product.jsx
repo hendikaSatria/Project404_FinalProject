@@ -4,7 +4,6 @@ import {
   Flex,
   Image,
   Text,
-  Button,
   Input,
   InputGroup,
   InputLeftElement,
@@ -15,7 +14,8 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
-  ButtonGroup,
+  Select,
+  Button,
 } from '@chakra-ui/react';
 import { SearchIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
@@ -24,36 +24,81 @@ import axios from 'axios';
 const Product = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedProductId, setSelectedProductId] = useState(null); // Menyimpan ID produk yang akan dihapus
+  const [selectedProductId, setSelectedProductId] = useState(null);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchError, setSearchError] = useState('');
 
-  // Menambah definisi cancelRef
   const cancelRef = React.useRef();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/product/detail');
-        setProducts(response.data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
     fetchProducts();
-  }, []);
+  }, [selectedCategory]);
+  
+  const fetchProducts = async () => {
+    try {
+      let response;
+      if (selectedCategory.trim() === '' || selectedCategory === 'All Categories') {
+        // Jika selectedCategory kosong atau "All Categories," ambil semua produk
+        response = await axios.get('http://localhost:3000/product/detail');
+      } else {
+        // Jika selectedCategory tidak kosong, lakukan filter berdasarkan kategori
+        const encodedCategory = encodeURIComponent(selectedCategory);
+        const endpoint = `http://localhost:3000/product/filter/${encodedCategory}`;
+        response = await axios.get(endpoint);
+      }
+  
+      setFilteredProducts(response.data); // Simpan hasil filter kategori ke dalam filteredProducts
+      setProducts(response.data); // Tampilkan hasil filter kategori sebagai hasil utama
+    } catch (error) {
+      console.error('Error fetching or filtering products:', error);
+    }
+  };
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/product/search?term=${searchTerm}`);
-      setProducts(response.data);
+      let response;
+      if (searchTerm.trim() === '') {
+        // Jika searchTerm kosong, gunakan filteredProducts (hasil filter kategori)
+        setProducts([...filteredProducts]);
+        setSearchError('');
+      } else {
+        // Jika searchTerm tidak kosong, lakukan pencarian pada filteredProducts
+        const searchResults = filteredProducts.filter((product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        if (searchResults.length === 0) {
+          setSearchError('No products found.');
+        } else {
+          setSearchError('');
+        }
+
+        setProducts(searchResults);
+        setSearchTerm(''); // Mengosongkan nilai pada searchTerm setelah selesai pencarian
+      }
     } catch (error) {
       console.error('Error searching products:', error);
     }
   };
+  
+  const handleKeyDown = (e) => {
+    // Jika tombol yang ditekan adalah "Enter", panggil fungsi handleSearch
+    if (e.key === 'Enter') {
+      setSearchError(''); // Reset pesan kesalahan sebelum melakukan pencarian baru
+      handleSearch();
+    }
+  };
+
+  const handleSelectChange = (e) => {
+    const category = e.target.value;
+    console.log('Selected Category (before):', selectedCategory);
+    setSelectedCategory(category);
+    setSearchError(''); // Mengosongkan nilai pada searchError setelah filterisasi
+  };
 
   const handleDelete = (productId) => {
-    // Menetapkan ID produk yang akan dihapus dan membuka AlertDialog
     setSelectedProductId(productId);
     setIsAlertDialogOpen(true);
   };
@@ -61,46 +106,37 @@ const Product = () => {
   const confirmDelete = async () => {
     try {
       await axios.delete(`http://localhost:3000/product/${selectedProductId}`);
-      // Jika penghapusan berhasil, perbarui daftar produk
       const updatedProducts = products.filter((product) => product.product_id !== selectedProductId);
       setProducts(updatedProducts);
     } catch (error) {
       console.error('Error deleting product:', error);
     } finally {
-      // Setelah penghapusan selesai, tutup AlertDialog dan reset selectedProductId
       setIsAlertDialogOpen(false);
       setSelectedProductId(null);
     }
   };
-
+  
   const cancelDelete = () => {
-    // Jika pengguna membatalkan penghapusan, tutup AlertDialog dan reset selectedProductId
     setIsAlertDialogOpen(false);
     setSelectedProductId(null);
   };
 
   return (
     <Flex p={4} mx="auto" maxW="1200px" justifyContent="space-between" flexDirection="column">
-      {/* Header */}
       <Box mb={4}>
         <Text fontSize="4xl" fontWeight="bold" my="1" textAlign="center" textTransform="uppercase">
           Product Management
         </Text>
       </Box>
-
-      {/* Search bar dan Tombol "Tambah Produk" */}
-      <Flex my="3" justifyContent="space-between">
-        <Link to="/admin/product/add">
-          <Button colorScheme="green" fontSize="sm" mr="2">
-            Tambah Produk
-          </Button>
-        </Link>
+      
+      <Flex >
         <InputGroup mb="3" ml="auto" maxW="500px">
           <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
           <Input
             placeholder="Search Product"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown} 
             fontSize="sm"
           />
           <IconButton
@@ -115,7 +151,30 @@ const Product = () => {
         </InputGroup>
       </Flex>
 
-      {/* Product List */}
+      <Flex my="2" justifyContent="space-between">
+        <Link to="/admin/product/add">
+          <Button colorScheme="green" fontSize="sm" mr="2">
+            Tambah Produk
+          </Button>
+        </Link>
+        <Select ml="auto" maxW="500px"
+           placeholder="Filter by Category"
+           value={selectedCategory}
+           onChange={handleSelectChange}
+        >
+          <option value="">All Categories</option>
+          <option value="Category 1">Category 1</option>
+          <option value="Category 2">Category 2</option>
+          <option value="Category 3">Category 3</option>
+          <option value="Category 4">Category 4</option>
+          <option value="Category 5">Category 5</option>
+        </Select>
+      </Flex>
+      {searchError && (
+        <Box my="2" color="red.500" textAlign="center" fontSize="sm">
+          {searchError}
+        </Box>
+      )}
       <Box rounded="3xl" overflowX="auto" backgroundColor="#F2F2F2">
         <Flex flexWrap="wrap" justifyContent="space-between" rounded="3xl" overflowX="auto">
           {products.map((product) => (
@@ -137,6 +196,7 @@ const Product = () => {
                     mb={2}
                     width="100%"
                     borderRadius="md"
+                    style={{ width: '400px', height: '600px', margin: 'auto' }}
                   />
                 </Box>
                 <Box flex="2" mr={4}>
@@ -151,10 +211,10 @@ const Product = () => {
                     Stock: {product.stock}
                   </Text>
                   <Text color="gray.500" fontSize="sm">
-                    Category: {product.category.category_name}
+                    Category: {product.category?.category_name || 'Unknown Category'}
                   </Text>
                   <Text color="gray.500" fontSize="sm">
-                    Warehouse: {product.warehouse.city_name}
+                    Warehouse: {product.warehouse?.warehouse_name || 'Unknown Warehouse'}
                   </Text>
                 </Box>
                 <Box>
@@ -179,25 +239,20 @@ const Product = () => {
         </Flex>
       </Box>
 
-      {/* AlertDialog untuk konfirmasi penghapusan */}
-      <AlertDialog
-        isOpen={isAlertDialogOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={cancelDelete}
-      >
+      <AlertDialog isOpen={isAlertDialogOpen} leastDestructiveRef={cancelRef} onClose={cancelDelete}>
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Delete Product
             </AlertDialogHeader>
             <AlertDialogBody>
               Are you sure you want to delete this product? You can't undo this action.
             </AlertDialogBody>
             <AlertDialogFooter>
-              <Button colorScheme='gray' onClick={cancelDelete}>
+              <Button colorScheme="gray" onClick={cancelDelete}>
                 Cancel
               </Button>
-              <Button colorScheme='red' onClick={confirmDelete} ml={3}>
+              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>

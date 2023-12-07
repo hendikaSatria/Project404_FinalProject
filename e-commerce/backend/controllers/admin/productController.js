@@ -168,7 +168,7 @@ const productController = {
       const productDetails = await prisma.product.findMany({
         include: {
           category: { select: { category_name: true } },
-          warehouse: { select: { city_name: true } },
+          warehouse: { select: { warehouse_name: true } },
         },
       });
 
@@ -179,6 +179,55 @@ const productController = {
     }
   },
 
+  searchProductByName: async (req, res) => {
+    try {
+      const { productName } = req.params;
+      const products = await prisma.product.findMany({
+        where: {
+          name: {
+            contains: productName,
+            mode: "insensitive", // Pencarian case-insensitive
+          },
+        },
+        include: {
+          category: { select: { category_name: true } },
+          warehouse: { select: { warehouse_name: true } },
+        },
+      });
+      
+      res.json(products);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
+
+  filterProductByCategory: async (req, res) => {
+    try {
+      const { categoryName } = req.params;
+      const products = await prisma.product.findMany({
+        where: {
+          category: {
+            category_name: {
+              equals: categoryName,
+              mode: "insensitive", // Pencarian case-insensitive
+            },
+          },
+        },
+        include: {
+          category: true,
+          warehouse: true,
+        },
+      });
+  
+      console.log('Filtered Products:', products); // Tambahkan ini
+  
+      res.json(products);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  },
 };
 
 
