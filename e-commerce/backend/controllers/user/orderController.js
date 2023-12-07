@@ -31,20 +31,23 @@ const calculateTotalWeight = (cartItems) => {
     }, 0);
 };
 
+const groupItemsByCategory = (cartItems) => {
+    const categoryGroups = {};
+    cartItems.forEach((cartItem) => {
+        const categoryId = cartItem.product.category_id;
+        if (!categoryGroups[categoryId]) {
+            categoryGroups[categoryId] = [];
+        }
+        categoryGroups[categoryId].push(cartItem);
+    });
+
+    return Object.values(categoryGroups);
+};
+
+
 const createOrder = async (userId, promoCode, courier) => {
     try {
         const userIdInt = parseInt(userId, 10);
-        const cartItems = await shoppingCartController.getShoppingCart(userIdInt);
-
-        if (cartItems.length === 0) {
-            throw new Error('Shopping cart is empty');
-        }
-
-        const warehouseGroups = groupItemsByWarehouse(cartItems);
-
-        let totalPrice = 0;
-        let totalShippingFee = 0;
-
         const user = await prisma.user.findUnique({
             where: {
                 user_id: userIdInt,
@@ -72,28 +75,27 @@ const createOrder = async (userId, promoCode, courier) => {
 
         const destinationCityId = userAddresses[0].city_id;
 
-        // Iterate over each warehouse group
-        for (const warehouseGroup of warehouseGroups) {
-            // Check if the warehouse group is not empty
-            if (warehouseGroup.length > 0) {
-                // Calculate total weight for the warehouse group
-                const totalWeight = calculateTotalWeight(warehouseGroup);
+        const cartItems = await shoppingCartController.getShoppingCart(userIdInt);
 
-                // Calculate shipping fee for the warehouse group
+        if (cartItems.length === 0) {
+            throw new Error('Shopping cart is empty');
+        }
+
+        const warehouseGroups = groupItemsByWarehouse(cartItems);
+        let totalPrice = 0;
+        let totalShippingFee = 0;
+
+        for (const warehouseGroup of warehouseGroups) {
+            if (warehouseGroup.length > 0) {
+                const totalWeight = calculateTotalWeight(warehouseGroup);
                 const warehouseShippingFee = await shippingController.calculateShippingFee(
                     warehouseGroup[0].product.warehouse_id,
                     destinationCityId,
                     totalWeight,
                     courier
                 );
-
-                // Add the shipping fee to the total shipping fee
                 totalShippingFee += warehouseShippingFee;
-
-                // Calculate total price for the warehouse group
                 const warehouseTotalPrice = calculateTotalPrice(warehouseGroup);
-
-                // Add the total price to the overall total price
                 totalPrice += warehouseTotalPrice;
             }
         }
@@ -104,31 +106,26 @@ const createOrder = async (userId, promoCode, courier) => {
         if (promoCode) {
             const isValidPromo = await promoController.validatePromoCodeForUser(promoCode);
 
-            if (isValidPromo) {
-                const promoAmount = await promoController.calculatePromoAmountForUser(promoCode, totalPrice);
-                promoDiscountAmount = promoAmount;
+            console.log('Promo Code:', promoCode);
+            console.log('isValidPromo:', isValidPromo);
 
-                // // Reserve the promotion for the user
-                // await promoController.reservePromotion(promoCode);
+            if (isValidPromo) {
+                const categoryGroups = groupItemsByCategory(cartItems);
+
+                for (const categoryGroup of categoryGroups) {
+                    if (categoryGroup.length > 0) {
+                        const totalCategoryPrice = calculateTotalPrice(categoryGroup);
+                        const promoAmount = await promoController.calculatePromoAmountForUser(
+                            promoCode,
+                            totalCategoryPrice,
+                            cartItems
+                        );
+                        promoDiscountAmount += promoAmount;
+                    }
+                }
             } else {
-                console.error('Invalid promo code');
                 throw new Error('Invalid promo code');
             }
-        }
-
-        const userAffiliate = await prisma.user.findUnique({
-            where: {
-                user_id: userIdInt,
-            },
-        });
-
-        if (userAffiliate && userAffiliate.affiliate_usage) {
-            affiliateDiscountAmount = totalPrice * 0.5;
-
-            await prisma.user.update({
-                where: { user_id: userIdInt },
-                data: { affiliate_usage: false },
-            });
         }
 
         const totalPriceWithDiscounts = totalPrice - promoDiscountAmount - affiliateDiscountAmount;
@@ -171,18 +168,12 @@ const createOrder = async (userId, promoCode, courier) => {
             },
         });
 
-        const userCart = await prisma.shoppingCart.findFirst({
-            where: {
-                user_id: userIdInt,
-            },
-        });
-
         await prisma.shoppingCartItem.deleteMany({
-            where: { cart_id: userCart.cart_id },
+            where: { cart_id: cartItems[0].cart_id },
         });
 
         await prisma.shoppingCart.delete({
-            where: { cart_id: userCart.cart_id },
+            where: { cart_id: cartItems[0].cart_id },
         });
 
         return order;
@@ -191,6 +182,7 @@ const createOrder = async (userId, promoCode, courier) => {
         throw new Error('Failed to create order');
     }
 };
+
 
 const getOrdersForUser = async (userId) => {
     try {
@@ -251,5 +243,5 @@ module.exports = {
     calculateTotalWeight,
     calculateTotalPrice,
     groupItemsByWarehouse,
-    getOrderById, 
+    getOrderById,
 };

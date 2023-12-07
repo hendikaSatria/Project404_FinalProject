@@ -3,7 +3,7 @@ import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { UploadProvider } from './context/UploadContext'; 
+import { UploadProvider } from './context/UploadContext';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import Navbar from './component/Navbar';
@@ -20,7 +20,7 @@ const App = () => {
   return (
     <ChakraProvider>
       <AuthProvider>
-        <UploadProvider> 
+        <UploadProvider>
           {!isLoginPage && <Navbar />}
           <Routes>
             <Route path="/login" element={<LoginPage />} />

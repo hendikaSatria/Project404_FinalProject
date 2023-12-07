@@ -26,27 +26,34 @@ import {
 const Profile = () => {
   const { user: contextUser, token, logout } = useAuth();
   const navigate = useNavigate();
-  const [user, setUser] = useState(contextUser);
+  const [user, setUser] = useState();
   const [provinces, setProvinces] = useState([]);
   const [cities, setCities] = useState([]);
   const [isAddAddressModalOpen, setAddAddressModalOpen] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedProvince, setSelectedProvince] = useState("");
+  const [loadingUser, setLoadingUser] = useState(true);
+
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        if (token) {
-          const userData = await fetchUserData(token);
-          setUser(userData);
+        if (!token) {
+          navigate("/login");
+          return;
         }
+
+        const userData = await fetchUserData(token);
+        setUser(userData || null);
+        console.log("User data in Profile:", userData);
       } catch (error) {
         console.error("Error fetching user data:", error);
+        setUser(null);
       }
     };
 
     fetchUserDetails();
-  }, [token]);
+  }, [token, navigate]);
 
   useEffect(() => {
     const fetchProvinceList = async () => {
@@ -115,7 +122,6 @@ const Profile = () => {
         console.error("Error: City details not found.");
       }
 
-      // Close the modal after handling the address
       handleCloseAddAddressModal();
     } catch (error) {
       console.error("Error handling address:", error);

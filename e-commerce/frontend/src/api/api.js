@@ -23,18 +23,16 @@ const handleRequestError = (error) => {
 export const loginUser = async (email, password) => {
   try {
     const response = await api.post('/userauth/login', { email, password });
-    return response.data;  
+    return response.data;
   } catch (error) {
-    throw handleRequestError(error);  
+    throw handleRequestError(error);
   }
 };
 
 
 export const registerUser = async (userData) => {
   try {
-    console.log('Register User Data:', userData);
     const response = await api.post('/userauth/register', userData);
-    console.log('Register Response:', response);
     return response.data.token;
   } catch (error) {
     throw handleRequestError(error);
@@ -67,8 +65,8 @@ export const getProductById = async (productId) => {
 
 export const getAllProducts = async () => {
   try {
-    const response = await api.get('/users/allProducts'); 
-    console.log('getAllProducts Response:', response); 
+    const response = await api.get('/users/allProducts');
+    console.log('getAllProducts Response:', response);
     return response.data;
   } catch (error) {
     console.error('Error in getAllProducts:', error);
@@ -201,7 +199,7 @@ export const removeFromCart = async (cartItemId, userId, productId) => {
 export const updateCartItemQuantity = async (cartItemId, newQuantity, userId) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await api.put(`/shoppingCart/updateCartItemQuantity/${cartItemId}/${newQuantity}/${userId}`,null, {
+    const response = await api.put(`/shoppingCart/updateCartItemQuantity/${cartItemId}/${newQuantity}/${userId}`, null, {
       headers: {
         Authorization: token,
       },
@@ -215,7 +213,7 @@ export const updateCartItemQuantity = async (cartItemId, newQuantity, userId) =>
 export const getShippingFee = async (userId) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await api.get(`/shipping/shipping-fees/${userId}` , {
+    const response = await api.get(`/shipping/shipping-fees/${userId}`, {
       headers: {
         Authorization: token,
       },
@@ -254,14 +252,12 @@ export const createOrder = async (userId, promoCode, courier, token) => {
 
     const data = response.data;
 
-    // Check if the response contains an error message
     if (data && data.error) {
       throw new Error(`Failed to create order: ${data.error}`);
     }
 
     console.log('Order creation data:', data);
 
-    // Assuming the response has an 'orderId' property
     if (data && data.orderId) {
       return data;
     } else {
@@ -309,7 +305,7 @@ export const uploadProofOfPayment = async (orderId, proofOfPaymentFile, token) =
       },
     });
 
-    return response; 
+    return response;
 
   } catch (error) {
     console.error('Error uploading proof of payment:', error);
@@ -336,6 +332,16 @@ export const getOrderById = async (orderId, token) => {
   } catch (error) {
     console.error('Error getting order by ID:', error);
     throw new Error('Failed to get order by ID');
+  }
+};
+
+export const fetchCategoryById = async (categoryId) => {
+  try {
+    const response = await api.get(`/users/categories/${categoryId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching category by ID:', error);
+    throw error;
   }
 };
 

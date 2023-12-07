@@ -54,14 +54,14 @@ async function main() {
       },
     ],
   });
-    // Delete all existing OrderItems
-    await prisma.orderItem.deleteMany();
+  // Delete all existing OrderItems
+  await prisma.orderItem.deleteMany();
 
-    // Delete all existing ShoppingCartItems
-    await prisma.shoppingCartItem.deleteMany();
+  // Delete all existing ShoppingCartItems
+  await prisma.shoppingCartItem.deleteMany();
 
-    // Delete all existing products
-    await prisma.product.deleteMany();
+  // Delete all existing products
+  await prisma.product.deleteMany();
 
   const product = await prisma.product.createMany({
     data: [
@@ -174,7 +174,7 @@ async function main() {
         warehouse_id: 2,
         image: "https://dummyimage.com/700x700/ffffff/000000.jpg",
         weight: 1.5,
-      },{
+      }, {
         name: "Product 11",
         description: "Description for Product 1",
         price: 29.99,
@@ -363,79 +363,38 @@ async function main() {
     ],
   });
 
-  //seeding Orders
-  const order1 = await prisma.orders.upsert({
-    where: {
-      order_id: 1, // ID order yang diinginkan
-    },
-    create: {
-      user_id: 1,
-      order_date: "2023-11-23T05:41:21.924Z",
-      delivery_time: "2023-11-23T05:41:21.924Z",
-      deliver_fee: "100000",
-      total_price: "100149.95",
-      payment_status: "Pending",
-      order_status: "Processing",
+  await prisma.promotion.create({
+    data: {
+      type: 'percentage',
+      maximum_usage: 100,
+      amount: 10, // 10% discount
+      remaining_usage: 100,
       admin_id: 1,
-      order_items: {
-        create: {
-          order_item_id: 17,
-          product_id: 1, // sesuaikan id dengan id product yang tersedia di database
-          quantity: 5,
-          price: "29.99",
-        },
-      },
     },
-    update: {},
   });
-  const order2 = await prisma.orders.upsert({
-    where: {
-      order_id: 2, // ID order yang diinginkan
-    },
-    create: {
-      user_id: 2,
-      order_date: "2023-11-23T05:41:21.924Z",
-      delivery_time: "2023-11-23T05:41:21.924Z",
-      deliver_fee: "100000",
-      total_price: "100149.95",
-      payment_status: "Pending",
-      order_status: "Processing",
+
+  await prisma.promotion.create({
+    data: {
+      type: 'fixed',
+      maximum_usage: 50,
+      amount: 5, // Fixed $5 discount
+      remaining_usage: 50,
       admin_id: 1,
-      order_items: {
-        create: {
-          order_item_id: 17,
-          product_id: 1, // sesuaikan id dengan id product yang tersedia di database
-          quantity: 5,
-          price: "29.99",
-        },
-      },
     },
-    update: {},
   });
-  const order3 = await prisma.orders.upsert({
-    where: {
-      order_id: 3, // ID order yang diinginkan
-    },
-    create: {
-      user_id: 3,
-      order_date: "2023-11-23T05:41:21.924Z",
-      delivery_time: "2023-11-23T05:41:21.924Z",
-      deliver_fee: "100000",
-      total_price: "100149.95",
-      payment_status: "Pending",
-      order_status: "Processing",
+
+  await prisma.promotion.create({
+    data: {
+      type: 'category 1',
+      maximum_usage: 50,
+      amount: 15, // 15% discount for specific category
+      remaining_usage: 50,
       admin_id: 1,
-      order_items: {
-        create: {
-          order_item_id: 17,
-          product_id: 1, // sesuaikan id dengan id product yang tersedia di database
-          quantity: 5,
-          price: "29.99",
-        },
-      },
+      promo_code: 'category 1'
     },
-    update: {},
   });
+
+  console.log('Promo seed data created successfully');
 }
 
 main()

@@ -24,7 +24,7 @@ const groupItemsByWarehouse = (cartItems) => {
 };
 
 const calculateShippingFee = async (originCityId, destinationCityId, weight, courier) => {
-    const apiKey = '86ee504db8abb644b6a2324e98e3b5d8';
+    const apiKey = 'efe5b3d7c7fa07f1238c1ad3025b18f2';
 
     try {
         const response = await axios.post(
@@ -41,9 +41,9 @@ const calculateShippingFee = async (originCityId, destinationCityId, weight, cou
                 },
             }
         );
-        
+
         // Debugging
-        console.log('API response:', response.data); 
+        console.log('API response:', response.data);
 
         if (
             response.data.rajaongkir &&
@@ -108,17 +108,17 @@ const getShippingFees = async (userId) => {
         for (const warehouseGroup of warehouseGroups) {
             // Check if the warehouse group is not empty
             if (warehouseGroup.length > 0) {
-                const warehouseCityId = warehouseGroup[0].product.city_id; 
+                const warehouseCityId = warehouseGroup[0].product.city_id;
 
                 // Calculate total weight for the warehouse group
                 const totalWeightForGroup = calculateTotalWeight(warehouseGroup);
 
                 // Calculate shipping fee for the warehouse group
                 const shippingFeeForGroup = await calculateShippingFee(
-                    warehouseGroup[0].product.warehouse_id, 
+                    warehouseGroup[0].product.warehouse_id,
                     destinationCityId,
                     totalWeightForGroup,
-                    'pos' 
+                    'pos'
                 );
 
                 totalShippingFee += shippingFeeForGroup;

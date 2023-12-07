@@ -28,13 +28,12 @@ const validatePromoCodeForUser = async (promoCode) => {
   }
 };
 
-const calculatePromoAmountForUser = async (promoCode, totalAmount) => {
+const calculatePromoAmountForUser = async (promoCode, totalAmount, cartItems, categoryId) => {
   try {
     const promo = await prisma.promotion.findFirst({
       where: {
         promo_code: promoCode,
         remaining_usage: { gt: 0 },
-        product_id: null,
       },
     });
 
@@ -46,14 +45,55 @@ const calculatePromoAmountForUser = async (promoCode, totalAmount) => {
       return (promo.amount / 100) * totalAmount;
     } else if (promo.type === 'fixed') {
       return promo.amount;
-    }
+    } else {
+      const matchingCategoryItems = cartItems.filter(async (cartItem) => {
+        const categoryId = cartItem.product.category_id;
 
-    return 0;
+        if (!categoryId) {
+          // Handle the case where the product has no category ID
+          return false;
+        }
+
+        try {
+          // Fetch category data using categoryId
+          const category = await prisma.category.findUnique({
+            where: {
+              category_id: categoryId,
+            },
+          });
+
+          if (!category) {
+            return false;
+          }
+
+          const categoryLowerCase = category.category_name.toLowerCase();
+          const promoTypeLowerCase = promo.type.toLowerCase();
+
+          console.log('Product:', cartItem.product);
+          console.log('Product Category:', categoryLowerCase);
+          console.log('Promo Type:', promoTypeLowerCase);
+
+          return categoryLowerCase === promoTypeLowerCase;
+        } catch (error) {
+          console.error('Error fetching category data:', error);
+          return false;
+        }
+      });
+
+
+      const matchingCategoryItemTotalPrice = matchingCategoryItems.reduce((total, cartItem) => {
+        return total + cartItem.product.price * cartItem.quantity;
+      }, 0);
+
+
+      return (promo.amount / 100) * matchingCategoryItemTotalPrice;
+    }
   } catch (error) {
     console.error('Error calculating promo amount for user:', error);
     throw new Error('Internal Server Error');
   }
 };
+
 
 const updatePromotionRemainingUsage = async (promoId) => {
   try {
@@ -63,7 +103,7 @@ const updatePromotionRemainingUsage = async (promoId) => {
       },
       data: {
         remaining_usage: {
-          decrement: 1, 
+          decrement: 1,
         },
       },
     });

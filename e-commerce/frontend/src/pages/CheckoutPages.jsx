@@ -54,7 +54,6 @@ const CheckoutPage = () => {
         setUser(userData);
 
         if (userData && userData.user_id) {
-          // Fetch shipping fee using the getShippingFee API
           const fetchedShippingFee = await getShippingFee(userData.user_id);
           setShippingFee(fetchedShippingFee);
         } else {
