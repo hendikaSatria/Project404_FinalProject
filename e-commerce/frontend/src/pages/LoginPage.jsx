@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Center, useToast } from "@chakra-ui/react";
 import { loginUser, registerUser } from "../api/api";
 import { useAuth } from "../context/AuthContext";
+import LoginImage from "../assets/login.jpg";
 import {
   Box,
   Grid,
@@ -155,11 +156,7 @@ const LoginPage = () => {
           alignItems="center"
         >
           <Box className="image-container">
-            <Image
-              className=" image"
-              src="https://via.placeholder.com/400"
-              alt="Dummy Image"
-            />
+            <Image boxSize={"450px"} src={LoginImage} alt="Login Image" />
           </Box>
           <Box p={8} borderWidth={1} borderRadius={8} boxShadow="lg">
             <Heading mb={4}>Welcome Back!</Heading>
