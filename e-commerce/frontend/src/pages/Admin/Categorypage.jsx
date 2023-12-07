@@ -17,10 +17,17 @@ import {
   ModalBody,
   ModalCloseButton,
   Stack,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   getAllCategories,
   createCategory,
@@ -30,14 +37,22 @@ import {
 
 const Categorypage = () => {
   const [categories, setCategories] = useState([]);
-  //   const [categoryName, setCategoryName] = useState();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryData, setCategoryData] = useState(null);
+  const [deleteCategoryId, setDeleteCategoryId] = useState(null);
+  const [deleteCategoryName, setDeleteCategoryName] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isAlertOpen,
+    onOpen: onAlertOpen,
+    onClose: onAlertClose,
+  } = useDisclosure();
   const [modalHeader, setModalHeader] = useState("Add Category");
   const [modalButtonLabel, setModalButtonLabel] = useState("Create");
   const OverlayOne = () => <ModalOverlay backdropFilter="blur(10px) " />;
   const [overlay, setOverlay] = useState(<OverlayOne />);
+  const cancelRef = React.useRef();
 
   const fetchCategories = async () => {
     try {
@@ -102,6 +117,11 @@ const Categorypage = () => {
     } catch (error) {
       console.error("error:", error.message);
     }
+  };
+
+  const handleOpenDeleteDialog = (categoryId) => {
+    setDeleteCategoryId(categoryId);
+    onAlertOpen();
   };
 
   return (
@@ -175,7 +195,10 @@ const Categorypage = () => {
                     <Button
                       w="full"
                       colorScheme="red"
-                      onClick={() => handleDelete(category.category_id)}
+                      onClick={() => {
+                        handleOpenDeleteDialog(category.category_id);
+                        setDeleteCategoryName(category.category_name);
+                      }}
                       // key={category.category_id}
                     >
                       Delete
@@ -186,42 +209,77 @@ const Categorypage = () => {
             ))}
           </VStack>
         </VStack>
-
-        {/* Modal */}
-
-        <Modal isCentered isOpen={isOpen} onClose={onClose}>
-          {overlay}
-          <ModalContent>
-            <ModalHeader>
-              <Text as="b" fontSize="x-large">
-                {modalHeader}
-              </Text>
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Stack>
-                <Text as="b" fontSize="large">
-                  Category Name
-                </Text>
-                <Input
-                  placeholder="Category Name"
-                  size="lg"
-                  value={categoryData?.category_name || ""}
-                  onChange={(e) => {
-                    setCategoryData((prevData) => ({
-                      ...prevData,
-                      category_name: e.target.value,
-                    }));
-                  }}
-                />
-              </Stack>
-            </ModalBody>
-            <ModalFooter>
-              <Button onClick={handleSubmit}>{modalButtonLabel}</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
       </Box>
+
+      {/* alert delete */}
+      <AlertDialog
+        isOpen={isAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onAlertClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Category : {deleteCategoryName}
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onAlertClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  handleDelete(deleteCategoryId);
+                  onAlertClose();
+                }}
+                ml={3}
+              >
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      {/* Modal */}
+
+      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+        {overlay}
+        <ModalContent>
+          <ModalHeader>
+            <Text as="b" fontSize="x-large">
+              {modalHeader}
+            </Text>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack>
+              <Text as="b" fontSize="large">
+                Category Name
+              </Text>
+              <Input
+                placeholder="Category Name"
+                size="lg"
+                value={categoryData?.category_name || ""}
+                onChange={(e) => {
+                  setCategoryData((prevData) => ({
+                    ...prevData,
+                    category_name: e.target.value,
+                  }));
+                }}
+              />
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={handleSubmit}>{modalButtonLabel}</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
