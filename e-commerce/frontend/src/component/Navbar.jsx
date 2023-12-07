@@ -15,12 +15,16 @@ import {
   MenuList,
   MenuItem,
   useMediaQuery,
+  Box,
+  Image,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaBox } from "react-icons/fa";
 import { MdOutlineMenu } from "react-icons/md";
+import Logowhite from "../assets/logowhite.png";
+import Logotext from "../assets/logotext.png";
 
 const CustomInput = styled(Input)`
   &:focus {
@@ -62,16 +66,23 @@ const Navbar = () => {
         color="white"
       >
         {isSmallerThan800 ? null : ( // Tambahkan kondisi untuk menyembunyikan logo pada layar kecil
-          <Link
+          <Box
             to="/"
-            as={Text}
+            as={Link}
             fontSize="xl"
             fontWeight="bold"
             textDecoration="none"
-            color="white"
+            ml={12}
           >
-            Logo
-          </Link>
+            <HStack>
+              <Image
+                boxSize={"50px"}
+                src={Logowhite}
+                objectFit={"cover"}
+              ></Image>
+              <Image h={"20px"} src={Logotext} objectFit={"cover"}></Image>
+            </HStack>
+          </Box>
         )}
 
         <Flex
