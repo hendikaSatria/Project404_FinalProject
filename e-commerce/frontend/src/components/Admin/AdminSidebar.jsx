@@ -4,6 +4,7 @@ import { FaBox, FaWarehouse, FaMoneyBill, FaUsers } from "react-icons/fa6";
 import { FaClipboardList } from "react-icons/fa";
 import { BiSolidDiscount } from "react-icons/bi";
 import { IoLogOut } from "react-icons/io5";
+
 import { Link, useNavigate } from "react-router-dom";
 
 const AdminSidebar = () => {
@@ -176,7 +177,7 @@ const AdminSidebar = () => {
             <IoLogOut size={35} />
             <Text as="b">Logout</Text>
           </Box>
-      </Link>
+        </Link>
       </VStack>
     </Box>
   );

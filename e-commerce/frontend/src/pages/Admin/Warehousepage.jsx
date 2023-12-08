@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Text,
@@ -7,56 +8,65 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Flex,
   HStack,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from "@chakra-ui/react";
-import { getAllWarehouses } from "../../modules/fetch";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { deleteWarehouse } from "../../modules/fetch/index";
+import { useDisclosure } from "@chakra-ui/react";
+import { getAllWarehouses, deleteWarehouse } from "../../modules/fetch";
 
-export default function Warehousepage() {
+export default function WarehousePage() {
   const [warehouses, setWarehouses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState(null);
+  const [selectedWarehouseName, setSelectedWarehouseName] = useState(null);
+  const cancelRef = React.useRef(); // Tambahkan useRef
 
   const fetchWarehouses = async () => {
     const response = await getAllWarehouses();
     setWarehouses(response);
-    // console.log(warehouses);
   };
+
   useEffect(() => {
     fetchWarehouses();
-  }, [searchTerm]);
+  }, [searchTerm, warehouses]);
 
-  //search
   const handleSearch = () => {
-    // Gunakan filter untuk mencocokkan gudang berdasarkan nama
-    const filteredWarehouses = warehouses.warehouses.filter((warehouse) =>
+    const filteredWarehouses = warehouses.filter((warehouse) =>
       warehouse.warehouse_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-    // Update state dengan daftar gudang yang sesuai
-    setWarehouses({ warehouses: filteredWarehouses });
+    setWarehouses(filteredWarehouses);
   };
 
-  //Delete
-  const handleDelete = async (warehouseId) => {
+  const handleDelete = async () => {
     try {
-      // Panggil fungsi deleteWarehouse dari modul fetch/index.js
-      await deleteWarehouse(warehouseId);
-
-      // Update state warehouses setelah penghapusan
+      await deleteWarehouse(selectedWarehouseId);
+      // console.log(warehouses.warehouses);
       const updatedWarehouses = warehouses.warehouses.filter(
-        (warehouse) => warehouse.warehouse_id !== warehouseId
+        (warehouse) => warehouse.warehouse_id !== selectedWarehouseId
       );
-      setWarehouses({ warehouses: updatedWarehouses });
+      // console.log(updatedWarehouses);
+      setWarehouses(updatedWarehouses);
 
-      // Tampilkan notifikasi atau pesan sukses jika diperlukan
-      console.log("Warehouse deleted successfully!");
+      // console.log(warehouses);
+
+      console.log("Gudang berhasil dihapus!");
     } catch (error) {
-      // Tangani error jika terjadi kesalahan saat penghapusan
-      console.error("Error deleting warehouse:", error.message);
+      console.error("Error menghapus gudang:", error.message);
+    } finally {
+      onClose();
     }
+  };
+
+  const handleOpenDeleteDialog = (warehouseId) => {
+    setSelectedWarehouseId(warehouseId);
+    onOpen();
   };
 
   return (
@@ -112,8 +122,12 @@ export default function Warehousepage() {
                     <Button
                       w="full"
                       colorScheme="red"
-                      onClick={() => handleDelete(warehouse.warehouse_id)}
-                      key={warehouse.warehouse_id}>
+                      onClick={() => {
+                        handleOpenDeleteDialog(warehouse.warehouse_id);
+                        setSelectedWarehouseName(warehouse.warehouse_name);
+                      }}
+                      key={warehouse.warehouse_id}
+                    >
                       Delete
                     </Button>
                   </VStack>
@@ -123,6 +137,34 @@ export default function Warehousepage() {
           </VStack>
         </VStack>
       </Box>
+
+      {/* alert delete */}
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Warehouse : {selectedWarehouseName}
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 }
