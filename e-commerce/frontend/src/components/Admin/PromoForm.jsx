@@ -4,7 +4,6 @@ import {
   FormLabel,
   VStack,
   useToast,
-  Select,
   Box,
   HStack,
   Input,
@@ -89,21 +88,13 @@ export default function PromoForm() {
       };
 
       await editPromo(id, data);
-      console.log("Data edited successfully: ", data);
-
-      toast({
-        title: "Success",
-        description: "Promo edited successfully",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      // console.log("Data edited successfully: ", data);
     } catch (error) {
       setError(`Error creating promotion: ${error.message}`);
       console.error("Error creating promotion:", error);
       toast({
         title: "Error",
-        description: error.response?.data.message || "Something went wrong",
+        description: error.response?.data.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -199,13 +190,32 @@ export default function PromoForm() {
               </FormControl>
 
               {!id && (
-                <Button onClick={handleSubmit} bg="white">
+                <Button
+                  mt="5px"
+                  onClick={handleSubmit}
+                  bg="blue"
+                  colorScheme="white"
+                  _hover={{
+                    textColor: "blue",
+                    bg: "white",
+                  }}>
                   Create Promo
                 </Button>
               )}
 
               {id && (
-                <Button onClick={() => handleEdit(id)} bg="white">
+                <Button
+                  mt="5px"
+                  as={Link}
+                  href="/admin/promo"
+                  _activeLink="none"
+                  onClick={() => handleEdit(id)}
+                  bg="blue"
+                  colorScheme="white"
+                  _hover={{
+                    textColor: "blue",
+                    bg: "white",
+                  }}>
                   Edit Promo
                 </Button>
               )}

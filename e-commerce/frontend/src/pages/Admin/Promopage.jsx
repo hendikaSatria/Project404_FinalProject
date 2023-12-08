@@ -69,10 +69,10 @@ export default function Promopage() {
         title: "Success",
         description: "Promo deleted successfully",
         status: "success",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
-      onClose()
+      onClose();
     } catch {
       console.error("Error deleting warehouse: ", error.message);
     }
@@ -85,7 +85,7 @@ export default function Promopage() {
           Promo Management
         </Text>
       </Box>
-      <VStack spacing={4} align="stretch" p={12}>
+      <VStack overflowY="auto" h="55em" spacing={4} align="stretch" p={12}>
         {/* search bar */}
         <Box align="center">
           <HStack w="750px">
@@ -184,13 +184,13 @@ export default function Promopage() {
                         </Button>
                       </PopoverTrigger>
                       <Portal>
-                        <PopoverContent >
+                        <PopoverContent>
                           <PopoverArrow />
-                          <PopoverHeader> Are you sure want to delete this ? </PopoverHeader>
+                          <PopoverHeader> Proceed to delete this ? </PopoverHeader>
                           <PopoverBody>
                             <PopoverCloseButton />
                             <Button
-                              ml="100px"
+                              ml="110px"
                               mr="5px"
                               colorScheme="red"
                               onClick={() => handleDelete(promotion.promo_id)}
