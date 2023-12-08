@@ -23,7 +23,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  AlertDialogCloseButton,
+  useToast,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 
@@ -53,6 +53,7 @@ const Categorypage = () => {
   const OverlayOne = () => <ModalOverlay backdropFilter="blur(10px) " />;
   const [overlay, setOverlay] = useState(<OverlayOne />);
   const cancelRef = React.useRef();
+  const toast = useToast();
 
   const fetchCategories = async () => {
     try {
@@ -83,39 +84,89 @@ const Categorypage = () => {
   const handleSubmit = async () => {
     try {
       if (modalHeader === "Add Category") {
-        // Logika untuk menambah kategori baru
-        const data = {
-          category_name: categoryData.category_name,
-        };
-        await createCategory(data);
-        console.log("Category Created Successfully ", data);
+        try {
+          // Logika untuk menambah kategori baru
+          const data = {
+            category_name: categoryData.category_name,
+          };
+          await createCategory(data);
+          toast({
+            title: "Sukses",
+            description: "Category berhasil ditambahkan!",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        } catch (error) {
+          console.error("error:", error.message);
+          toast({
+            title: "Error",
+            description: "Terjadi kesalahan saat menambahkan category.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
       } else if (modalHeader === "Edit Category") {
-        // Logika untuk mengedit kategori
-        await editCategory(
-          categoryData.category_id,
-          categoryData.category_name
-        );
-        // console.log(
-        //   "Category Edited Successfully ",
-        //   categoryData.category_id,
-        //   categoryData.category_name
-        // );
+        try {
+          // Logika untuk mengedit kategori
+          await editCategory(
+            categoryData.category_id,
+            categoryData.category_name
+          );
+          toast({
+            title: "Sukses",
+            description: "Category berhasil diupdate!",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        } catch (error) {
+          console.error("error:", error.message);
+          toast({
+            title: "Error",
+            description: "Terjadi kesalahan saat mengedit category.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
       }
 
       await fetchCategories();
       onClose();
     } catch (error) {
       console.error("error:", error.message);
+      toast({
+        title: "Error",
+        description: "Terjadi kesalahan !!!.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
   const handleDelete = async (id) => {
     try {
-      //   console.log(id);
       await deleteCategory(id);
       await fetchCategories();
+      toast({
+        title: "Sukses",
+        description: `${deleteCategoryName} berhasil dihapus!`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("error:", error.message);
+      toast({
+        title: "Error",
+        description: `Terjadi kesalaha saat mengkapus category ${deleteCategoryName}!`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -173,12 +224,16 @@ const Categorypage = () => {
                 w="full"
                 rounded="lg"
                 key={`${category.category_id}`}
+                p={4}
               >
-                <Box w="80%" rounded="lg">
-                  <Text>{`${category.category_name}`}</Text>
-                </Box>
-                <Box p={2}>
-                  <VStack spacing={2}>
+                <HStack justify={"space-between"} w={"full"}>
+                  <Box w="80%" rounded="lg">
+                    <Text
+                      as={"b"}
+                      fontSize={"xx-large"}
+                    >{`${category.category_name}`}</Text>
+                  </Box>
+                  <HStack>
                     <Button
                       w="full"
                       colorScheme="yellow"
@@ -203,8 +258,8 @@ const Categorypage = () => {
                     >
                       Delete
                     </Button>
-                  </VStack>
-                </Box>
+                  </HStack>
+                </HStack>
               </WrapItem>
             ))}
           </VStack>

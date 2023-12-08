@@ -15,6 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  useToast,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
@@ -28,37 +29,53 @@ export default function WarehousePage() {
   const [selectedWarehouseName, setSelectedWarehouseName] = useState(null);
   const cancelRef = React.useRef(); // Tambahkan useRef
 
+  const toast = useToast();
+
   const fetchWarehouses = async () => {
     const response = await getAllWarehouses();
-    setWarehouses(response);
+    setWarehouses(response.warehouses);
   };
 
   useEffect(() => {
     fetchWarehouses();
-  }, [searchTerm, warehouses]);
+  }, [searchTerm]);
 
   const handleSearch = () => {
+    // console.log(warehouses.warehouses);
     const filteredWarehouses = warehouses.filter((warehouse) =>
       warehouse.warehouse_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setWarehouses(filteredWarehouses);
+    console.log(filteredWarehouses);
   };
 
   const handleDelete = async () => {
     try {
       await deleteWarehouse(selectedWarehouseId);
-      // console.log(warehouses.warehouses);
-      const updatedWarehouses = warehouses.warehouses.filter(
+      const updatedWarehouses = warehouses.filter(
         (warehouse) => warehouse.warehouse_id !== selectedWarehouseId
       );
-      // console.log(updatedWarehouses);
       setWarehouses(updatedWarehouses);
+      fetchWarehouses();
 
-      // console.log(warehouses);
-
-      console.log("Gudang berhasil dihapus!");
+      // Tampilkan toast ketika data berhasil dihapus
+      toast({
+        title: "Sukses",
+        description: "Gudang berhasil dihapus!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error menghapus gudang:", error.message);
+      // Tampilkan toast error jika ada masalah
+      toast({
+        title: "Error",
+        description: "Terjadi kesalahan saat menghapus gudang.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     } finally {
       onClose();
     }
@@ -103,7 +120,7 @@ export default function WarehousePage() {
           {/* end of search bar */}
 
           <VStack overflowY="auto" h="70vh" bg="gray.200" p={4}>
-            {warehouses?.warehouses?.map((warehouse) => (
+            {warehouses?.map((warehouse) => (
               <WrapItem
                 bg="blue.200"
                 w="full"
@@ -114,7 +131,7 @@ export default function WarehousePage() {
                   <HStack p={6} w={"100%"}>
                     <Text
                       w={"100%"}
-                      fontSize={"xl"}
+                      fontSize={"xx-large"}
                       as={"b"}
                     >{`${warehouse.warehouse_name}`}</Text>
                     <VStack w={"100%"}>

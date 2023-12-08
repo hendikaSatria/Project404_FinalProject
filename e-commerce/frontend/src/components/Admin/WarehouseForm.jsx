@@ -7,6 +7,7 @@ import {
   Input,
   Link,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { IoIosBackspace } from "react-icons/io";
@@ -27,6 +28,7 @@ const WarehouseForm = () => {
   const [warehouseName, setWarehouseName] = useState("");
   const [error, setError] = useState(null);
   const { id } = useParams();
+  const toast = useToast();
 
   useEffect(() => {
     console.log(id);
@@ -110,11 +112,25 @@ const WarehouseForm = () => {
       };
 
       await createWarehouse(data);
+      toast({
+        title: "Sukses",
+        description: "Gudang berhasil ditambahkan!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
       //   console.log(data);
       console.log("Warehouse created successfully!");
     } catch (error) {
       setError(`Error fetching citydetail data: ${error.message}`);
-      console.error("Error fetching citydetail data:", error);
+      // console.error("Error fetching citydetail data:", error);
+      toast({
+        title: "Error",
+        description: "Terjadi kesalahan saat menambahkan data warehouse.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -136,9 +152,23 @@ const WarehouseForm = () => {
 
       await editWarehouse(id, data);
       console.log("data successfully updated", data);
+      toast({
+        title: "Sukses",
+        description: "Gudang berhasil diupdate!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
       setError(`Error fetching citydetail data: ${error.message}`);
       console.error("Error fetching citydetail data:", error);
+      toast({
+        title: "Error",
+        description: "Terjadi kesalahan saat menambahkan mengedit warehouse.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
