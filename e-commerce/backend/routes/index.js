@@ -39,7 +39,7 @@ router.get("/rajaongkir/province", async (req, res) => {
       "https://api.rajaongkir.com/starter/province",
       {
         headers: {
-          key: "5985d7433b5faf58ae6933d9876eddf1",
+          key: "ae0828a345b0ca66f2e0de4a84341cfa",
         },
       }
     );
@@ -63,7 +63,7 @@ router.get("/rajaongkir/city", async (req, res) => {
       `https://api.rajaongkir.com/starter/city?province=${provinceId}`,
       {
         headers: {
-          key: "5985d7433b5faf58ae6933d9876eddf1",
+          key: "ae0828a345b0ca66f2e0de4a84341cfa",
         },
       }
     );
@@ -85,7 +85,7 @@ router.get("/rajaongkir/citydetail", async (req, res) => {
       `https://api.rajaongkir.com/starter/city?id=${id}&province=${province}`,
       {
         headers: {
-          key: "5985d7433b5faf58ae6933d9876eddf1",
+          key: "ae0828a345b0ca66f2e0de4a84341cfa",
         },
       }
     );
