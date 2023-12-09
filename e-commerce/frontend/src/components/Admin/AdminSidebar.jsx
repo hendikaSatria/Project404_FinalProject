@@ -1,6 +1,6 @@
 import { Box, VStack, Text } from "@chakra-ui/react";
 import { TbCategoryFilled } from "react-icons/tb";
-import { FaBox, FaWarehouse, FaMoneyBill, FaUsers } from "react-icons/fa6";
+import { FaBox, FaWarehouse, FaUsers } from "react-icons/fa6";
 import { FaClipboardList } from "react-icons/fa";
 import { BiSolidDiscount } from "react-icons/bi";
 import { IoLogOut } from "react-icons/io5";

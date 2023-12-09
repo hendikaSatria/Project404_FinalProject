@@ -41,10 +41,10 @@ const WarehouseForm = () => {
 
       // Update state variables with the fetched data
       setWarehouseName(warehouseData.warehouse_name);
-      setSelectedProvince(warehouseData.province_name); // Assuming the server response has a 'province' field
-      setSelectedProvinceID(warehouseData.province_id); // Assuming the server response has a 'province' field
-      setSelectedCity(warehouseData.city_name); // Assuming the server response has a 'city' field
-      setPostalCode(warehouseData.postal_code); // Assuming the server response has a 'postalCode' field
+      setSelectedProvince(warehouseData.province_name);
+      setSelectedProvinceID(warehouseData.province_id);
+      setSelectedCity(warehouseData.city_name);
+      setPostalCode(warehouseData.postal_code);
     } catch (error) {
       setError("Error fetching warehouse by id");
       console.log(error);
@@ -93,7 +93,6 @@ const WarehouseForm = () => {
     if (selectedProvinceID) {
       fetchCitiesByProvince(selectedProvinceID);
     }
-    // console.log(selectedProvinceID, selectedProvince);
   }, [selectedProvinceID]);
 
   const handleSubmit = async () => {
