@@ -1,6 +1,6 @@
 import { Box, VStack, Text } from "@chakra-ui/react";
 import { TbCategoryFilled } from "react-icons/tb";
-import { FaBox, FaWarehouse, FaMoneyBill, FaUsers } from "react-icons/fa6";
+import { FaBox, FaWarehouse, FaUsers } from "react-icons/fa6";
 import { FaClipboardList } from "react-icons/fa";
 import { BiSolidDiscount } from "react-icons/bi";
 import { IoLogOut } from "react-icons/io5";
@@ -18,7 +18,9 @@ const AdminSidebar = () => {
   return (
     <Box w="250px" h="100%" bg="blue.200" color="black" p="4">
       <VStack align="center" spacing="6">
-        <Text fontSize="xl">Sidebar Title</Text>
+        <Text fontSize="xl" as={"b"}>
+          Admin
+        </Text>
 
         <Link to={`/admin/product`}>
           <Box
@@ -119,26 +121,7 @@ const AdminSidebar = () => {
             <Text as="b">Promo</Text>
           </Box>
         </Link>
-        <Link to={"/admin/payment"}>
-          {" "}
-          <Box
-            size="md"
-            height="60px"
-            width="200px"
-            rounded="lg"
-            bg="blue.100"
-            align="center"
-            boxShadow="lg"
-            _hover={{
-              transform: "scale(1.1)",
-              transitionDuration: "0.4s",
-              transitionTimingFunction: "ease-in-out",
-            }}
-          >
-            <FaMoneyBill size={35} />
-            <Text as="b">Payment</Text>
-          </Box>
-        </Link>
+
         <Link to={"/admin/user"}>
           {" "}
           <Box

@@ -56,7 +56,6 @@ const AdminRouter = () => {
       />
       <Route path="/login" element={<AdminLogin />} />
 
-
       <Route
         path="/*"
         element={
@@ -100,6 +99,10 @@ const AdminRouter = () => {
                   path="/warehouse/create"
                   element={<PrivateRoute element={<WarehouseForm />} />}
                 />
+                <Route
+                  path="warehouse/:id"
+                  element={<PrivateRoute element={<WarehouseForm />} />}
+                 />
                 <Route 
                   path="/promo" 
                   element={<PrivateRoute element={<Promopage />} />}
@@ -111,13 +114,13 @@ const AdminRouter = () => {
                 <Route 
                   path="/promo/create" 
                   element={<PrivateRoute element={<PromoForm />} />}
+
                 />
               </Routes>
             </Box>
           </Flex>
         }
       />
-
     </Routes>
   );
 };
