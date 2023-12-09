@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const promoController = require('../controllers/admin/promoController');
+const { authMiddleware } = require("../middleware/authMiddleWare");
+
+router.use(authMiddleware)
 
 router.get('/', promoController.getAllPromo)
 router.get('/:id', promoController.getPromoById)

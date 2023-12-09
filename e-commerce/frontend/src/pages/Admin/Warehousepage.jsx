@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Text,
@@ -7,56 +8,82 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Flex,
   HStack,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useToast,
 } from "@chakra-ui/react";
-import { getAllWarehouses } from "../../modules/fetch";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { deleteWarehouse } from "../../modules/fetch/index";
+import { useDisclosure } from "@chakra-ui/react";
+import { getAllWarehouses, deleteWarehouse } from "../../modules/fetch";
 
-export default function Warehousepage() {
+export default function WarehousePage() {
   const [warehouses, setWarehouses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState(null);
+  const [selectedWarehouseName, setSelectedWarehouseName] = useState(null);
+  const cancelRef = React.useRef(); // Tambahkan useRef
+
+  const toast = useToast();
 
   const fetchWarehouses = async () => {
     const response = await getAllWarehouses();
-    setWarehouses(response);
-    // console.log(warehouses);
+    setWarehouses(response.warehouses);
   };
+
   useEffect(() => {
     fetchWarehouses();
   }, [searchTerm]);
 
-  //search
   const handleSearch = () => {
-    // Gunakan filter untuk mencocokkan gudang berdasarkan nama
-    const filteredWarehouses = warehouses.warehouses.filter((warehouse) =>
+    // console.log(warehouses.warehouses);
+    const filteredWarehouses = warehouses.filter((warehouse) =>
       warehouse.warehouse_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-    // Update state dengan daftar gudang yang sesuai
-    setWarehouses({ warehouses: filteredWarehouses });
+    setWarehouses(filteredWarehouses);
+    console.log(filteredWarehouses);
   };
 
-  //Delete
-  const handleDelete = async (warehouseId) => {
+  const handleDelete = async () => {
     try {
-      // Panggil fungsi deleteWarehouse dari modul fetch/index.js
-      await deleteWarehouse(warehouseId);
-
-      // Update state warehouses setelah penghapusan
-      const updatedWarehouses = warehouses.warehouses.filter(
-        (warehouse) => warehouse.warehouse_id !== warehouseId
+      await deleteWarehouse(selectedWarehouseId);
+      const updatedWarehouses = warehouses.filter(
+        (warehouse) => warehouse.warehouse_id !== selectedWarehouseId
       );
-      setWarehouses({ warehouses: updatedWarehouses });
+      setWarehouses(updatedWarehouses);
+      fetchWarehouses();
 
-      // Tampilkan notifikasi atau pesan sukses jika diperlukan
-      console.log("Warehouse deleted successfully!");
+      // Tampilkan toast ketika data berhasil dihapus
+      toast({
+        title: "Sukses",
+        description: "Gudang berhasil dihapus!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
-      // Tangani error jika terjadi kesalahan saat penghapusan
-      console.error("Error deleting warehouse:", error.message);
+      console.error("Error menghapus gudang:", error.message);
+      // Tampilkan toast error jika ada masalah
+      toast({
+        title: "Error",
+        description: "Terjadi kesalahan saat menghapus gudang.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      onClose();
     }
+  };
+
+  const handleOpenDeleteDialog = (warehouseId) => {
+    setSelectedWarehouseId(warehouseId);
+    onOpen();
   };
 
   return (
@@ -93,7 +120,8 @@ export default function Warehousepage() {
           {/* end of search bar */}
 
           <VStack overflowY="auto" h="70vh" bg="gray.200" p={4}>
-            {warehouses?.warehouses?.map((warehouse) => (
+
+            {warehouses?.map((warehouse) => (
               <WrapItem
                 bg="blue.200"
                 w="full"
@@ -101,9 +129,17 @@ export default function Warehousepage() {
                 key={`${warehouse.warehouse_id} `}
               >
                 <Box w="80%" rounded="lg">
-                  <Text>{`${warehouse.warehouse_name}`}</Text>
-                  <Text>{`${warehouse.city_name}`}</Text>
-                  <Text>{`${warehouse.province_name}`}</Text>
+                  <HStack p={6} w={"100%"}>
+                    <Text
+                      w={"100%"}
+                      fontSize={"xx-large"}
+                      as={"b"}
+                    >{`${warehouse.warehouse_name}`}</Text>
+                    <VStack w={"100%"}>
+                      <Text>{`${warehouse.province_name}`}</Text>
+                      <Text>{`${warehouse.city_name}`}</Text>
+                    </VStack>
+                  </HStack>
                 </Box>
                 <Box p={2}>
                   <VStack spacing={2}>
@@ -111,14 +147,16 @@ export default function Warehousepage() {
                       w="full"
                       colorScheme="yellow"
                       as={Link}
-                      to={`/admin/warehouse/${warehouse.warehouse_id}`}
-                    >
+                      to={`/admin/warehouse/${warehouse.warehouse_id}`}>
                       Edit
                     </Button>
                     <Button
                       w="full"
                       colorScheme="red"
-                      onClick={() => handleDelete(warehouse.warehouse_id)}
+                      onClick={() => {
+                        handleOpenDeleteDialog(warehouse.warehouse_id);
+                        setSelectedWarehouseName(warehouse.warehouse_name);
+                      }}
                       key={warehouse.warehouse_id}
                     >
                       Delete
@@ -130,6 +168,34 @@ export default function Warehousepage() {
           </VStack>
         </VStack>
       </Box>
+
+      {/* alert delete */}
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Warehouse : {selectedWarehouseName}
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 }
