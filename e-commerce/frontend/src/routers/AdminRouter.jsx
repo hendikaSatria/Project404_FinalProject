@@ -9,12 +9,12 @@ import {
 import PropTypes from "prop-types";
 import { Box, Flex } from "@chakra-ui/react";
 import AdminLogin from "../pages/Admin/AdminLogin";
-import Home from "../pages/admin/home";
+import Home from "../pages/Admin/Home";
 import Order from "../pages/Admin/Order";
 import User from "../pages/Admin/User";
 import Product from "../pages/Admin/Product";
-import FormAddProduct from "../components/Admin/FormAddProduct";
-import FormEditProduct from "../components/Admin/FormEditProduct";
+import FormAddProduct from "../Components/Admin/FormAddProduct";
+import FormEditProduct from "../Components/Admin/FormEditProduct";
 import AdminSidebar from "../components/Admin/AdminSidebar";
 import Warehousepage from "../pages/Admin/Warehousepage";
 import WarehouseForm from "../components/Admin/WarehouseForm";

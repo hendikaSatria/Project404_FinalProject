@@ -51,54 +51,68 @@ const AdminLogin = () => {
 
   return (
     <Box
-      bg={useColorModeValue('gray.200', 'gray.800')}
       minH="100vh"
       display="flex"
       alignItems="center"
       justifyContent="center"
     >
-      <Box
-        p={4}
-        maxW="350px"
-        bg={useColorModeValue('white', 'gray.700')}
-        shadow="md"
-        rounded="lg"
-        textAlign="center"
-      >
-        <Heading mb={6}>Welcome back!</Heading>
-        <Text fontSize="lg" color="gray.600" mb={6}>
-          Let's start manage 404 website!
-        </Text>
-        <Stack spacing={4}>
-          <FormControl id="username">
-            <FormLabel>Username</FormLabel>
-            <Input
-              type="text"
-              name="username"
-              value={credentials.username}
-              onChange={handleInputChange}
-              placeholder="Enter your username"
-            />
-          </FormControl>
-          <FormControl id="password">
-            <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              name="password"
-              value={credentials.password}
-              onChange={handleInputChange}
-              placeholder="Enter your password"
-            />
-          </FormControl>
-          <Button
-            colorScheme="blue"
-            onClick={handleLogin}
-            isLoading={isLoading}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Signing in...' : 'Sign in'}
-          </Button>
-        </Stack>
+
+      {/* Bagian Kiri (Gambar) */}
+      <Box flex="1" display={{ base: 'none', md: 'block' }}>
+        <img
+          src="../../../public/bg-login-admin.jpg"  // Ganti dengan path yang sesuai dengan struktur folder Anda
+          alt="Background"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      </Box>
+
+      {/* Bagian Kanan (Konten Login) */}
+      <Box flex="1">
+        <Box
+          p={4}
+          maxW="400px"  // Sesuaikan lebar konten login
+          bg={useColorModeValue('white', 'gray.700')}
+          shadow="lg"
+          rounded="lg"
+          textAlign="center"
+        >
+          <Heading mb={6}>Welcome back!</Heading>
+          <Text fontSize="lg" color="gray.600" mb={6}>
+            Let's start manage MBOK BETAH websites!
+          </Text>
+          <Stack spacing={4}>
+            <FormControl id="username">
+              <FormLabel>Username</FormLabel>
+              <Input
+                type="text"
+                name="username"
+                value={credentials.username}
+                onChange={handleInputChange}
+                placeholder="Enter your username"
+              />
+            </FormControl>
+            <FormControl id="password">
+              <FormLabel>Password</FormLabel>
+              <Input
+                type="password"
+                name="password"
+                value={credentials.password}
+                onChange={handleInputChange}
+                placeholder="Enter your password"
+              />
+            </FormControl>
+            <Button
+              color="white"
+              backgroundColor="#377E7F"
+              _hover={{ backgroundColor: '#25595E', opacity: 1 }}  // Sesuaikan warna dan opasitas sesuai keinginan
+              onClick={handleLogin}
+              isLoading={isLoading}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Signing in...' : 'Sign in'}
+            </Button>
+          </Stack>
+        </Box>
       </Box>
     </Box>
   );

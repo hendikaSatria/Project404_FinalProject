@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Heading, Button, Input, useToast, Link } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Button,
+  Input,
+  useToast,
+  Link,
+  Text, // Tambahkan Text dari Chakra UI
+} from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,8 +21,8 @@ const FormAddProduct = () => {
     price: '',
     stock: '',
     is_available: '',
-    category_id: '',
-    warehouse_id: '',
+    category_name: '',
+    warehouse_name: '',
     weight: '',
     image: null,
   });
@@ -36,8 +44,8 @@ const FormAddProduct = () => {
         price,
         stock,
         is_available,
-        category_id,
-        warehouse_id,
+        category_name,
+        warehouse_name,
         weight,
         image,
       } = formData;
@@ -48,8 +56,8 @@ const FormAddProduct = () => {
       formDataToSend.append('price', price);
       formDataToSend.append('stock', stock);
       formDataToSend.append('is_available', is_available);
-      formDataToSend.append('category_id', category_id);
-      formDataToSend.append('warehouse_id', warehouse_id);
+      formDataToSend.append('category_name', category_name);
+      formDataToSend.append('warehouse_name', warehouse_name);
       formDataToSend.append('weight', weight);
       formDataToSend.append('image', image);
 
@@ -89,6 +97,10 @@ const FormAddProduct = () => {
       </Box>
 
       <form encType="multipart/form-data">
+        <Text mb={2}>
+          Mohon isi formulir di bawah untuk menambahkan produk baru. Pastikan data yang Anda
+          masukkan akurat dan lengkap.
+        </Text>
         <Input
           type="text"
           name="name"
@@ -130,18 +142,18 @@ const FormAddProduct = () => {
           mb={3}
         />
         <Input
-          type="number"
-          name="category_id"
-          placeholder="ID Kategori"
-          value={formData.category_id}
+          type="text"
+          name="category_name"
+          placeholder="Nama Kategori"
+          value={formData.category_name}
           onChange={handleInputChange}
           mb={3}
         />
         <Input
-          type="number"
-          name="warehouse_id"
-          placeholder="ID Gudang"
-          value={formData.warehouse_id}
+          type="text"
+          name="warehouse_name"
+          placeholder="Nama Gudang"
+          value={formData.warehouse_name}
           onChange={handleInputChange}
           mb={3}
         />
@@ -153,6 +165,9 @@ const FormAddProduct = () => {
           onChange={handleInputChange}
           mb={3}
         />
+        <Text mb={2}>
+          Pilih gambar produk yang akan diunggah
+        </Text>
         <Input type="file" name="image" onChange={handleImageChange} mb={3} />
         <Button colorScheme="green" mt={4} onClick={handleTambahProduk}>
           Simpan Produk
