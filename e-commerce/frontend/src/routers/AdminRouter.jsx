@@ -14,7 +14,7 @@ import Order from "../pages/Admin/Order";
 import User from "../pages/Admin/User";
 import Product from "../pages/Admin/Product";
 import FormAddProduct from "../Components/Admin/FormAddProduct";
-import FormEditProduct from "../components/Admin/FormEditProduct";
+import FormEditProduct from "../Components/Admin/FormEditProduct";
 import AdminSidebar from "../components/Admin/AdminSidebar";
 import Warehousepage from "../pages/Admin/Warehousepage";
 import WarehouseForm from "../components/Admin/WarehouseForm";
@@ -56,7 +56,7 @@ const AdminRouter = () => {
           element={
             <Flex w="100vw" h="100vh">
               <AdminSidebar />
-              <Box bg="#F2F2F2" w="full" h="full">
+              <Box w="full" h="full">
                 <Routes>
                   <Route
                     path="/home"

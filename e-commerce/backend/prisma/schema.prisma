@@ -68,7 +68,7 @@ model AffiliateDiscount {
 // Category Model
 model Category {
   category_id   Int      @id @default(autoincrement())
-  category_name String
+  category_name String   @unique
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 

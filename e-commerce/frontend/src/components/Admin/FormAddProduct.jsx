@@ -21,8 +21,8 @@ const FormAddProduct = () => {
     price: '',
     stock: '',
     is_available: '',
-    category_id: '',
-    warehouse_id: '',
+    category_name: '',
+    warehouse_name: '',
     weight: '',
     image: null,
   });
@@ -44,8 +44,8 @@ const FormAddProduct = () => {
         price,
         stock,
         is_available,
-        category_id,
-        warehouse_id,
+        category_name,
+        warehouse_name,
         weight,
         image,
       } = formData;
@@ -56,8 +56,8 @@ const FormAddProduct = () => {
       formDataToSend.append('price', price);
       formDataToSend.append('stock', stock);
       formDataToSend.append('is_available', is_available);
-      formDataToSend.append('category_id', category_id);
-      formDataToSend.append('warehouse_id', warehouse_id);
+      formDataToSend.append('category_name', category_name);
+      formDataToSend.append('warehouse_name', warehouse_name);
       formDataToSend.append('weight', weight);
       formDataToSend.append('image', image);
 
@@ -142,18 +142,18 @@ const FormAddProduct = () => {
           mb={3}
         />
         <Input
-          type="number"
-          name="category_id"
-          placeholder="ID Kategori"
-          value={formData.category_id}
+          type="text"
+          name="category_name"
+          placeholder="Nama Kategori"
+          value={formData.category_name}
           onChange={handleInputChange}
           mb={3}
         />
         <Input
-          type="number"
-          name="warehouse_id"
-          placeholder="ID Gudang"
-          value={formData.warehouse_id}
+          type="text"
+          name="warehouse_name"
+          placeholder="Nama Gudang"
+          value={formData.warehouse_name}
           onChange={handleInputChange}
           mb={3}
         />

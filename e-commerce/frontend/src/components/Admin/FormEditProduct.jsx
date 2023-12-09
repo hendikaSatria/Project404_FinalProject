@@ -1,4 +1,3 @@
-// FormEditProduct.jsx
 import React, { useState, useEffect } from 'react';
 import { Box, Heading, Button, Input, useToast } from '@chakra-ui/react';
 import axios from 'axios';
@@ -15,8 +14,8 @@ const FormEditProduct = () => {
     price: '',
     stock: '',
     is_available: '',
-    category_id: '',
-    warehouse_id: '',
+    category_name: '',
+    warehouse_name: '',
     weight: '',
     image: null,
   });
@@ -32,8 +31,8 @@ const FormEditProduct = () => {
           price: String(productData.price),
           stock: String(productData.stock),
           is_available: String(productData.is_available),
-          category_id: String(productData.category_id),
-          warehouse_id: String(productData.warehouse_id),
+          category_name: productData.category ? productData.category.category_name : '',
+          warehouse_name: productData.warehouse ? productData.warehouse.warehouse_name : '',
           weight: String(productData.weight),
           image: null,
         });
@@ -62,43 +61,43 @@ const FormEditProduct = () => {
         price,
         stock,
         is_available,
-        category_id,
-        warehouse_id,
+        category_name,
+        warehouse_name,
         weight,
         image,
       } = formData;
-
+  
       const formDataToSend = new FormData();
       formDataToSend.append('name', name);
       formDataToSend.append('description', description);
       formDataToSend.append('price', price);
       formDataToSend.append('stock', stock);
       formDataToSend.append('is_available', is_available);
-      formDataToSend.append('category_id', category_id);
-      formDataToSend.append('warehouse_id', warehouse_id);
+      formDataToSend.append('category_name', category_name);
+      formDataToSend.append('warehouse_name', warehouse_name);
       formDataToSend.append('weight', weight);
       if (image) {
         formDataToSend.append('image', image);
       }
-
+  
       const response = await axios.put(`http://localhost:3000/product/${id}`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+  
       console.log('Produk berhasil diubah:', response.data);
-
+  
       toast({
         title: 'Produk berhasil diubah',
         status: 'success',
         isClosable: true,
       });
-
+  
       navigate('/admin/product');
     } catch (error) {
       console.error('Error ubah produk:', error);
-
+  
       toast({
         title: 'Gagal mengubah produk',
         status: 'error',
@@ -167,22 +166,22 @@ const FormEditProduct = () => {
           mb={3}
         />
 
-        <label>ID Kategori</label>
+        <label>Nama Kategori</label>
         <Input
-          type="number"
-          name="category_id"
-          placeholder="ID Kategori"
-          value={formData.category_id}
+          type="text"
+          name="category_name"
+          placeholder="Nama Kategori"
+          value={formData.category_name}
           onChange={handleInputChange}
           mb={3}
         />
 
-        <label>ID Gudang</label>
+        <label>Nama Gudang</label>
         <Input
-          type="number"
-          name="warehouse_id"
-          placeholder="ID Gudang"
-          value={formData.warehouse_id}
+          type="text"
+          name="warehouse_name"
+          placeholder="Nama Gudang"
+          value={formData.warehouse_name}
           onChange={handleInputChange}
           mb={3}
         />

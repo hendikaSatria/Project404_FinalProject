@@ -162,7 +162,7 @@ const Order = () => {
       {/* end of status filter */}
 
       {/* order table */}
-      <Box border="1px solid" rounded="3xl" overflowX="auto">
+      <Box border="1px solid" rounded="3xl" overflowX="auto" overflowY="auto" maxH="500px">
         <Table variant="simple">
           <Thead>
             <Tr>

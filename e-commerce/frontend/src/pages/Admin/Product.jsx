@@ -16,8 +16,10 @@ import {
   AlertDialogFooter,
   Select,
   Button,
+  Tooltip,
+
 } from '@chakra-ui/react';
-import { SearchIcon, DeleteIcon } from '@chakra-ui/icons';
+import { SearchIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -35,7 +37,7 @@ const Product = () => {
   useEffect(() => {
     fetchProducts();
   }, [selectedCategory]);
-  
+
   const fetchProducts = async () => {
     try {
       let response;
@@ -48,7 +50,7 @@ const Product = () => {
         const endpoint = `http://localhost:3000/product/filter/${encodedCategory}`;
         response = await axios.get(endpoint);
       }
-  
+
       setFilteredProducts(response.data); // Simpan hasil filter kategori ke dalam filteredProducts
       setProducts(response.data); // Tampilkan hasil filter kategori sebagai hasil utama
     } catch (error) {
@@ -82,7 +84,7 @@ const Product = () => {
       console.error('Error searching products:', error);
     }
   };
-  
+
   const handleKeyDown = (e) => {
     // Jika tombol yang ditekan adalah "Enter", panggil fungsi handleSearch
     if (e.key === 'Enter') {
@@ -115,7 +117,7 @@ const Product = () => {
       setSelectedProductId(null);
     }
   };
-  
+
   const cancelDelete = () => {
     setIsAlertDialogOpen(false);
     setSelectedProductId(null);
@@ -128,15 +130,15 @@ const Product = () => {
           Product Management
         </Text>
       </Box>
-      
-      <Flex >
+
+      <Flex>
         <InputGroup mb="3" ml="auto" maxW="500px">
           <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
           <Input
             placeholder="Search Product"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={handleKeyDown} 
+            onKeyDown={handleKeyDown}
             fontSize="sm"
           />
           <IconButton
@@ -153,14 +155,22 @@ const Product = () => {
 
       <Flex my="2" justifyContent="space-between">
         <Link to="/admin/product/add">
-          <Button colorScheme="green" fontSize="sm" mr="2">
-            Tambah Produk
-          </Button>
+          <Tooltip label="Add Product" fontSize="md">
+            <IconButton
+              colorScheme="green"
+              fontSize="sm"
+              icon={<AddIcon />}
+              aria-label="Add Product"
+            />
+          </Tooltip>
         </Link>
-        <Select ml="auto" maxW="500px"
-           placeholder="Filter by Category"
-           value={selectedCategory}
-           onChange={handleSelectChange}
+
+        <Select
+          ml="auto"
+          maxW="500px"
+          placeholder="Filter by Category"
+          value={selectedCategory}
+          onChange={handleSelectChange}
         >
           <option value="">All Categories</option>
           <option value="Category 1">Category 1</option>
@@ -175,8 +185,8 @@ const Product = () => {
           {searchError}
         </Box>
       )}
-      <Box rounded="3xl" overflowX="auto" backgroundColor="#F2F2F2">
-        <Flex flexWrap="wrap" justifyContent="space-between" rounded="3xl" overflowX="auto">
+      <Box rounded="3xl" overflowX="auto" overflowY="auto" backgroundColor="#F2F2F2" maxH="500px" px="5" py="5">
+        <Flex flexWrap="wrap" justifyContent="space-between" rounded="3xl">
           {products.map((product) => (
             <Box
               key={product.product_id}
@@ -188,7 +198,7 @@ const Product = () => {
               width={['100%', '48%']}
             >
               <Flex justifyContent="space-between">
-                <Box flex="1" mr={4}>
+                <Box flex="1" mr="5">
                   <Image
                     src={`http://localhost:3000/images/${product.image}`}
                     alt={product.name}
@@ -199,13 +209,13 @@ const Product = () => {
                     style={{ width: '400px', height: '600px', margin: 'auto' }}
                   />
                 </Box>
-                <Box flex="2" mr={4}>
+                <Box flex="2" pl="5" justifyContent="space-between">
                   <Text fontSize="xl" fontWeight="semibold">
                     {product.name}
                   </Text>
                   <Text fontSize="md">{product.description}</Text>
                   <Text color="gray.500" fontSize="sm">
-                    Price: ${product.price}
+                    Harga: Rp. {product.price}
                   </Text>
                   <Text color="gray.500" fontSize="sm">
                     Stock: {product.stock}
@@ -217,20 +227,23 @@ const Product = () => {
                     Warehouse: {product.warehouse?.warehouse_name || 'Unknown Warehouse'}
                   </Text>
                 </Box>
-                <Box>
+                <Box ml="5">
                   <Link to={`/admin/product/edit/${product.product_id}`}>
-                    <Button colorScheme="yellow" mb={2} fontSize="sm">
-                      Edit
-                    </Button>
-                  </Link>
-                  <Button
+                    <Tooltip label="Edit Product" fontSize="md">
+                      <Button colorScheme="yellow" mb={2} fontSize="sm">
+                        Edit
+                      </Button>
+                    </Tooltip>
+                  </Link><Button
                     colorScheme="red"
                     mb={2}
                     ml={2}
                     fontSize="sm"
                     onClick={() => handleDelete(product.product_id)}
                   >
-                    <DeleteIcon />
+                    <Tooltip label="Delete Product" fontSize="md">
+                      <DeleteIcon />
+                    </Tooltip>
                   </Button>
                 </Box>
               </Flex>

@@ -22,8 +22,26 @@ const productController = {
 
   createProduct: async (req, res) => {
     try {
-      if (!req.file)
+      // Validasi apakah kategori sudah ada
+      const { category_name, warehouse_name } = req.body;
+      const category = await prisma.category.findUnique({
+        where: { category_name },
+      });
+
+      // Validasi apakah gudang sudah ada
+      const warehouse = await prisma.warehouse.findFirst({
+        where: {
+          warehouse_name: warehouse_name,
+        },
+      });
+
+      if (!category || !warehouse) {
+        return res.status(400).json({ message: "Category or warehouse not found" });
+      }
+
+      if (!req.file) {
         return res.status(400).json({ message: "Please upload the image" });
+      }
 
       const {
         name,
@@ -31,10 +49,9 @@ const productController = {
         price,
         stock,
         is_available,
-        category_id,
-        warehouse_id,
         weight,
       } = req.body;
+
       const intStock = parseInt(stock);
       const intPrice = parseInt(price);
       const intWeight = parseInt(weight);
@@ -47,8 +64,8 @@ const productController = {
           price: intPrice,
           stock: intStock,
           is_available: isAvailableBoolean,
-          category_id: parseInt(category_id), // Convert to number
-          warehouse_id: parseInt(warehouse_id), // Convert to number
+          category_id: category.category_id,
+          warehouse_id: warehouse.warehouse_id,
           image: req.file.filename,
           weight: intWeight,
         },
@@ -70,23 +87,62 @@ const productController = {
         price,
         stock,
         is_available,
-        category_id,
-        warehouse_id,
+        category_name,
+        warehouse_name,
         weight,
       } = req.body;
       const intStock = parseInt(stock);
       const numericPrice = parseFloat(price);
       const intWeight = parseInt(weight);
-
+  
       const isAvailableBoolean =
         typeof is_available === "string"
           ? is_available.toLowerCase() === "true"
           : typeof is_available === "boolean"
-            ? is_available
-            : undefined;
-
+          ? is_available
+          : undefined;
+  
+      // Dapatkan produk yang ingin diperbarui beserta kategori dan gudangnya
+      const existingProduct = await prisma.product.findUnique({
+        where: {
+          product_id: parseInt(id),
+        },
+        include: {
+          category: true,
+          warehouse: true,
+        },
+      });
+  
+      if (!existingProduct) {
+        return res.status(404).json({ message: "Produk tidak ditemukan" });
+      }
+  
+      // Dapatkan kategori yang sudah ada berdasarkan category_name
+      let existingCategory;
+      if (category_name !== undefined) {
+        existingCategory = await prisma.category.findUnique({
+          where: { category_name },
+        });
+      } else {
+        // Gunakan kategori yang sudah ada sebelumnya jika category_name tidak diberikan
+        existingCategory = existingProduct.category;
+      }
+  
+      // Dapatkan gudang yang sudah ada berdasarkan warehouse_name
+      const existingWarehouse = await prisma.warehouse.findFirst({
+        where: {
+          warehouse_name,
+        },
+      });
+  
+      if (!existingCategory || !existingWarehouse) {
+        return res
+          .status(400)
+          .json({ message: "Category atau warehouse tidak ditemukan" });
+      }
+  
       let updatedProduct;
-
+  
       if (req.file) {
         // Jika ada file gambar baru, perbarui juga gambar
         updatedProduct = await prisma.product.update({
@@ -94,13 +150,21 @@ const productController = {
             product_id: parseInt(id),
           },
           data: {
-            name: name,
-            description: description,
+            name,
+            description,
             price: numericPrice,
             stock: intStock,
             is_available: isAvailableBoolean,
-            category_id: parseInt(category_id),
-            warehouse_id: parseInt(warehouse_id),
+            category: {
+              connect: {
+                category_name: existingCategory.category_name,
+              },
+            },
+            warehouse: {
+              connect: {
+                warehouse_id: existingWarehouse.warehouse_id,
+              },
+            },
             weight: intWeight,
             image: req.file.filename,
           },
@@ -112,24 +176,33 @@ const productController = {
             product_id: parseInt(id),
           },
           data: {
-            name: name,
-            description: description,
+            name,
+            description,
             price: numericPrice,
             stock: intStock,
             is_available: isAvailableBoolean,
-            category_id: parseInt(category_id),
-            warehouse_id: parseInt(warehouse_id),
+            category: {
+              connect: {
+                category_name: existingCategory.category_name,
+              },
+            },
+            warehouse: {
+              connect: {
+                warehouse_id: existingWarehouse.warehouse_id,
+              },
+            },
             weight: intWeight,
           },
         });
       }
-
+  
       res.json(updatedProduct);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Kesalahan Server Internal" });
     }
   },
+
 
   deleteProduct: async (req, res) => {
     try {
@@ -194,7 +267,7 @@ const productController = {
           warehouse: { select: { warehouse_name: true } },
         },
       });
-      
+
       res.json(products);
     } catch (error) {
       console.error(error);
@@ -219,9 +292,9 @@ const productController = {
           warehouse: true,
         },
       });
-  
+
       console.log('Filtered Products:', products); // Tambahkan ini
-  
+
       res.json(products);
     } catch (error) {
       console.error(error);
