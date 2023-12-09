@@ -120,6 +120,7 @@ export default function WarehousePage() {
           {/* end of search bar */}
 
           <VStack overflowY="auto" h="70vh" bg="gray.200" p={4}>
+
             {warehouses?.map((warehouse) => (
               <WrapItem
                 bg="blue.200"
@@ -146,8 +147,7 @@ export default function WarehousePage() {
                       w="full"
                       colorScheme="yellow"
                       as={Link}
-                      to={`/admin/warehouse/${warehouse.warehouse_id}`}
-                    >
+                      to={`/admin/warehouse/${warehouse.warehouse_id}`}>
                       Edit
                     </Button>
                     <Button
