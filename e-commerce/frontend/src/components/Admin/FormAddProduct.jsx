@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Heading,
   Button,
   Input,
   useToast,
-  Link,
+  Select,
   Text, // Tambahkan Text dari Chakra UI
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
 
 const FormAddProduct = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
+  const [categories, setCategories] = useState([]);
+  const [warehouses, setWarehouses] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -26,6 +29,40 @@ const FormAddProduct = () => {
     weight: '',
     image: null,
   });
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/product/categories/names`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      throw error;
+    }
+  };
+
+  const fetchWarehouses = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/product/warehouses/names`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching warehouses:', error);
+      throw error;
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const categoriesData = await fetchCategories();
+        const warehousesData = await fetchWarehouses();
+        setCategories(categoriesData);
+        setWarehouses(warehousesData);
+      } catch (error) {
+        console.error('Error fetching categories and warehouses:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -87,6 +124,7 @@ const FormAddProduct = () => {
     }
   };
 
+
   return (
     <Box p={4}>
       <Box mb={4} display="flex" justifyContent="space-between" alignItems="center">
@@ -101,74 +139,91 @@ const FormAddProduct = () => {
           Mohon isi formulir di bawah untuk menambahkan produk baru. Pastikan data yang Anda
           masukkan akurat dan lengkap.
         </Text>
-        <Input
-          type="text"
-          name="name"
-          placeholder="Nama Produk"
-          value={formData.name}
-          onChange={handleInputChange}
-          mb={3}
-        />
-        <Input
-          type="text"
-          name="description"
-          placeholder="Deskripsi"
-          value={formData.description}
-          onChange={handleInputChange}
-          mb={3}
-        />
-        <Input
-          type="text"
-          name="price"
-          placeholder="Harga"
-          value={formData.price}
-          onChange={handleInputChange}
-          mb={3}
-        />
-        <Input
-          type="number"
-          name="stock"
-          placeholder="Stok"
-          value={formData.stock}
-          onChange={handleInputChange}
-          mb={3}
-        />
-        <Input
-          type="text"
-          name="is_available"
-          placeholder="Tersedia (true/false)"
-          value={formData.is_available}
-          onChange={handleInputChange}
-          mb={3}
-        />
-        <Input
-          type="text"
-          name="category_name"
-          placeholder="Nama Kategori"
-          value={formData.category_name}
-          onChange={handleInputChange}
-          mb={3}
-        />
-        <Input
-          type="text"
-          name="warehouse_name"
-          placeholder="Nama Gudang"
-          value={formData.warehouse_name}
-          onChange={handleInputChange}
-          mb={3}
-        />
-        <Input
-          type="number"
-          name="weight"
-          placeholder="Berat"
-          value={formData.weight}
-          onChange={handleInputChange}
-          mb={3}
-        />
-        <Text mb={2}>
-          Pilih gambar produk yang akan diunggah
-        </Text>
-        <Input type="file" name="image" onChange={handleImageChange} mb={3} />
+        <Box mb={3}>
+          <Input
+            type="text"
+            name="name"
+            placeholder="Nama Produk"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+        </Box>
+        <Box mb={3}>
+          <Input
+            type="text"
+            name="description"
+            placeholder="Deskripsi"
+            value={formData.description}
+            onChange={handleInputChange}
+          />
+        </Box>
+        <Box mb={3}>
+          <Input
+            type="text"
+            name="price"
+            placeholder="Harga"
+            value={formData.price}
+            onChange={handleInputChange}
+          />
+        </Box>
+        <Box mb={3}>
+          <Input
+            type="number"
+            name="stock"
+            placeholder="Stok"
+            value={formData.stock}
+            onChange={handleInputChange}
+          />
+        </Box>
+        <Box mb={3}>
+          <label>Pilih Kategori</label>
+          <Select
+            name="category_name"
+            value={formData.category_name}
+            onChange={handleInputChange}
+          >
+            <option value="" disabled>Pilih Kategori</option>
+            {categories
+              .slice() // Membuat salinan array untuk menghindari perubahan langsung
+              .sort() // Mengurutkan array sesuai abjad
+              .map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+          </Select>
+        </Box>
+        <Box mb={3}>
+          <label>Pilih Gudang</label>
+          <Select
+            name="warehouse_name"
+            value={formData.warehouse_name}
+            onChange={handleInputChange}
+          >
+            <option value="" disabled>Pilih Gudang</option>
+            {warehouses
+              .slice() // Membuat salinan array untuk menghindari perubahan langsung
+              .sort() // Mengurutkan array sesuai abjad
+              .map((warehouse) => (
+                <option key={warehouse} value={warehouse}>
+                  {warehouse}
+                </option>
+              ))}
+          </Select>
+        </Box>
+        <Box mb={3}>
+          <Input
+            type="number"
+            name="weight"
+            placeholder="Berat"
+            value={formData.weight}
+            onChange={handleInputChange}
+          />
+        </Box>
+        <Box mb={3}>
+          <Text>Pilih gambar produk yang akan diunggah</Text>
+          <Input type="file" name="image" onChange={handleImageChange} />
+        </Box>
         <Button colorScheme="green" mt={4} onClick={handleTambahProduk}>
           Simpan Produk
         </Button>

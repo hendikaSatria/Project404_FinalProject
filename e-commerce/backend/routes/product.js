@@ -13,7 +13,8 @@ router.route("/:id").put(mtr.upload.single("image"),productController.updateProd
 router.route("/category/:category_id").get(productController.getByCategory);
 router.route("/search/:productName").get(productController.searchProductByName);
 router.route("/filter/:categoryName").get(productController.filterProductByCategory);
-// router.route ("/add").post(mtr.upload.single("image"),productController.addProduct);
+router.route('/categories/names').get(productController.getAllCategoryNames);
+router.route('/warehouses/names').get(productController.getAllWarehouseNames);
 
 
 

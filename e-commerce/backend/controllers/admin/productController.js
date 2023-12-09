@@ -22,13 +22,11 @@ const productController = {
 
   createProduct: async (req, res) => {
     try {
-      // Validasi apakah kategori sudah ada
       const { category_name, warehouse_name } = req.body;
       const category = await prisma.category.findUnique({
         where: { category_name },
       });
 
-      // Validasi apakah gudang sudah ada
       const warehouse = await prisma.warehouse.findFirst({
         where: {
           warehouse_name: warehouse_name,
@@ -48,14 +46,12 @@ const productController = {
         description,
         price,
         stock,
-        is_available,
         weight,
       } = req.body;
 
       const intStock = parseInt(stock);
       const intPrice = parseInt(price);
       const intWeight = parseInt(weight);
-      const isAvailableBoolean = is_available.toLowerCase() === "true";
 
       const product = await prisma.product.create({
         data: {
@@ -63,7 +59,7 @@ const productController = {
           description: description,
           price: intPrice,
           stock: intStock,
-          is_available: isAvailableBoolean,
+          is_available: true, // Set is_available to true by default
           category_id: category.category_id,
           warehouse_id: warehouse.warehouse_id,
           image: req.file.filename,
@@ -86,7 +82,6 @@ const productController = {
         description,
         price,
         stock,
-        is_available,
         category_name,
         warehouse_name,
         weight,
@@ -95,14 +90,6 @@ const productController = {
       const numericPrice = parseFloat(price);
       const intWeight = parseInt(weight);
   
-      const isAvailableBoolean =
-        typeof is_available === "string"
-          ? is_available.toLowerCase() === "true"
-          : typeof is_available === "boolean"
-          ? is_available
-          : undefined;
-  
-      // Dapatkan produk yang ingin diperbarui beserta kategori dan gudangnya
       const existingProduct = await prisma.product.findUnique({
         where: {
           product_id: parseInt(id),
@@ -117,18 +104,15 @@ const productController = {
         return res.status(404).json({ message: "Produk tidak ditemukan" });
       }
   
-      // Dapatkan kategori yang sudah ada berdasarkan category_name
       let existingCategory;
       if (category_name !== undefined) {
         existingCategory = await prisma.category.findUnique({
           where: { category_name },
         });
       } else {
-        // Gunakan kategori yang sudah ada sebelumnya jika category_name tidak diberikan
         existingCategory = existingProduct.category;
       }
   
-      // Dapatkan gudang yang sudah ada berdasarkan warehouse_name
       const existingWarehouse = await prisma.warehouse.findFirst({
         where: {
           warehouse_name,
@@ -144,7 +128,6 @@ const productController = {
       let updatedProduct;
   
       if (req.file) {
-        // Jika ada file gambar baru, perbarui juga gambar
         updatedProduct = await prisma.product.update({
           where: {
             product_id: parseInt(id),
@@ -154,7 +137,7 @@ const productController = {
             description,
             price: numericPrice,
             stock: intStock,
-            is_available: isAvailableBoolean,
+            is_available: existingProduct.is_available,
             category: {
               connect: {
                 category_name: existingCategory.category_name,
@@ -170,7 +153,6 @@ const productController = {
           },
         });
       } else {
-        // Jika tidak ada file gambar baru, hanya perbarui informasi produk lainnya
         updatedProduct = await prisma.product.update({
           where: {
             product_id: parseInt(id),
@@ -180,7 +162,7 @@ const productController = {
             description,
             price: numericPrice,
             stock: intStock,
-            is_available: isAvailableBoolean,
+            is_available: existingProduct.is_available,
             category: {
               connect: {
                 category_name: existingCategory.category_name,
@@ -208,9 +190,12 @@ const productController = {
     try {
       const { id } = req.params;
 
-      const deletedProduct = await prisma.product.delete({
+      const deletedProduct = await prisma.product.update({
         where: {
           product_id: parseInt(id),
+        },
+        data: {
+          is_available: false,
         },
       });
 
@@ -239,6 +224,9 @@ const productController = {
   getAllProductDetails: async (req, res) => {
     try {
       const productDetails = await prisma.product.findMany({
+        where: {
+          is_available: true,
+        },
         include: {
           category: { select: { category_name: true } },
           warehouse: { select: { warehouse_name: true } },
@@ -259,8 +247,9 @@ const productController = {
         where: {
           name: {
             contains: productName,
-            mode: "insensitive", // Pencarian case-insensitive
+            mode: "insensitive",
           },
+          is_available: true,
         },
         include: {
           category: { select: { category_name: true } },
@@ -283,9 +272,10 @@ const productController = {
           category: {
             category_name: {
               equals: categoryName,
-              mode: "insensitive", // Pencarian case-insensitive
+              mode: "insensitive",
             },
           },
+          is_available: true,
         },
         include: {
           category: true,
@@ -293,7 +283,7 @@ const productController = {
         },
       });
 
-      console.log('Filtered Products:', products); // Tambahkan ini
+      console.log('Filtered Products:', products);
 
       res.json(products);
     } catch (error) {
@@ -301,8 +291,37 @@ const productController = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
-};
+  getAllCategoryNames: async (req, res) => {
+    try {
+      const categories = await prisma.category.findMany({
+        select: {
+          category_name: true,
+        },
+      });
+      const categoryNames = categories.map(category => category.category_name);
+      res.json(categoryNames || []);
+    } catch (error) {
+      console.error('Error fetching category names:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  },
 
+  getAllWarehouseNames: async (req, res) =>  {
+    try{
+      const warehouses = await prisma.warehouse.findMany({
+        select: {
+          warehouse_name: true,
+        },
+      });
+      const warehouseNames = warehouses.map(warehouse => warehouse.warehouse_name);
+      res.json(warehouseNames || []);
+    }catch (error) {
+      console.error('Error fetching warehouse names:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
+
+};
 
 
 module.exports = productController;

@@ -28,6 +28,7 @@ const Product = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const [categories, setCategories] = useState([]); // Menyimpan daftar kategori dari server
   const [selectedCategory, setSelectedCategory] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchError, setSearchError] = useState('');
@@ -35,6 +36,8 @@ const Product = () => {
   const cancelRef = React.useRef();
 
   useEffect(() => {
+    // Fetch daftar kategori saat komponen dimuat
+    fetchCategories();
     fetchProducts();
   }, [selectedCategory]);
 
@@ -55,6 +58,14 @@ const Product = () => {
       setProducts(response.data); // Tampilkan hasil filter kategori sebagai hasil utama
     } catch (error) {
       console.error('Error fetching or filtering products:', error);
+    }
+  };
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/product/categories/names');
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
     }
   };
 
@@ -173,11 +184,14 @@ const Product = () => {
           onChange={handleSelectChange}
         >
           <option value="">All Categories</option>
-          <option value="Category 1">Category 1</option>
-          <option value="Category 2">Category 2</option>
-          <option value="Category 3">Category 3</option>
-          <option value="Category 4">Category 4</option>
-          <option value="Category 5">Category 5</option>
+          {categories
+            .slice() // Membuat salinan array untuk menghindari perubahan langsung
+            .sort() // Mengurutkan array sesuai abjad
+            .map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
         </Select>
       </Flex>
       {searchError && (

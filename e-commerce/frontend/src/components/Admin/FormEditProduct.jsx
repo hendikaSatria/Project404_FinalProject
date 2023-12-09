@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Heading, Button, Input, useToast } from '@chakra-ui/react';
+import { Box, Heading, Button, Input, useToast, Select } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
@@ -7,6 +7,8 @@ const FormEditProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const toast = useToast();
+  const [categoryNames, setCategoryNames] = useState([]);
+  const [warehouseNames, setWarehouseNames] = useState([]);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -43,6 +45,35 @@ const FormEditProduct = () => {
 
     fetchProduct();
   }, [id]);
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      category_name: categoryNames.length > 0 ? categoryNames[0] : '', // Pilih kategori pertama
+      warehouse_name: warehouseNames.length > 0 ? warehouseNames[0] : '', // Pilih gudang pertama
+    }));
+  }, [categoryNames, warehouseNames]);
+  useEffect(() => {
+    const fetchCategoryNames = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/product/categories/names');
+        setCategoryNames(response.data);
+      } catch (error) {
+        console.error('Error fetching category names:', error);
+      }
+    };
+
+    const fetchWarehouseNames = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/product/warehouses/names');
+        setWarehouseNames(response.data);
+      } catch (error) {
+        console.error('Error fetching warehouse names:', error);
+      }
+    };
+
+    fetchCategoryNames();
+    fetchWarehouseNames();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -66,7 +97,7 @@ const FormEditProduct = () => {
         weight,
         image,
       } = formData;
-  
+
       const formDataToSend = new FormData();
       formDataToSend.append('name', name);
       formDataToSend.append('description', description);
@@ -79,25 +110,25 @@ const FormEditProduct = () => {
       if (image) {
         formDataToSend.append('image', image);
       }
-  
+
       const response = await axios.put(`http://localhost:3000/product/${id}`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-  
+
       console.log('Produk berhasil diubah:', response.data);
-  
+
       toast({
         title: 'Produk berhasil diubah',
         status: 'success',
         isClosable: true,
       });
-  
+
       navigate('/admin/product');
     } catch (error) {
       console.error('Error ubah produk:', error);
-  
+
       toast({
         title: 'Gagal mengubah produk',
         status: 'error',
@@ -156,35 +187,39 @@ const FormEditProduct = () => {
           mb={3}
         />
 
-        <label>Tersedia (true/false)</label>
-        <Input
-          type="text"
-          name="is_available"
-          placeholder="Tersedia (true/false)"
-          value={formData.is_available}
-          onChange={handleInputChange}
-          mb={3}
-        />
-
-        <label>Nama Kategori</label>
-        <Input
-          type="text"
+        <Select
           name="category_name"
-          placeholder="Nama Kategori"
+          
           value={formData.category_name}
           onChange={handleInputChange}
           mb={3}
-        />
+        >
+          {categoryNames
+            .slice() // Membuat salinan array untuk menghindari perubahan langsung
+            .sort() // Mengurutkan array sesuai abjad
+            .map(category => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+        </Select>
 
         <label>Nama Gudang</label>
-        <Input
-          type="text"
+        <Select
           name="warehouse_name"
-          placeholder="Nama Gudang"
-          value={formData.warehouse_name}
+                   value={formData.warehouse_name}
           onChange={handleInputChange}
           mb={3}
-        />
+        >
+          {warehouseNames
+            .slice() // Membuat salinan array untuk menghindari perubahan langsung
+            .sort() // Mengurutkan array sesuai abjad
+            .map(warehouse => (
+              <option key={warehouse} value={warehouse}>
+                {warehouse}
+              </option>
+            ))}
+        </Select>
 
         <label>Berat</label>
         <Input

@@ -14,6 +14,7 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
+  Text,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import axios from 'axios';
@@ -33,8 +34,11 @@ const Order = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('Token')}`,
           },
-        });
-
+        }); const sortedOrders = response.data.sort((a, b) =>
+          new Date(b.order_date) - new Date(a.order_date)
+        );
+        setOrderDetails(sortedOrders);
+        setFilteredOrders(sortedOrders);
         setOrderDetails(response.data);
         setFilteredOrders(response.data);
       } catch (error) {
@@ -101,6 +105,7 @@ const Order = () => {
     );
     setFilteredOrders(filtered);
   };
+
   const handleKeyDown = (e) => {
     // Jika tombol yang ditekan adalah "Enter", panggil fungsi handleSearch
     if (e.key === 'Enter') {
@@ -139,7 +144,11 @@ const Order = () => {
       {/* end of search bar */}
 
       {/* status filter */}
-      <Select mb="3" ml="auto" maxW="500px" display="flex"
+      <Select
+        mb="3"
+        ml="auto"
+        maxW="500px"
+        display="flex"
         size="sm"
         placeholder="Filter Status"
         value={statusFilter}
@@ -196,46 +205,54 @@ const Order = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {filteredOrders.map((order, index) => (
-              <Tr key={order.order_id}>
-                <Td textAlign="center" p={2}>{index + 1}</Td>
-                <Td textAlign="center" p={2}>{order.order_id}</Td>
-                <Td textAlign="center" p={2}>
-                  {new Date(order.order_date).toLocaleDateString()}
-                </Td>
-                <Td textAlign="center" p={2}>{order.total_price}</Td>
-                <Td textAlign="center" p={2}>
-                  {order.order_items[0]?.product.name}
-                </Td>
-                <Td textAlign="center" p={2}>{order.order_items[0]?.quantity}</Td>
-                <Td textAlign="center" p={2}>{order.order_items[0]?.price}</Td>
-                <Td textAlign="center" p={2}>
-                  {order.ProofsOfPayment.map((proof, proofIndex) => (
-                    <img
-                      key={proofIndex}
-                      src={proof.image}
-                      alt={`Proof of Payment ${order.order_id} - ${proofIndex + 1}`}
-                      style={{ width: '40px', height: '60px', display: 'block', margin: 'auto', marginBottom: '10px' }}
-                    />
-                  ))}
-                </Td>
-                <Td textAlign="center" p={2}>
-                  <Select
-                    size="sm"
-                    onChange={(e) => {
-                      const newStatus = e.target.value;
-                      const orderId = order.order_id;
-                      handleStatusChange(orderId, newStatus);
-                    }}
-                    value={order.order_status}
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="finish">Finish</option>
-                  </Select>
+            {filteredOrders.length === 0 ? (
+              <Tr>
+                <Td colSpan="9" textAlign="center">
+                  <Text>No orders found</Text>
                 </Td>
               </Tr>
-            ))}
+            ) : (
+              filteredOrders.map((order, index) => (
+                <Tr key={order.order_id}>
+                  <Td textAlign="center" p={2}>{index + 1}</Td>
+                  <Td textAlign="center" p={2}>{order.order_id}</Td>
+                  <Td textAlign="center" p={2}>
+                    {new Date(order.order_date).toLocaleDateString()}
+                  </Td>
+                  <Td textAlign="center" p={2}>{order.total_price}</Td>
+                  <Td textAlign="center" p={2}>
+                    {order.order_items[0]?.product.name}
+                  </Td>
+                  <Td textAlign="center" p={2}>{order.order_items[0]?.quantity}</Td>
+                  <Td textAlign="center" p={2}>{order.order_items[0]?.price}</Td>
+                  <Td textAlign="center" p={2}>
+                    {order.ProofsOfPayment.map((proof, proofIndex) => (
+                      <img
+                        key={proofIndex}
+                        src={`http://localhost:3000/images/${proof.image}`}
+                        alt={`Proof of Payment ${order.order_id} - ${proofIndex + 1}`}
+                        style={{ width: '40px', height: '60px', display: 'block', margin: 'auto', marginBottom: '10px' }}
+                      />
+                    ))}
+                  </Td>
+                  <Td textAlign="center" p={2}>
+                    <Select
+                      size="sm"
+                      onChange={(e) => {
+                        const newStatus = e.target.value;
+                        const orderId = order.order_id;
+                        handleStatusChange(orderId, newStatus);
+                      }}
+                      value={order.order_status}
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="processing">Processing</option>
+                      <option value="finish">Finish</option>
+                    </Select>
+                  </Td>
+                </Tr>
+              ))
+            )}
           </Tbody>
         </Table>
       </Box>
