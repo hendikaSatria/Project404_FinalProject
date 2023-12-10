@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Heading, Button, Input, useToast, Select } from '@chakra-ui/react';
+import { Box, Heading, Button, Input, useToast, Select, Grid } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ const FormEditProduct = () => {
   const toast = useToast();
   const [categoryNames, setCategoryNames] = useState([]);
   const [warehouseNames, setWarehouseNames] = useState([]);
+ 
 
   const [formData, setFormData] = useState({
     name: '',
@@ -36,7 +37,7 @@ const FormEditProduct = () => {
           category_name: productData.category ? productData.category.category_name : '',
           warehouse_name: productData.warehouse ? productData.warehouse.warehouse_name : '',
           weight: String(productData.weight),
-          image: null,
+          image: productData.image,
         });
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -83,6 +84,7 @@ const FormEditProduct = () => {
   const handleImageChange = (e) => {
     setFormData({ ...formData, image: e.target.files[0] });
   };
+
 
   const handleEditProduct = async () => {
     try {
@@ -145,95 +147,123 @@ const FormEditProduct = () => {
           <Button colorScheme="blue">Kembali ke Produk</Button>
         </Link>
       </Box>
-
+  
       <form encType="multipart/form-data">
-        <label>Nama Produk</label>
-        <Input
-          type="text"
-          name="name"
-          placeholder="Nama Produk"
-          value={formData.name}
-          onChange={handleInputChange}
-          mb={3}
-        />
-
-        <label>Deskripsi</label>
-        <Input
-          type="text"
-          name="description"
-          placeholder="Deskripsi"
-          value={formData.description}
-          onChange={handleInputChange}
-          mb={3}
-        />
-
-        <label>Harga</label>
-        <Input
-          type="text"
-          name="price"
-          placeholder="Harga"
-          value={formData.price}
-          onChange={handleInputChange}
-          mb={3}
-        />
-
-        <label>Stok</label>
-        <Input
-          type="number"
-          name="stock"
-          placeholder="Stok"
-          value={formData.stock}
-          onChange={handleInputChange}
-          mb={3}
-        />
-
-        <Select
-          name="category_name"
-          
-          value={formData.category_name}
-          onChange={handleInputChange}
-          mb={3}
-        >
-          {categoryNames
-            .slice() // Membuat salinan array untuk menghindari perubahan langsung
-            .sort() // Mengurutkan array sesuai abjad
-            .map(category => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-        </Select>
-
-        <label>Nama Gudang</label>
-        <Select
-          name="warehouse_name"
-                   value={formData.warehouse_name}
-          onChange={handleInputChange}
-          mb={3}
-        >
-          {warehouseNames
-            .slice() // Membuat salinan array untuk menghindari perubahan langsung
-            .sort() // Mengurutkan array sesuai abjad
-            .map(warehouse => (
-              <option key={warehouse} value={warehouse}>
-                {warehouse}
-              </option>
-            ))}
-        </Select>
-
-        <label>Berat</label>
-        <Input
-          type="number"
-          name="weight"
-          placeholder="Berat"
-          value={formData.weight}
-          onChange={handleInputChange}
-          mb={3}
-        />
-
-        <label>Gambar Produk</label>
-        <Input type="file" name="image" onChange={handleImageChange} mb={3} />
-
+        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+          <Box>
+            <label>Nama Produk</label>
+            <Input
+              type="text"
+              name="name"
+              placeholder="Nama Produk"
+              value={formData.name}
+              onChange={handleInputChange}
+              mb={3}
+            />
+  
+            <label>Deskripsi</label>
+            <Input
+              type="text"
+              name="description"
+              placeholder="Deskripsi"
+              value={formData.description}
+              onChange={handleInputChange}
+              mb={3}
+            />
+          </Box>
+  
+          <Box>
+            <label>Harga</label>
+            <Input
+              type="text"
+              name="price"
+              placeholder="Harga"
+              value={formData.price}
+              onChange={handleInputChange}
+              mb={3}
+            />
+  
+            <label>Stok</label>
+            <Input
+              type="number"
+              name="stock"
+              placeholder="Stok"
+              value={formData.stock}
+              onChange={handleInputChange}
+              mb={3}
+            />
+          </Box>
+        </Grid>
+  
+        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+          <Box>
+            <label>Nama Kategori</label>
+            <Select
+              name="category_name"
+              value={formData.category_name}
+              onChange={handleInputChange}
+              mb={3}
+            >
+              {categoryNames
+                .slice()
+                .sort()
+                .map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+            </Select>
+          </Box>
+  
+          <Box>
+            <label>Nama Gudang</label>
+            <Select
+              name="warehouse_name"
+              value={formData.warehouse_name}
+              onChange={handleInputChange}
+              mb={3}
+            >
+              {warehouseNames
+                .slice()
+                .sort()
+                .map((warehouse) => (
+                  <option key={warehouse} value={warehouse}>
+                    {warehouse}
+                  </option>
+                ))}
+            </Select>
+          </Box>
+        </Grid>
+  
+        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+          <Box>
+            <label>Berat</label>
+            <Input
+              type="number"
+              name="weight"
+              placeholder="Berat"
+              value={formData.weight}
+              onChange={handleInputChange}
+              mb={3}
+            />
+            <label>Ubah Gambar</label>
+            <Input type="file" name="image" onChange={handleImageChange} mb={3} />
+          </Box>
+  
+          <Box>
+            <label>Gambar Produk Saat Ini</label>
+            {formData.image && (
+              <img
+                src={`http://localhost:3000/images/${formData.image}`}
+                alt={formData.name}
+                mb={2}
+                width="100%"
+                style={{ width: '200px', height: '300px', margin: 'right' }}
+              />
+            )}
+          </Box>
+        </Grid>
+  
         <Button colorScheme="blue" mt={4} onClick={handleEditProduct}>
           Simpan Perubahan
         </Button>

@@ -16,6 +16,7 @@ import {
   InputLeftElement,
   IconButton,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import axios from "axios";
@@ -62,10 +63,15 @@ const User = () => {
   };
 
   return (
-    <Box p={4} mx="auto">
-      <Heading my="5" textAlign="center" textTransform="uppercase">
-        User Management
-      </Heading>
+    <Box mx="auto">
+      <Box bg="blue.200" w="full" align="center" height="60px">
+        <Text fontWeight="bold" fontSize={"xx-large"}>
+          User Management
+        </Text>
+      </Box>
+
+      <Box align="center" p="20px">
+        <VStack spacing={4} align="stretch" px={12}>
       <Box mb="3" ml="auto" maxW="500px" display="flex">
         <InputGroup>
           <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
@@ -120,6 +126,8 @@ const User = () => {
             )}
           </Tbody>
         </Table>
+      </Box>
+      </VStack>
       </Box>
     </Box>
   );

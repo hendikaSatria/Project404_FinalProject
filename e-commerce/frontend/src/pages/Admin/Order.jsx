@@ -15,6 +15,7 @@ import {
   InputLeftElement,
   Input,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import axios from 'axios';
@@ -114,13 +115,19 @@ const Order = () => {
   };
 
   return (
-    <Box p={4} mx="auto">
-      <Heading my="5" textAlign="center" textTransform="uppercase">
-        Order Management
-      </Heading>
+    <Box  mx="auto">
+      <Box bg="blue.200" w="full" align="center" height="60px">
+        <Text fontWeight="bold" fontSize={"xx-large"}>
+          Order Management
+        </Text>
+      </Box>
+
+      
+      <Box align="center" p="20px">
+        <VStack spacing={4} align="stretch" px={12}>
 
       {/* search bar */}
-      <Box mb="3" ml="auto" maxW="500px" display="flex">
+      <Box ml="auto" maxW="500px" display="flex">
         <InputGroup>
           <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
           <Input
@@ -255,6 +262,8 @@ const Order = () => {
             )}
           </Tbody>
         </Table>
+      </Box>
+      </VStack>
       </Box>
       {/* end of order table */}
     </Box>

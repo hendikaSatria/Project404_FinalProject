@@ -17,6 +17,7 @@ import {
   Select,
   Button,
   Tooltip,
+  VStack,
 
 } from '@chakra-ui/react';
 import { SearchIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons';
@@ -135,135 +136,140 @@ const Product = () => {
   };
 
   return (
-    <Flex p={4} mx="auto" maxW="1200px" justifyContent="space-between" flexDirection="column">
-      <Box mb={4}>
-        <Text fontSize="4xl" fontWeight="bold" my="1" textAlign="center" textTransform="uppercase">
+    <Flex justifyContent="space-between" flexDirection="column">
+      <Box bg="blue.200" w="full" align="center" height="60px">
+        <Text fontWeight="bold" fontSize={"xx-large"}>
           Product Management
         </Text>
       </Box>
+      <Box align="center" p="20px">
+        <VStack spacing={4} align="stretch" px={12}>
+          <Flex >
+            <InputGroup ml="auto" maxW="500px">
+              <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
+              <Input
+                placeholder="Search Product"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
+                fontSize="sm"
+              />
+              <IconButton
+                mx="3"
+                colorScheme="blue"
+                h="2.5rem"
+                size="lg"
+                onClick={handleSearch}
+                aria-label="Search"
+                icon={<SearchIcon />}
+              />
+            </InputGroup>
+          </Flex>
 
-      <Flex>
-        <InputGroup mb="3" ml="auto" maxW="500px">
-          <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
-          <Input
-            placeholder="Search Product"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={handleKeyDown}
-            fontSize="sm"
-          />
-          <IconButton
-            mx="3"
-            colorScheme="blue"
-            h="2.5rem"
-            size="lg"
-            onClick={handleSearch}
-            aria-label="Search"
-            icon={<SearchIcon />}
-          />
-        </InputGroup>
-      </Flex>
+          <Flex justifyContent="space-between">
+            <Link to="/admin/product/add">
+              <Tooltip label="Add Product" fontSize="md">
+                <IconButton
+                  colorScheme="green"
+                  fontSize="sm"
+                  icon={<AddIcon />}
+                  aria-label="Add Product"
+                />
+              </Tooltip>
+            </Link>
 
-      <Flex my="2" justifyContent="space-between">
-        <Link to="/admin/product/add">
-          <Tooltip label="Add Product" fontSize="md">
-            <IconButton
-              colorScheme="green"
-              fontSize="sm"
-              icon={<AddIcon />}
-              aria-label="Add Product"
-            />
-          </Tooltip>
-        </Link>
-
-        <Select
-          ml="auto"
-          maxW="500px"
-          placeholder="Filter by Category"
-          value={selectedCategory}
-          onChange={handleSelectChange}
-        >
-          <option value="">All Categories</option>
-          {categories
-            .slice() // Membuat salinan array untuk menghindari perubahan langsung
-            .sort() // Mengurutkan array sesuai abjad
-            .map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-        </Select>
-      </Flex>
-      {searchError && (
-        <Box my="2" color="red.500" textAlign="center" fontSize="sm">
-          {searchError}
-        </Box>
-      )}
-      <Box rounded="3xl" overflowX="auto" overflowY="auto" backgroundColor="#F2F2F2" maxH="500px" px="5" py="5">
-        <Flex flexWrap="wrap" justifyContent="space-between" rounded="3xl">
-          {products.map((product) => (
-            <Box
-              key={product.product_id}
-              p={4}
-              mb={4}
-              bg="white"
-              boxShadow="md"
-              borderRadius="md"
-              width={['100%', '48%']}
+            <Select
+              ml="auto"
+              maxW="500px"
+              placeholder="Filter by Category"
+              value={selectedCategory}
+              onChange={handleSelectChange}
             >
-              <Flex justifyContent="space-between">
-                <Box flex="1" mr="5">
-                  <Image
-                    src={`http://localhost:3000/images/${product.image}`}
-                    alt={product.name}
-                    maxH="150px"
-                    mb={2}
-                    width="100%"
-                    borderRadius="md"
-                    style={{ width: '400px', height: '600px', margin: 'auto' }}
-                  />
-                </Box>
-                <Box flex="2" pl="5" justifyContent="space-between">
-                  <Text fontSize="xl" fontWeight="semibold">
-                    {product.name}
-                  </Text>
-                  <Text fontSize="md">{product.description}</Text>
-                  <Text color="gray.500" fontSize="sm">
-                    Harga: Rp. {product.price}
-                  </Text>
-                  <Text color="gray.500" fontSize="sm">
-                    Stock: {product.stock}
-                  </Text>
-                  <Text color="gray.500" fontSize="sm">
-                    Category: {product.category?.category_name || 'Unknown Category'}
-                  </Text>
-                  <Text color="gray.500" fontSize="sm">
-                    Warehouse: {product.warehouse?.warehouse_name || 'Unknown Warehouse'}
-                  </Text>
-                </Box>
-                <Box ml="5">
-                  <Link to={`/admin/product/edit/${product.product_id}`}>
-                    <Tooltip label="Edit Product" fontSize="md">
-                      <Button colorScheme="yellow" mb={2} fontSize="sm">
-                        Edit
-                      </Button>
-                    </Tooltip>
-                  </Link><Button
-                    colorScheme="red"
-                    mb={2}
-                    ml={2}
-                    fontSize="sm"
-                    onClick={() => handleDelete(product.product_id)}
-                  >
-                    <Tooltip label="Delete Product" fontSize="md">
-                      <DeleteIcon />
-                    </Tooltip>
-                  </Button>
-                </Box>
-              </Flex>
+              <option value="">All Categories</option>
+              {categories
+                .slice() // Membuat salinan array untuk menghindari perubahan langsung
+                .sort() // Mengurutkan array sesuai abjad
+                .map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+            </Select>
+          </Flex>
+          {searchError && (
+            <Box my="2" color="red.500" textAlign="center" fontSize="sm">
+              {searchError}
             </Box>
-          ))}
-        </Flex>
+          )}
+          <Box rounded="3xl" overflowX="auto" overflowY="auto" backgroundColor="#F2F2F2" maxH="500px" px="5" py="5">
+            <Flex flexWrap="wrap" justifyContent="space-between" rounded="3xl">
+              {products.map((product) => (
+                <Box
+                  key={product.product_id}
+                  p={4}
+                  mb={4}
+                  bg="white"
+                  boxShadow="md"
+                  borderRadius="md"
+                  width={['100%', '48%']}
+                >
+                  <Flex justifyContent="space-between">
+                    <Box flex="1" mr="5">
+                      <Image
+                        src={`http://localhost:3000/images/${product.image}`}
+                        alt={product.name}
+                        maxH="150px"
+                        mb={2}
+                        width="100%"
+                        borderRadius="md"
+                        style={{ width: '400px', height: '600px', margin: 'auto' }}
+                      />
+                    </Box>
+                    <Box flex="2" pl="5" justifyContent="space-between">
+                      <Text fontSize="xl" fontWeight="semibold">
+                        {product.name}
+                      </Text>
+                      <Text fontSize="md">{product.description}</Text>
+                      <Text color="gray.500" fontSize="sm">
+                        Harga: Rp. {product.price}
+                      </Text>
+                      <Text color="gray.500" fontSize="sm">
+                        Stock: {product.stock}
+                      </Text>
+                      <Text color="gray.500" fontSize="sm">
+                        Category: {product.category?.category_name || 'Unknown Category'}
+                      </Text>
+                      <Text color="gray.500" fontSize="sm">
+                        Warehouse: {product.warehouse?.warehouse_name || 'Unknown Warehouse'}
+                      </Text>
+                    </Box>
+                    <Box ml="5">
+                      <Link to={`/admin/product/edit/${product.product_id}`}>
+                        <Tooltip label="Edit Product" fontSize="md">
+                          <Button colorScheme="yellow" mb={2} fontSize="sm">
+                            Edit
+                          </Button>
+                        </Tooltip>
+                      </Link><Button
+                        colorScheme="red"
+                        mb={2}
+                        ml={2}
+                        fontSize="sm"
+                        onClick={() => handleDelete(product.product_id)}
+                      >
+                        <Tooltip label="Delete Product" fontSize="md">
+                          <DeleteIcon />
+                        </Tooltip>
+                      </Button>
+                    </Box>
+                  </Flex>
+                </Box>
+              ))}
+            </Flex>
+
+
+          </Box>
+        </VStack>
       </Box>
 
       <AlertDialog isOpen={isAlertDialogOpen} leastDestructiveRef={cancelRef} onClose={cancelDelete}>
