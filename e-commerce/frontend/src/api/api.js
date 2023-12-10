@@ -39,10 +39,10 @@ export const registerUser = async (userData) => {
   }
 };
 
-export const getProducts = async ({ page, limit, sort, filter }) => {
+export const getProducts = async ({ page, limit, sort, filter, search }) => {
   try {
     const { data } = await api.get('/users/products', {
-      params: { page, limit, sort, filter },
+      params: { page, limit, sort, filter, search },
     });
 
     return data;
@@ -344,6 +344,23 @@ export const fetchCategoryById = async (categoryId) => {
     throw error;
   }
 };
+
+export const completeOrder = async (orderId, token) => {
+  try {
+    const response = await api.post(`/user/orders/completeOrder/${orderId}`, null, {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return response.data;
+
+  } catch (error) {
+    console.error('Error completing order:', error);
+    throw new Error('Failed to complete order');
+  }
+};
+
 
 
 export default api;

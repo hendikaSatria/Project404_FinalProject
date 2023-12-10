@@ -6,7 +6,7 @@ const path = require('path');
 // Set up multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); 
+    cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Middleware to handle file upload
-const uploadMiddleware = upload.single('proofOfPaymentFile'); 
+const uploadMiddleware = upload.single('proofOfPaymentFile');
 
 async function uploadProofOfPayment(req, res) {
   const orderId = parseInt(req.params.orderId, 10);

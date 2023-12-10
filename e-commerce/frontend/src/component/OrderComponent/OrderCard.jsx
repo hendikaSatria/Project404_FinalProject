@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text, Image, Button } from '@chakra-ui/react';
-import { uploadProofOfPayment } from '../../api/api';
+import { uploadProofOfPayment, completeOrder } from '../../api/api';
 import { useAuth } from '../../context/AuthContext';
 import { useUploadContext } from '../../context/UploadContext';
-import { CheckIcon } from '@chakra-ui/icons'; 
+import { CheckIcon } from '@chakra-ui/icons';
 
 const OrderCard = ({ order }) => {
   const { token } = useAuth();
@@ -36,7 +36,6 @@ const OrderCard = ({ order }) => {
 
       const response = await uploadProofOfPayment(order.order_id, proofOfPaymentFile, token);
 
-      // Check if the response status is in the success range (200-299)
       if (response.status >= 200 && response.status < 300) {
         setSuccess();
         localStorage.setItem(`proofUploaded_${order.order_id}`, 'true');
@@ -49,6 +48,21 @@ const OrderCard = ({ order }) => {
     }
   };
 
+  const handleCompleteOrder = async () => {
+    try {
+      const response = await completeOrder(order.order_id, token);
+
+      if (response && response.error) {
+        console.error('Error completing order:', response.error);
+      } else {
+        alert('Order completed successfully!');
+      }
+    } catch (error) {
+      console.error('Error completing order:', error);
+    }
+  };
+
+
   return (
     <Box border="1px solid #ccc" p="4" m="4 0">
       <Box display="flex" justifyContent="space-between" alignItems="center" mb="4">
@@ -57,9 +71,10 @@ const OrderCard = ({ order }) => {
             Order #{order.order_id}
           </Text>
           <Text>Delivery Time: {order.delivery_time}</Text>
+          <Text>Order Status: {order.order_status}</Text>
         </Box>
         <Box>
-          <Text>Total Price: ${order.total_price}</Text>
+          <Text>Total Price: Rp{order.total_price}</Text>
         </Box>
       </Box>
 
@@ -83,32 +98,50 @@ const OrderCard = ({ order }) => {
         ))}
       </Box>
 
-      <input type="file" onChange={handleFileChange} />
+      <Box mt="4">
+        {order.order_status !== 'Finished' && order.order_status !== 'Finish' && (
+          <>
+            <input type="file" onChange={handleFileChange} />
 
-      <Button
-        mt="4"
-        colorScheme="teal"
-        variant="outline"
-        size="sm"
-        onClick={handleUploadProofOfPayment}
-        disabled={isProofUploaded}
-      >
-        Upload Proof of Payment
-      </Button>
+            <Button
+              colorScheme="teal"
+              variant="outline"
+              size="sm"
+              onClick={handleUploadProofOfPayment}
+              disabled={isProofUploaded}
+            >
+              Upload Proof of Payment
+            </Button>
 
-      {isProofUploaded && (
-        <Box color="green" mt="2" display="flex" alignItems="center">
-          <CheckIcon mr="2" /> Proof of payment uploaded successfully!
-        </Box>
-      )}
+            {isProofUploaded && (
+              <Box color="green" mt="2" display="flex" alignItems="center">
+                <CheckIcon mr="2" /> Proof of payment uploaded successfully!
+              </Box>
+            )}
 
-      {uploadSuccess && !isProofUploaded && (
-        <Text color="green" mt="2">
-          Proof of payment uploaded successfully! ✅
-        </Text>
-      )}
+            {uploadSuccess && !isProofUploaded && (
+              <Text color="green" mt="2">
+                Proof of payment uploaded successfully! ✅
+              </Text>
+            )}
+          </>
+        )}
+
+        {order.order_status === 'Processing' && (
+          <Button
+            mt="2"
+            colorScheme="teal"
+            variant="outline"
+            size="sm"
+            onClick={handleCompleteOrder}
+          >
+            Complete Order
+          </Button>
+        )}
+      </Box>
     </Box>
   );
+
 };
 
 export default OrderCard;

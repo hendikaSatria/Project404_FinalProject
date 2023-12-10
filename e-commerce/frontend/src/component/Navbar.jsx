@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -35,7 +35,7 @@ const CustomInput = styled(Input)`
   }
 `;
 
-const Navbar = () => {
+const Navbar = ({ onSearchTermChange }) => {
   const { user, token } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,25 +47,34 @@ const Navbar = () => {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    console.log("Search term:", searchTerm);
+    onSearchTermChange(searchTerm);
   };
 
   const handleLinkClick = (path) => {
+    if (path === "/") {
+      setSearchTerm("");
+    }
+
+    console.log("Navigating to:", path);
     navigate(token ? path : "/login");
   };
+
+
+  useEffect(() => {
+    console.log("Navbar rendered or updated");
+  });
 
   return (
     <ChakraProvider>
       <CSSReset />
       <Flex
-        // direction={isSmallerThan800 ? "column" : "row"}
         align="center"
         justify="space-between"
         p={4}
         bg="teal.300"
         color="white"
       >
-        {isSmallerThan800 ? null : ( // Tambahkan kondisi untuk menyembunyikan logo pada layar kecil
+        {isSmallerThan800 ? null : (
           <Box
             to="/"
             as={Link}

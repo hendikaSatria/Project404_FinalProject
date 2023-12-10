@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const orderController = require('../../controllers/user/orderController');
-const { authenticateToken } = require('../../middleware/authMiddleWare'); 
+const { authenticateToken } = require('../../middleware/authMiddleWare');
 
 
-// Create an order
 router.post('/:userId', authenticateToken, async (req, res) => {
   const userId = req.params.userId;
   const promoCode = req.body.promoCode;
-  const courier = "pos"; 
+  const courier = "pos";
 
   try {
     const order = await orderController.createOrder(userId, promoCode, courier);
@@ -19,16 +18,15 @@ router.post('/:userId', authenticateToken, async (req, res) => {
   }
 });
 
-// Get orders for a user
 router.get('/:userId', authenticateToken, async (req, res) => {
-    const userId = req.params.userId;
+  const userId = req.params.userId;
 
-    try {
-        const orders = await orderController.getOrdersForUser(userId);
-        res.json({ orders });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  try {
+    const orders = await orderController.getOrdersForUser(userId);
+    res.json({ orders });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 router.post('/calculateTotalPrice', async (req, res) => {
@@ -47,12 +45,24 @@ router.post('/calculateTotalPrice', async (req, res) => {
 
 router.get('/getById/:orderId', authenticateToken, async (req, res) => {
   try {
-      const orderId = req.params.orderId;
-      const order = await orderController.getOrderById(orderId);
-      res.status(200).json(order);
+    const orderId = req.params.orderId;
+    const order = await orderController.getOrderById(orderId);
+    res.status(200).json(order);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to retrieve order' });
+    console.error(error);
+    res.status(500).json({ error: 'Failed to retrieve order' });
+  }
+});
+
+router.post('/completeOrder/:orderId', authenticateToken, async (req, res) => {
+  const orderId = req.params.orderId;
+
+  try {
+    const completedOrder = await orderController.completeOrder(orderId);
+    return res.status(200).json({ message: 'Order completed successfully', order: completedOrder });
+  } catch (error) {
+    console.error('Error completing order:', error);
+    return res.status(500).json({ error: 'Failed to complete order' });
   }
 });
 

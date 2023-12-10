@@ -2,7 +2,7 @@ const { PrismaClient } = require("../../prisma/generated/client");
 const prisma = new PrismaClient();
 
 const getProducts = async (req, res) => {
-    const { page = 1, limit = 12, sort = null, filter = null } = req.query;
+    const { page = 1, limit = 12, sort = null, filter = null, search = null } = req.query;
 
     try {
         let options = {
@@ -10,11 +10,22 @@ const getProducts = async (req, res) => {
             skip: (+page - 1) * +limit,
         }
 
-        if (!!filter)
+        if (!!filter) {
             options.where = {
-                category_id: parseInt(filter)
-            }
-        
+                category_id: parseInt(filter),
+            };
+        }
+
+        if (!!search) {
+            options.where = {
+                ...options.where,
+                name: {
+                    contains: search,
+                    mode: "insensitive",
+                },
+            };
+        }
+
         const totalProducts = await prisma.product.count();
         let products = await prisma.product.findMany(options);
 
@@ -45,6 +56,7 @@ const getProducts = async (req, res) => {
     }
 };
 
+
 const getAllProducts = async (req, res) => {
     try {
         const products = await prisma.product.findMany();
@@ -60,7 +72,7 @@ const getProductById = async (req, res) => {
 
     try {
         const product = await prisma.product.findUnique({
-            where: { product_id: Number(productId) }, 
+            where: { product_id: Number(productId) },
         });
 
         if (!product) {

@@ -1,7 +1,6 @@
-// App.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { UploadProvider } from './context/UploadContext';
 import LoginPage from './pages/LoginPage';
@@ -16,12 +15,20 @@ import OrderPage from './pages/OrderPage';
 const App = () => {
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearchTermChange = (newSearchTerm) => {
+    console.log('New Search Term:', newSearchTerm);
+    setSearchTerm(newSearchTerm);
+    navigate('/');
+  };
 
   return (
     <ChakraProvider>
       <AuthProvider>
         <UploadProvider>
-          {!isLoginPage && <Navbar />}
+          {!isLoginPage && <Navbar onSearchTermChange={handleSearchTermChange} />}
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/product/:productId" element={<ProductDetails />} />
@@ -29,7 +36,7 @@ const App = () => {
             <Route path="/cart" element={<ShoppingCartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/Orders" element={<OrderPage />} />
-            <Route index element={<HomePage />} />
+            <Route index element={<HomePage searchTerm={searchTerm} />} />
           </Routes>
         </UploadProvider>
       </AuthProvider>
@@ -38,3 +45,4 @@ const App = () => {
 };
 
 export default App;
+

@@ -128,6 +128,21 @@ const createOrder = async (userId, promoCode, courier) => {
             }
         }
 
+        // Check for affiliate discount
+        if (user && user.affiliate_usage) {
+            // Calculate affiliate discount (50% off total item price)
+            affiliateDiscountAmount = 0.5 * totalPrice;
+            // Update user affiliate_usage to false
+            await prisma.user.update({
+                where: {
+                    user_id: userIdInt,
+                },
+                data: {
+                    affiliate_usage: false,
+                },
+            });
+        }
+
         const totalPriceWithDiscounts = totalPrice - promoDiscountAmount - affiliateDiscountAmount;
         const totalPriceWithShipping = totalPriceWithDiscounts + totalShippingFee;
 
@@ -143,7 +158,7 @@ const createOrder = async (userId, promoCode, courier) => {
                 deliver_fee: totalShippingFee,
                 total_price: parseFloat(totalPriceWithShipping.toFixed(2)),
                 payment_status: 'Pending',
-                order_status: 'Processing',
+                order_status: 'Pending',
                 admin: {
                     connect: {
                         admin_id: 1,
@@ -182,6 +197,7 @@ const createOrder = async (userId, promoCode, courier) => {
         throw new Error('Failed to create order');
     }
 };
+
 
 
 const getOrdersForUser = async (userId) => {
@@ -237,6 +253,32 @@ const getOrderById = async (orderId) => {
     }
 };
 
+const completeOrder = async (orderId) => {
+    try {
+        const orderIdInt = parseInt(orderId, 10);
+
+        const updatedOrder = await prisma.orders.update({
+            where: {
+                order_id: orderIdInt,
+            },
+            data: {
+                order_status: 'Finished',
+            },
+        });
+
+        if (!updatedOrder) {
+            console.error('Order not found');
+            throw new Error('Order not found');
+        }
+
+        return updatedOrder;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Failed to complete order');
+    }
+};
+
+
 module.exports = {
     createOrder,
     getOrdersForUser,
@@ -244,4 +286,5 @@ module.exports = {
     calculateTotalPrice,
     groupItemsByWarehouse,
     getOrderById,
+    completeOrder
 };

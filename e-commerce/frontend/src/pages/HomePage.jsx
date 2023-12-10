@@ -3,16 +3,16 @@ import FilterBar from '../component/FilterBar';
 import ProductGrid from '../component/ProductGrid/ProductGrid';
 import { getAllProducts, getProducts } from '../api/api';
 
-const HomePage = () => {
+const HomePage = ({ searchTerm }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sortingOption, setSortingOption] = useState(null);
-  const [allProducts, setAllProducts] = useState([]);
+  const [searchedProducts, setSearchedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, sortingOption, selectedCategory]);
+  }, [currentPage, sortingOption, selectedCategory, searchTerm]);
 
   const fetchProducts = async () => {
     try {
@@ -20,41 +20,30 @@ const HomePage = () => {
         page: currentPage,
         limit: 12,
         filter: selectedCategory,
-        sort: sortingOption
+        sort: sortingOption,
+        search: searchTerm,
       });
-      setAllProducts(response.data)
-      setTotalPages(Math.ceil(response.length / 12));
+
+      if (response && response.data) {
+        setSearchedProducts(response.data);
+        setTotalPages(Math.ceil(response.data.length / 12));
+      } else {
+        console.error('Invalid response format:', response);
+      }
     } catch (error) {
       console.error('Error fetching all products:', error);
     }
   };
 
-  const fetchTotalProducts = async () => {
-    try {
-      const response = await getAllProducts();
-      setTotalPages(Math.ceil(response.length / 12));
-     
-    } catch (error) {
-      console.error('Error fetching all products:', error);
-    }
-  }
-  
+
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-  
-    const newFilteredProducts = allProducts
-      ? allProducts.filter(
-          (product) => !category || String(product.category_id) === String(category)
-        )
-      : [];
-  
-    console.log('Filtered Products1:', newFilteredProducts);
-    setAllProducts(newFilteredProducts);
+    fetchProducts();
   };
 
   const handleSortingChange = (option) => {
-    console.log(option);
     setSortingOption(option);
+    fetchProducts();
   };
 
   const handlePrevPage = () => {
@@ -77,7 +66,7 @@ const HomePage = () => {
       <ProductGrid
         selectedCategory={selectedCategory}
         sortingOption={sortingOption}
-        products={allProducts}
+        products={searchedProducts}
         currentPage={currentPage}
         totalPages={totalPages}
         handlePrevPage={handlePrevPage}
