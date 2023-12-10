@@ -123,7 +123,7 @@ const Order = () => {
       </Box>
 
       
-      <Box align="center" p="20px">
+      <Box p="20px">
         <VStack spacing={4} align="stretch" px={12}>
 
       {/* search bar */}

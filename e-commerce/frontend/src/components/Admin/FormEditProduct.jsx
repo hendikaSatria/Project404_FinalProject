@@ -9,7 +9,8 @@ const FormEditProduct = () => {
   const toast = useToast();
   const [categoryNames, setCategoryNames] = useState([]);
   const [warehouseNames, setWarehouseNames] = useState([]);
- 
+  const [previewImage, setPreviewImage] = useState(null);
+
 
   const [formData, setFormData] = useState({
     name: '',
@@ -82,8 +83,19 @@ const FormEditProduct = () => {
   };
 
   const handleImageChange = (e) => {
-    setFormData({ ...formData, image: e.target.files[0] });
+    const newImage = e.target.files[0];
+    setFormData({ ...formData, image: newImage });
+
+    // Tampilkan gambar baru secara langsung
+    if (newImage) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPreviewImage(e.target.result);
+      };
+      reader.readAsDataURL(newImage);
+    }
   };
+
 
 
   const handleEditProduct = async () => {
@@ -137,6 +149,7 @@ const FormEditProduct = () => {
         isClosable: true,
       });
     }
+
   };
 
   return (
@@ -147,7 +160,7 @@ const FormEditProduct = () => {
           <Button colorScheme="blue">Kembali ke Produk</Button>
         </Link>
       </Box>
-  
+
       <form encType="multipart/form-data">
         <Grid templateColumns="repeat(2, 1fr)" gap={4}>
           <Box>
@@ -160,7 +173,7 @@ const FormEditProduct = () => {
               onChange={handleInputChange}
               mb={3}
             />
-  
+
             <label>Deskripsi</label>
             <Input
               type="text"
@@ -171,7 +184,7 @@ const FormEditProduct = () => {
               mb={3}
             />
           </Box>
-  
+
           <Box>
             <label>Harga</label>
             <Input
@@ -182,7 +195,7 @@ const FormEditProduct = () => {
               onChange={handleInputChange}
               mb={3}
             />
-  
+
             <label>Stok</label>
             <Input
               type="number"
@@ -194,7 +207,7 @@ const FormEditProduct = () => {
             />
           </Box>
         </Grid>
-  
+
         <Grid templateColumns="repeat(2, 1fr)" gap={4}>
           <Box>
             <label>Nama Kategori</label>
@@ -214,7 +227,7 @@ const FormEditProduct = () => {
                 ))}
             </Select>
           </Box>
-  
+
           <Box>
             <label>Nama Gudang</label>
             <Select
@@ -234,7 +247,7 @@ const FormEditProduct = () => {
             </Select>
           </Box>
         </Grid>
-  
+
         <Grid templateColumns="repeat(2, 1fr)" gap={4}>
           <Box>
             <label>Berat</label>
@@ -249,10 +262,19 @@ const FormEditProduct = () => {
             <label>Ubah Gambar</label>
             <Input type="file" name="image" onChange={handleImageChange} mb={3} />
           </Box>
-  
+
           <Box>
-            <label>Gambar Produk Saat Ini</label>
-            {formData.image && (
+            <label>Gambar Produk </label>
+            {previewImage && (
+              <img
+                src={previewImage}
+                alt={formData.name}
+                mb={2}
+                width="100%"
+                style={{ width: '200px', height: '300px', margin: 'right' }}
+              />
+            )}
+            {!previewImage && formData.image && (
               <img
                 src={`http://localhost:3000/images/${formData.image}`}
                 alt={formData.name}
@@ -263,7 +285,7 @@ const FormEditProduct = () => {
             )}
           </Box>
         </Grid>
-  
+
         <Button colorScheme="blue" mt={4} onClick={handleEditProduct}>
           Simpan Perubahan
         </Button>
