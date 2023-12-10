@@ -44,6 +44,38 @@ const groupItemsByCategory = (cartItems) => {
     return Object.values(categoryGroups);
 };
 
+const updateProductStock = async (productId, quantity) => {
+    try {
+        const product = await prisma.product.findUnique({
+            where: {
+                product_id: productId,
+            },
+        });
+
+        if (!product) {
+            throw new Error('Product not found');
+        }
+
+        const newStockQuantity = product.stock - quantity;
+
+        if (newStockQuantity < 0) {
+            throw new Error('Insufficient stock');
+        }
+
+        await prisma.product.update({
+            where: {
+                product_id: productId,
+            },
+            data: {
+                stock: newStockQuantity,
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Failed to update product stock');
+    }
+};
+
 
 const createOrder = async (userId, promoCode, courier) => {
     try {
@@ -97,8 +129,19 @@ const createOrder = async (userId, promoCode, courier) => {
                 totalShippingFee += warehouseShippingFee;
                 const warehouseTotalPrice = calculateTotalPrice(warehouseGroup);
                 totalPrice += warehouseTotalPrice;
+
+                // Update product stock for each item in the warehouse group
+                for (const cartItem of warehouseGroup) {
+                    const productId = cartItem.product.product_id;
+                    const quantity = cartItem.quantity;
+
+                    // Update the stock for each product in the order
+                    await updateProductStock(productId, quantity);
+                }
             }
         }
+
+
 
         let promoDiscountAmount = 0;
         let affiliateDiscountAmount = 0;
