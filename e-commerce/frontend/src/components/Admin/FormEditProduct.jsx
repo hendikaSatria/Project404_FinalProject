@@ -175,7 +175,7 @@ const FormEditProduct = () => {
           <Box>
             <label>Harga</label>
             <Input
-              type="text"
+              type="number"
               name="price"
               placeholder="Harga"
               value={formData.price}
