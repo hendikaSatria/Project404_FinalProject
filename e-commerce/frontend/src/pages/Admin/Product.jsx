@@ -20,7 +20,7 @@ import {
   VStack,
 
 } from '@chakra-ui/react';
-import { SearchIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { SearchIcon, AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -33,7 +33,7 @@ const Product = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchError, setSearchError] = useState('');
-
+  const [lowStockProducts, setLowStockProducts] = useState([]);
   const cancelRef = React.useRef();
 
   useEffect(() => {
@@ -54,9 +54,21 @@ const Product = () => {
         const endpoint = `http://localhost:3000/product/filter/${encodedCategory}`;
         response = await axios.get(endpoint);
       }
-
-      setFilteredProducts(response.data); // Simpan hasil filter kategori ke dalam filteredProducts
-      setProducts(response.data); // Tampilkan hasil filter kategori sebagai hasil utama
+  
+      const allProducts = response.data;
+  
+      // Urutkan produk berdasarkan nama sebelum ditampilkan
+      const sortedProducts = allProducts.slice().sort((a, b) => a.name.localeCompare(b.name));
+  
+      // Filter produk dengan stok di bawah 5
+      const lowStockProducts = sortedProducts.filter((product) => product.stock < 5);
+      setLowStockProducts(lowStockProducts);
+  
+      // Simpan hasil filter kategori ke dalam filteredProducts
+      setFilteredProducts(sortedProducts);
+  
+      // Tampilkan hasil filter kategori 
+      setProducts(sortedProducts);
     } catch (error) {
       console.error('Error fetching or filtering products:', error);
     }
@@ -142,7 +154,7 @@ const Product = () => {
           Product Management
         </Text>
       </Box>
-      <Box align="center" p="20px">
+      <Box align="Justify" p="20px">
         <VStack spacing={4} align="stretch" px={12}>
           <Flex >
             <InputGroup ml="auto" maxW="500px">
@@ -181,11 +193,11 @@ const Product = () => {
             <Select
               ml="auto"
               maxW="500px"
-              placeholder="Filter by Category"
+              placeholder="Berdasarkan Kategori"
               value={selectedCategory}
               onChange={handleSelectChange}
             >
-              <option value="">All Categories</option>
+              <option value="">Semua kategori</option>
               {categories
                 .slice() // Membuat salinan array untuk menghindari perubahan langsung
                 .sort() // Mengurutkan array sesuai abjad
@@ -233,24 +245,30 @@ const Product = () => {
                       <Text color="gray.500" fontSize="sm">
                         Harga: Rp. {product.price}
                       </Text>
-                      <Text color="gray.500" fontSize="sm">
+                      <Text color={product.stock < 5 ? 'red' : 'black'} fontWeight={product.stock < 5 ? 'bold' : 'normal'} fontSize="sm">
                         Stock: {product.stock}
                       </Text>
                       <Text color="gray.500" fontSize="sm">
-                        Category: {product.category?.category_name || 'Unknown Category'}
+                        kategori: {product.category?.category_name || 'Unknown Category'}
                       </Text>
                       <Text color="gray.500" fontSize="sm">
-                        Warehouse: {product.warehouse?.warehouse_name || 'Unknown Warehouse'}
+                        Gudang: {product.warehouse?.warehouse_name || 'Unknown Warehouse'}
                       </Text>
                     </Box>
                     <Box ml="5">
                       <Link to={`/admin/product/edit/${product.product_id}`}>
-                        <Tooltip label="Edit Product" fontSize="md">
-                          <Button colorScheme="yellow" mb={2} fontSize="sm">
-                            Edit
-                          </Button>
-                        </Tooltip>
-                      </Link><Button
+                        <Button
+                          colorScheme="yellow"
+                          mb={2}
+                          fontSize="sm"
+                        >
+                          <Tooltip label="Edit Product" fontSize="md">
+                            <EditIcon />
+                          </Tooltip>
+                        </Button>
+                      </Link>
+
+                      <Button
                         colorScheme="red"
                         mb={2}
                         ml={2}
