@@ -54,17 +54,21 @@ const Product = () => {
         const endpoint = `http://localhost:3000/product/filter/${encodedCategory}`;
         response = await axios.get(endpoint);
       }
-
+  
       const allProducts = response.data;
-      setFilteredProducts(allProducts);
-
+  
+      // Urutkan produk berdasarkan nama sebelum ditampilkan
+      const sortedProducts = allProducts.slice().sort((a, b) => a.name.localeCompare(b.name));
+  
       // Filter produk dengan stok di bawah 5
-      const lowStockProducts = allProducts.filter((product) => product.stock < 5);
+      const lowStockProducts = sortedProducts.filter((product) => product.stock < 5);
       setLowStockProducts(lowStockProducts);
-
-      setProducts(allProducts);
-      setFilteredProducts(response.data); // Simpan hasil filter kategori ke dalam filteredProducts
-      setProducts(response.data); // Tampilkan hasil filter kategori sebagai hasil utama
+  
+      // Simpan hasil filter kategori ke dalam filteredProducts
+      setFilteredProducts(sortedProducts);
+  
+      // Tampilkan hasil filter kategori 
+      setProducts(sortedProducts);
     } catch (error) {
       console.error('Error fetching or filtering products:', error);
     }
