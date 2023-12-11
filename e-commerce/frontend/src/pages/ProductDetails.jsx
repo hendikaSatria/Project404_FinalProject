@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Flex, Image, Text, Button } from '@chakra-ui/react';
-import { getProductById, addToCart, fetchUserData, fetchCart } from '../api/api';
-import { useAuth } from '../context/AuthContext';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Box, Flex, Image, Text, Button } from "@chakra-ui/react";
+import {
+  getProductById,
+  addToCart,
+  fetchUserData,
+  fetchCart,
+} from "../api/api";
+import { useAuth } from "../context/AuthContext";
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -12,14 +17,13 @@ const ProductDetails = () => {
   const { token } = useAuth();
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
         const productData = await getProductById(productId);
         setProduct(productData);
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error("Error fetching product details:", error);
       }
     };
 
@@ -30,7 +34,7 @@ const ProductDetails = () => {
         const cartData = await fetchCart(userId);
         setCartItems(cartData);
       } catch (error) {
-        console.error('Error fetching cart items:', error);
+        console.error("Error fetching cart items:", error);
       }
     };
 
@@ -39,7 +43,10 @@ const ProductDetails = () => {
   }, [productId, token]);
 
   const handleIncrement = () => {
-    const totalQuantityInCart = cartItems.reduce((total, item) => total + item.quantity, 0);
+    const totalQuantityInCart = cartItems.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
     const remainingStock = product.stock - totalQuantityInCart;
 
     if (quantity < remainingStock) {
@@ -56,9 +63,9 @@ const ProductDetails = () => {
       const userData = await fetchUserData(token);
       const userId = userData.user_id;
       const response = await addToCart(userId, productId, quantity, token);
-      console.log('Added to cart:', response);
+      console.log("Added to cart:", response);
     } catch (error) {
-      console.error('Error adding to cart:', error);
+      console.error("Error adding to cart:", error);
     }
   };
 
@@ -68,18 +75,21 @@ const ProductDetails = () => {
       const userId = userData.user_id;
 
       // Check if the selected quantity exceeds the available stock
-      const totalQuantityInCart = cartItems.reduce((total, item) => total + item.quantity, 0);
+      const totalQuantityInCart = cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
       const remainingStock = product.stock - totalQuantityInCart;
 
       if (quantity > remainingStock) {
-        console.error('Selected quantity exceeds available stock.');
+        console.error("Selected quantity exceeds available stock.");
         return;
       }
       const response = await addToCart(userId, productId, quantity, token);
-      console.log('Added to cart:', response);
-      navigate('/cart');
+      console.log("Added to cart:", response);
+      navigate("/cart");
     } catch (error) {
-      console.error('Error processing checkout:', error);
+      console.error("Error processing checkout:", error);
     }
   };
 
@@ -92,7 +102,10 @@ const ProductDetails = () => {
       <Box width="80%">
         <Flex>
           <Box flex="1">
-            <Image src={product.image} alt={product.name} />
+            <Image
+              src={`http://localhost:3000/images/${product.image}`}
+              alt={product.name}
+            />
           </Box>
 
           <Box flex="1" p={4}>
@@ -105,7 +118,10 @@ const ProductDetails = () => {
             <Flex alignItems="center" mb={4}>
               <Button onClick={handleDecrement}>-</Button>
               <Text mx={4}>{quantity}</Text>
-              <Button onClick={handleIncrement} isDisabled={quantity >= product.stock}>
+              <Button
+                onClick={handleIncrement}
+                isDisabled={quantity >= product.stock}
+              >
                 +
               </Button>
             </Flex>

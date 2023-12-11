@@ -43,6 +43,7 @@ const ProductCard = ({ product }) => {
             src={`http://localhost:3000/images/${image}`}
             alt={name}
             objectFit="cover"
+            boxSize="220px"
           />
         </Box>
         <Box w="full">

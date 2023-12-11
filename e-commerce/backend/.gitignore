@@ -11,5 +11,5 @@ node_modules
 /prisma/migrations/20231130163344_branch_abel_migrate
 
 
-public
+public/images/*
 
