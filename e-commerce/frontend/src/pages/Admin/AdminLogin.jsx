@@ -48,6 +48,11 @@ const AdminLogin = () => {
       setIsLoading(false);
     }
   };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
 
   return (
     <Box
@@ -98,6 +103,7 @@ const AdminLogin = () => {
                 name="password"
                 value={credentials.password}
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
                 placeholder="Enter your password"
               />
             </FormControl>
