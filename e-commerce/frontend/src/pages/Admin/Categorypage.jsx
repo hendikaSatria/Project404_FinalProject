@@ -190,7 +190,7 @@ const Categorypage = () => {
 
   return (
     <>
-      <Box bg="blue.200" w="full" align="center" height="60px">
+      <Box bg="teal.300" w="full" align="center" height="60px">
         <Text fontWeight="bold" fontSize={"xx-large"}>
           Category
         </Text>

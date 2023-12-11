@@ -34,7 +34,6 @@ const Profile = () => {
   const [selectedProvince, setSelectedProvince] = useState("");
   const [loadingUser, setLoadingUser] = useState(true);
 
-
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {

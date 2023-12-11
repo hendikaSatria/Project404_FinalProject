@@ -3,7 +3,9 @@ const prisma = new PrismaClient();
 
 const productController = {
   getAllProduct: async (req, res) => {
-    const products = await prisma.product.findMany();
+    const products = await prisma.product.findMany({
+      where: { is_available: true },
+    });
     res.json(products || {});
   },
 

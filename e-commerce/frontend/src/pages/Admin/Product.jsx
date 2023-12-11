@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -18,21 +18,20 @@ import {
   Button,
   Tooltip,
   VStack,
-
-} from '@chakra-ui/react';
-import { SearchIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+} from "@chakra-ui/react";
+import { SearchIcon, AddIcon, DeleteIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [categories, setCategories] = useState([]); // Menyimpan daftar kategori dari server
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [searchError, setSearchError] = useState('');
+  const [searchError, setSearchError] = useState("");
 
   const cancelRef = React.useRef();
 
@@ -45,9 +44,12 @@ const Product = () => {
   const fetchProducts = async () => {
     try {
       let response;
-      if (selectedCategory.trim() === '' || selectedCategory === 'All Categories') {
+      if (
+        selectedCategory.trim() === "" ||
+        selectedCategory === "All Categories"
+      ) {
         // Jika selectedCategory kosong atau "All Categories," ambil semua produk
-        response = await axios.get('http://localhost:3000/product/detail');
+        response = await axios.get("http://localhost:3000/product/detail");
       } else {
         // Jika selectedCategory tidak kosong, lakukan filter berdasarkan kategori
         const encodedCategory = encodeURIComponent(selectedCategory);
@@ -58,25 +60,27 @@ const Product = () => {
       setFilteredProducts(response.data); // Simpan hasil filter kategori ke dalam filteredProducts
       setProducts(response.data); // Tampilkan hasil filter kategori sebagai hasil utama
     } catch (error) {
-      console.error('Error fetching or filtering products:', error);
+      console.error("Error fetching or filtering products:", error);
     }
   };
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/product/categories/names');
+      const response = await axios.get(
+        "http://localhost:3000/product/categories/names"
+      );
       setCategories(response.data);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
 
   const handleSearch = async () => {
     try {
       let response;
-      if (searchTerm.trim() === '') {
+      if (searchTerm.trim() === "") {
         // Jika searchTerm kosong, gunakan filteredProducts (hasil filter kategori)
         setProducts([...filteredProducts]);
-        setSearchError('');
+        setSearchError("");
       } else {
         // Jika searchTerm tidak kosong, lakukan pencarian pada filteredProducts
         const searchResults = filteredProducts.filter((product) =>
@@ -84,32 +88,32 @@ const Product = () => {
         );
 
         if (searchResults.length === 0) {
-          setSearchError('No products found.');
+          setSearchError("No products found.");
         } else {
-          setSearchError('');
+          setSearchError("");
         }
 
         setProducts(searchResults);
-        setSearchTerm(''); // Mengosongkan nilai pada searchTerm setelah selesai pencarian
+        setSearchTerm(""); // Mengosongkan nilai pada searchTerm setelah selesai pencarian
       }
     } catch (error) {
-      console.error('Error searching products:', error);
+      console.error("Error searching products:", error);
     }
   };
 
   const handleKeyDown = (e) => {
     // Jika tombol yang ditekan adalah "Enter", panggil fungsi handleSearch
-    if (e.key === 'Enter') {
-      setSearchError(''); // Reset pesan kesalahan sebelum melakukan pencarian baru
+    if (e.key === "Enter") {
+      setSearchError(""); // Reset pesan kesalahan sebelum melakukan pencarian baru
       handleSearch();
     }
   };
 
   const handleSelectChange = (e) => {
     const category = e.target.value;
-    console.log('Selected Category (before):', selectedCategory);
+    console.log("Selected Category (before):", selectedCategory);
     setSelectedCategory(category);
-    setSearchError(''); // Mengosongkan nilai pada searchError setelah filterisasi
+    setSearchError(""); // Mengosongkan nilai pada searchError setelah filterisasi
   };
 
   const handleDelete = (productId) => {
@@ -120,10 +124,12 @@ const Product = () => {
   const confirmDelete = async () => {
     try {
       await axios.delete(`http://localhost:3000/product/${selectedProductId}`);
-      const updatedProducts = products.filter((product) => product.product_id !== selectedProductId);
+      const updatedProducts = products.filter(
+        (product) => product.product_id !== selectedProductId
+      );
       setProducts(updatedProducts);
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error("Error deleting product:", error);
     } finally {
       setIsAlertDialogOpen(false);
       setSelectedProductId(null);
@@ -137,16 +143,19 @@ const Product = () => {
 
   return (
     <Flex justifyContent="space-between" flexDirection="column">
-      <Box bg="blue.200" w="full" align="center" height="60px">
+      <Box bg="teal.300" w="full" align="center" height="60px">
         <Text fontWeight="bold" fontSize={"xx-large"}>
           Product Management
         </Text>
       </Box>
       <Box align="center" p="20px">
         <VStack spacing={4} align="stretch" px={12}>
-          <Flex >
+          <Flex>
             <InputGroup ml="auto" maxW="500px">
-              <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
+              <InputLeftElement
+                pointerEvents="none"
+                children={<SearchIcon color="gray.300" />}
+              />
               <Input
                 placeholder="Search Product"
                 value={searchTerm}
@@ -201,7 +210,15 @@ const Product = () => {
               {searchError}
             </Box>
           )}
-          <Box rounded="3xl" overflowX="auto" overflowY="auto" backgroundColor="#F2F2F2" maxH="500px" px="5" py="5">
+          <Box
+            rounded="3xl"
+            overflowX="auto"
+            overflowY="auto"
+            backgroundColor="#F2F2F2"
+            maxH="500px"
+            px="5"
+            py="5"
+          >
             <Flex flexWrap="wrap" justifyContent="space-between" rounded="3xl">
               {products.map((product) => (
                 <Box
@@ -211,7 +228,7 @@ const Product = () => {
                   bg="white"
                   boxShadow="md"
                   borderRadius="md"
-                  width={['100%', '48%']}
+                  width={["100%", "48%"]}
                 >
                   <Flex justifyContent="space-between">
                     <Box flex="1" mr="5">
@@ -222,7 +239,11 @@ const Product = () => {
                         mb={2}
                         width="100%"
                         borderRadius="md"
-                        style={{ width: '400px', height: '600px', margin: 'auto' }}
+                        style={{
+                          width: "400px",
+                          height: "600px",
+                          margin: "auto",
+                        }}
                       />
                     </Box>
                     <Box flex="2" pl="5" justifyContent="space-between">
@@ -237,10 +258,13 @@ const Product = () => {
                         Stock: {product.stock}
                       </Text>
                       <Text color="gray.500" fontSize="sm">
-                        Category: {product.category?.category_name || 'Unknown Category'}
+                        Category:{" "}
+                        {product.category?.category_name || "Unknown Category"}
                       </Text>
                       <Text color="gray.500" fontSize="sm">
-                        Warehouse: {product.warehouse?.warehouse_name || 'Unknown Warehouse'}
+                        Warehouse:{" "}
+                        {product.warehouse?.warehouse_name ||
+                          "Unknown Warehouse"}
                       </Text>
                     </Box>
                     <Box ml="5">
@@ -250,7 +274,8 @@ const Product = () => {
                             Edit
                           </Button>
                         </Tooltip>
-                      </Link><Button
+                      </Link>
+                      <Button
                         colorScheme="red"
                         mb={2}
                         ml={2}
@@ -266,20 +291,23 @@ const Product = () => {
                 </Box>
               ))}
             </Flex>
-
-
           </Box>
         </VStack>
       </Box>
 
-      <AlertDialog isOpen={isAlertDialogOpen} leastDestructiveRef={cancelRef} onClose={cancelDelete}>
+      <AlertDialog
+        isOpen={isAlertDialogOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={cancelDelete}
+      >
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Delete Product
             </AlertDialogHeader>
             <AlertDialogBody>
-              Are you sure you want to delete this product? You can't undo this action.
+              Are you sure you want to delete this product? You can't undo this
+              action.
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button colorScheme="gray" onClick={cancelDelete}>
