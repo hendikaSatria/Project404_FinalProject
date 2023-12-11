@@ -159,7 +159,7 @@ const FormAddProduct = () => {
         </Box>
         <Box mb={3}>
           <Input
-            type="text"
+            type="number"
             name="price"
             placeholder="Harga"
             value={formData.price}

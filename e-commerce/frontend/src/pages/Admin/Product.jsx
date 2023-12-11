@@ -189,11 +189,11 @@ const Product = () => {
             <Select
               ml="auto"
               maxW="500px"
-              placeholder="Filter by Category"
+              placeholder="Berdasarkan Kategori"
               value={selectedCategory}
               onChange={handleSelectChange}
             >
-              <option value="">All Categories</option>
+              <option value="">Semua kategori</option>
               {categories
                 .slice() // Membuat salinan array untuk menghindari perubahan langsung
                 .sort() // Mengurutkan array sesuai abjad
