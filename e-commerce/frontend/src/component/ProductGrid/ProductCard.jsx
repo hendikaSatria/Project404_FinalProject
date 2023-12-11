@@ -13,6 +13,7 @@ import { useAuth } from "../../context/AuthContext";
 
 const ProductCard = ({ product }) => {
   const { product_id, name, price, image } = product;
+  // console.log(image);
   const navigate = useNavigate();
   const { token } = useAuth();
 
@@ -38,7 +39,11 @@ const ProductCard = ({ product }) => {
     >
       <VStack>
         <Box>
-          <Image src={image} alt={name} objectFit="cover" />
+          <Image
+            src={`http://localhost:3000/images/${image}`}
+            alt={name}
+            objectFit="cover"
+          />
         </Box>
         <Box w="full">
           <Text fontSize={["sm", "md", "lg", "xl"]} fontWeight="bold">

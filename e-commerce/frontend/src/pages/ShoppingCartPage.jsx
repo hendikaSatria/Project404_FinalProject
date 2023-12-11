@@ -114,9 +114,19 @@ const ShoppingCartPage = () => {
       h="100vh"
       bg={"gray.200"}
     >
-      <Text fontSize="2xl" fontWeight="bold" mb={4}>
-        Shopping Cart
-      </Text>
+      <Box
+        bg="teal.300"
+        m={4}
+        p={2}
+        w="50%"
+        align="center"
+        rounded="full"
+        boxShadow="lg"
+      >
+        <Text fontSize="4xl" fontWeight="bold" mb={4}>
+          Shopping Cart
+        </Text>
+      </Box>
       <Flex
         width="90%"
         // justify="space-between"
