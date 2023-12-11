@@ -3,7 +3,9 @@ const prisma = new PrismaClient();
 
 const categoryController = {
   getAll: async (req, res) => {
-    const categorys = await prisma.category.findMany();
+    const categorys = await prisma.category.findMany({
+      where: { deleted: false },
+    });
     res.status(200).json({ categorys });
   },
 
@@ -59,9 +61,12 @@ const categoryController = {
   deleteCategory: async (req, res) => {
     try {
       const { id } = req.params;
-      const category = await prisma.category.delete({
+      const category = await prisma.category.update({
         where: {
           category_id: Number(id),
+        },
+        data: {
+          deleted: true,
         },
       });
       res

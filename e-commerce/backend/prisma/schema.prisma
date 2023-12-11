@@ -68,7 +68,8 @@ model AffiliateDiscount {
 // Category Model
 model Category {
   category_id   Int      @id @default(autoincrement())
-  category_name String
+  category_name String   @unique
+  deleted       Boolean  @default(false)
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 
@@ -205,12 +206,14 @@ model ProofsOfPayment {
 // Warehouse Table
 model Warehouse {
   warehouse_id  Int    @id @default(autoincrement())
+  warehouse_name String
   province_id   Int
   province_name String
   city_id       Int
   city_name     String
   postal_code   Int
   admin_id      Int
+  deleted       Boolean   @default(false)
 
   // Relationships
   admin      Admin     @relation(fields: [admin_id], references: [admin_id])

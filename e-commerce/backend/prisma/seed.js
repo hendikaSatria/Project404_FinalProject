@@ -16,6 +16,7 @@ async function main() {
     data: [
       {
         province_id: 31,
+        warehouse_name: "Kalideres",
         province_name: "DKI Jakarta",
         city_id: 1,
         city_name: "Jakarta Pusat",
@@ -24,6 +25,7 @@ async function main() {
       },
       {
         province_id: 31,
+        warehouse_name: "Kalikalian",
         province_name: "DKI Jakarta",
         city_id: 2,
         city_name: "Jakarta Selatan",
@@ -75,7 +77,8 @@ async function main() {
         is_available: true,
         category_id: 1,
         warehouse_id: 1,
-        image: "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/6/28/1f7d2b33-708e-460a-a680-cf86649e6e23.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/6/28/1f7d2b33-708e-460a-a680-cf86649e6e23.jpg",
         weight: 500,
       },
       {
@@ -86,7 +89,8 @@ async function main() {
         is_available: true,
         category_id: 1,
         warehouse_id: 1,
-        image: "https://images.tokopedia.net/img/cache/900/hDjmkQ/2023/12/6/78dfeaeb-4285-453f-80cd-36c374c5863b.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/hDjmkQ/2023/12/6/78dfeaeb-4285-453f-80cd-36c374c5863b.jpg",
         weight: 400,
       },
       {
@@ -97,7 +101,8 @@ async function main() {
         is_available: true,
         category_id: 2,
         warehouse_id: 2,
-        image: "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/8/10/828fca69-244a-450b-8907-d062e32c5869.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/8/10/828fca69-244a-450b-8907-d062e32c5869.jpg",
         weight: 700,
       },
       {
@@ -108,7 +113,8 @@ async function main() {
         is_available: true,
         category_id: 2,
         warehouse_id: 2,
-        image: "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/5/9/fb7bc428-dd51-4e38-9796-c29660442a46.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/5/9/fb7bc428-dd51-4e38-9796-c29660442a46.jpg",
         weight: 0.6,
       },
       {
@@ -119,7 +125,8 @@ async function main() {
         is_available: true,
         category_id: 3,
         warehouse_id: 1,
-        image: "https://images.tokopedia.net/img/cache/900/VqbcmM/2021/9/8/06eed048-7b60-4d57-aa33-ab039d6c194d.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/VqbcmM/2021/9/8/06eed048-7b60-4d57-aa33-ab039d6c194d.jpg",
         weight: 0.8,
       },
       {
@@ -130,7 +137,8 @@ async function main() {
         is_available: true,
         category_id: 3,
         warehouse_id: 1,
-        image: "https://images.tokopedia.net/img/cache/900/hDjmkQ/2023/2/28/156d7585-a822-4dde-bf2a-77ba1263462b.png",
+        image:
+          "https://images.tokopedia.net/img/cache/900/hDjmkQ/2023/2/28/156d7585-a822-4dde-bf2a-77ba1263462b.png",
         weight: 0.4,
       },
       {
@@ -141,9 +149,11 @@ async function main() {
         is_available: false,
         category_id: 4,
         warehouse_id: 2,
-        image: "https://images.tokopedia.net/img/cache/900/VqbcmM/2020/11/4/8a032b65-bb05-45a1-b1ea-20ffdebb5fbb.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/VqbcmM/2020/11/4/8a032b65-bb05-45a1-b1ea-20ffdebb5fbb.jpg",
         weight: 1.2,
-      }, {
+      },
+      {
         name: "Switsall",
         description: "Description for Product 1",
         price: 18000,
@@ -151,7 +161,8 @@ async function main() {
         is_available: true,
         category_id: 1,
         warehouse_id: 1,
-        image: "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/6/28/1f7d2b33-708e-460a-a680-cf86649e6e23.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/6/28/1f7d2b33-708e-460a-a680-cf86649e6e23.jpg",
         weight: 500,
       },
       {
@@ -162,7 +173,8 @@ async function main() {
         is_available: true,
         category_id: 1,
         warehouse_id: 1,
-        image: "https://images.tokopedia.net/img/cache/900/hDjmkQ/2023/12/6/78dfeaeb-4285-453f-80cd-36c374c5863b.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/hDjmkQ/2023/12/6/78dfeaeb-4285-453f-80cd-36c374c5863b.jpg",
         weight: 400,
       },
       {
@@ -173,7 +185,8 @@ async function main() {
         is_available: true,
         category_id: 2,
         warehouse_id: 2,
-        image: "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/8/10/828fca69-244a-450b-8907-d062e32c5869.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/8/10/828fca69-244a-450b-8907-d062e32c5869.jpg",
         weight: 700,
       },
       {
@@ -184,7 +197,8 @@ async function main() {
         is_available: true,
         category_id: 2,
         warehouse_id: 2,
-        image: "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/5/9/fb7bc428-dd51-4e38-9796-c29660442a46.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/5/9/fb7bc428-dd51-4e38-9796-c29660442a46.jpg",
         weight: 0.6,
       },
       {
@@ -195,7 +209,8 @@ async function main() {
         is_available: true,
         category_id: 3,
         warehouse_id: 1,
-        image: "https://images.tokopedia.net/img/cache/900/VqbcmM/2021/9/8/06eed048-7b60-4d57-aa33-ab039d6c194d.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/VqbcmM/2021/9/8/06eed048-7b60-4d57-aa33-ab039d6c194d.jpg",
         weight: 0.8,
       },
       {
@@ -206,7 +221,8 @@ async function main() {
         is_available: true,
         category_id: 3,
         warehouse_id: 1,
-        image: "https://images.tokopedia.net/img/cache/900/hDjmkQ/2023/2/28/156d7585-a822-4dde-bf2a-77ba1263462b.png",
+        image:
+          "https://images.tokopedia.net/img/cache/900/hDjmkQ/2023/2/28/156d7585-a822-4dde-bf2a-77ba1263462b.png",
         weight: 0.4,
       },
       {
@@ -217,14 +233,15 @@ async function main() {
         is_available: false,
         category_id: 4,
         warehouse_id: 2,
-        image: "https://images.tokopedia.net/img/cache/900/VqbcmM/2020/11/4/8a032b65-bb05-45a1-b1ea-20ffdebb5fbb.jpg",
+        image:
+          "https://images.tokopedia.net/img/cache/900/VqbcmM/2020/11/4/8a032b65-bb05-45a1-b1ea-20ffdebb5fbb.jpg",
         weight: 1.2,
       },
     ],
   });
 
-
   //seeding User
+
   // const user = await prisma.user.createMany({
   //   data: [
   //     {
@@ -302,38 +319,38 @@ async function main() {
 
   await prisma.promotion.create({
     data: {
-      type: 'percentage',
+      type: "percentage",
       maximum_usage: 100,
       amount: 10,
       remaining_usage: 100,
       admin_id: 1,
-      promo_code: 'percentage_10_off'
+      promo_code: "percentage_10_off",
     },
   });
 
   await prisma.promotion.create({
     data: {
-      type: 'fixed',
+      type: "fixed",
       maximum_usage: 50,
       amount: 50,
       remaining_usage: 50,
       admin_id: 1,
-      promo_code: 'fixed_50'
+      promo_code: "fixed_50",
     },
   });
 
   await prisma.promotion.create({
     data: {
-      type: 'category 1',
+      type: "category 1",
       maximum_usage: 50,
       amount: 15, // 15% discount for specific category
       remaining_usage: 50,
       admin_id: 1,
-      promo_code: 'category 1'
+      promo_code: "category 1",
     },
   });
 
-  console.log('Promo seed data created successfully');
+  console.log("Promo seed data created successfully");
 }
 
 main()

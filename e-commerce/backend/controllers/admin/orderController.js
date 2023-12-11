@@ -1,13 +1,13 @@
 const { PrismaClient } = require("../../prisma/generated/client");
 const prisma = new PrismaClient();
 
-const OrderController = {
-  getAllOrders: async (req, res) => {
-    const orders = await prisma.orders.findMany({
-      include: { order_items: true },
-    });
-    res.json(orders);
-  },
+  const OrderController = {
+    getAllOrders: async (req, res) => {
+      const orders = await prisma.orders.findMany({
+        include: { order_items: true },
+      });
+      res.json(orders);
+    },
 
   getOrderById: async (req, res) => {
     const orderId = parseInt(req.params.id);
@@ -42,6 +42,40 @@ const OrderController = {
 
     res.json({ message: 'Order deleted successfully' });
   },
+
+  getOrderDetails: async (req, res) => {
+    try {
+      const orderDetails = await prisma.orders.findMany({
+        select: {
+          order_id: true,
+          order_date: true,
+          total_price: true,
+          order_items: {
+            select: {
+              product: {
+                select: {
+                  name: true,
+                },
+              },
+              quantity: true,
+              price: true,
+            },
+          },
+          order_status: true,
+          ProofsOfPayment: {
+            select: {
+              image: true,
+            },
+          },
+        },
+      });
+  
+      res.json(orderDetails);
+    } catch (error) {
+      console.error('Error retrieving order details:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
 };
 
-module.exports = OrderController;
+  module.exports = OrderController;
