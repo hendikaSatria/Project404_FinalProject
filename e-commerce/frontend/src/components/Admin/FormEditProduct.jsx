@@ -286,7 +286,7 @@ const FormEditProduct = () => {
           </Box>
         </Grid>
 
-        <Button colorScheme="blue" mt={4} onClick={handleEditProduct}>
+        <Button colorScheme="green" mt={4} onClick={handleEditProduct}>
           Simpan Perubahan
         </Button>
       </form>

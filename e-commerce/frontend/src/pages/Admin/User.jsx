@@ -95,7 +95,7 @@ const User = () => {
           roundedRight="md" // Styling for the right side of the button
         />
       </Box>
-      <Box border="1px solid" rounded="3xl" overflowX="auto" overflowY="auto" maxH="500px">
+      <Box overflowX="auto" overflowY="auto" maxH="500px">
         <Table variant="simple">
           <Thead>
             <Tr>
