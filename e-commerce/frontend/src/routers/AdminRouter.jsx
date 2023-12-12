@@ -15,12 +15,12 @@ import User from "../pages/Admin/User";
 import Product from "../pages/Admin/Product";
 import FormAddProduct from "../Components/Admin/FormAddProduct";
 import FormEditProduct from "../Components/Admin/FormEditProduct";
-import AdminSidebar from "../components/Admin/AdminSidebar";
+import AdminSidebar from "../Components/Admin/AdminSidebar";
 import Warehousepage from "../pages/Admin/Warehousepage";
-import WarehouseForm from "../components/Admin/WarehouseForm";
+import WarehouseForm from "../Components/Admin/WarehouseForm";
 import Categorypage from "../pages/Admin/Categorypage";
 import Promopage from "../pages/Admin/Promopage";
-import PromoForm from "../components/Admin/PromoForm";
+import PromoForm from "../Components/Admin/PromoForm";
 
 const checkAuthentication = () => {
   // Periksa apakah token ada di localStorage
@@ -102,19 +102,18 @@ const AdminRouter = () => {
                 <Route
                   path="warehouse/:id"
                   element={<PrivateRoute element={<WarehouseForm />} />}
-                 />
-                <Route 
-                  path="/promo" 
+                />
+                <Route
+                  path="/promo"
                   element={<PrivateRoute element={<Promopage />} />}
                 />
-                <Route 
-                  path="/promo/:id" 
+                <Route
+                  path="/promo/:id"
                   element={<PrivateRoute element={<PromoForm />} />}
-                  />
-                <Route 
-                  path="/promo/create" 
+                />
+                <Route
+                  path="/promo/create"
                   element={<PrivateRoute element={<PromoForm />} />}
-
                 />
               </Routes>
             </Box>

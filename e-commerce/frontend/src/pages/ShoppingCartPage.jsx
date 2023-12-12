@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Flex, VStack, Text, Button, Box } from "@chakra-ui/react";
-import ItemList from "../component/CartProduct/CartItemList";
+import ItemList from "../Components/CartProduct/CartItemList";
 import * as api from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";

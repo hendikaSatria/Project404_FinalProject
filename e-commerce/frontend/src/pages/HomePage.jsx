@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import FilterBar from '../component/FilterBar';
-import ProductGrid from '../component/ProductGrid/ProductGrid';
-import { getAllProducts, getProducts } from '../api/api';
+import React, { useState, useEffect } from "react";
+import FilterBar from "../Components/FilterBar";
+import ProductGrid from "../Components/ProductGrid/ProductGrid";
+import { getAllProducts, getProducts } from "../api/api";
 
 const HomePage = ({ searchTerm }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -28,13 +28,12 @@ const HomePage = ({ searchTerm }) => {
         setSearchedProducts(response.data);
         setTotalPages(Math.ceil(response.data.length / 12));
       } else {
-        console.error('Invalid response format:', response);
+        console.error("Invalid response format:", response);
       }
     } catch (error) {
-      console.error('Error fetching all products:', error);
+      console.error("Error fetching all products:", error);
     }
   };
-
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);

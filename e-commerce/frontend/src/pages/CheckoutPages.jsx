@@ -14,10 +14,10 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
-import TopSection from "../component/CheckoutComponent/TopSection";
-import LeftSection from "../component/CheckoutComponent/LeftSection";
-import RightSection from "../component/CheckoutComponent/RightSection";
-import PromoCard from "../component/Promo/PromoCard";
+import TopSection from "../Components/CheckoutComponent/TopSection";
+import LeftSection from "../Components/CheckoutComponent/LeftSection";
+import RightSection from "../Components/CheckoutComponent/RightSection";
+import PromoCard from "../Components/Promo/PromoCard";
 import { getAllPromo, getShippingFee, fetchUserData } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 

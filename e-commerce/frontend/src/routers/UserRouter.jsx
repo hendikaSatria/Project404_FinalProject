@@ -11,7 +11,7 @@ import { AuthProvider } from "../context/AuthContext";
 import { UploadProvider } from "../context/UploadContext";
 import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
-import Navbar from "../component/Navbar";
+import Navbar from "../Components/Navbar";
 import ProductDetails from "../pages/ProductDetails";
 import ProfilePage from "../pages/ProfilePage";
 import ShoppingCartPage from "../pages/ShoppingCartPage";

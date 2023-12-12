@@ -1,6 +1,6 @@
 import React from "react";
 import { ChakraProvider, Box, Text, HStack } from "@chakra-ui/react";
-import OrderList from "../component/OrderComponent/OrderList";
+import OrderList from "../Components/OrderComponent/OrderList";
 import { FaBox } from "react-icons/fa";
 
 const OrderPage = () => {

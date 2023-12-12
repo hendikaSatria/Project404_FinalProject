@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import './LoginPage.css';
-import ToastMessage from "../component/toast";
+import ToastMessage from "../Components/toast";
 import { useNavigate } from "react-router-dom";
 import { Center, useToast } from "@chakra-ui/react";
 import { loginUser, registerUser } from "../api/api";

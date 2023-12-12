@@ -24,11 +24,19 @@ const ItemCard = React.memo(
     const totalItemPrice = (parseFloat(price) * quantity).toFixed(2);
 
     return (
-      <Box borderBottom="1px solid #ccc" paddingY={4} w={{ base: "100%", md: "55vw" }}>
-        <HStack width="100%" justify="space-between" direction={{ base: "column", md: "row" }}>
+      <Box
+        borderBottom="1px solid #ccc"
+        paddingY={4}
+        w={{ base: "100%", md: "55vw" }}
+      >
+        <HStack
+          width="100%"
+          justify="space-between"
+          direction={{ base: "column", md: "row" }}
+        >
           <HStack align="start" ml={{ base: 0, md: 20 }}>
             <Image
-              src={image}
+              src={`http://localhost:3000/images/${image}`}
               alt={itemName}
               boxSize={{ base: "100%", md: "100px" }}
               objectFit="cover"
@@ -38,7 +46,9 @@ const ItemCard = React.memo(
             </Text>
           </HStack>
 
-          <VStack align="flex-end" ml={{ base: 0, md: 4 }}> {/* Adjust margin at different breakpoints */}
+          <VStack align="flex-end" ml={{ base: 0, md: 4 }}>
+            {" "}
+            {/* Adjust margin at different breakpoints */}
             <Text fontSize="lg" fontWeight="bold">
               Rp{totalItemPrice}
             </Text>
@@ -69,5 +79,3 @@ const ItemCard = React.memo(
 );
 
 export default ItemCard;
-
-
