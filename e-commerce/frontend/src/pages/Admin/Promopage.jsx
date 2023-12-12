@@ -61,7 +61,9 @@ export default function Promopage() {
       //Calling function from api
       await deletePromo(promoid);
 
-      const updatedPromo = promotions.filter((promotion) => promotion.promo_id !== promoid);
+      const updatedPromo = promotions.filter(
+        (promotion) => promotion.promo_id !== promoid
+      );
       setPromotions(updatedPromo);
 
       console.log("Promo deleted successfully");
@@ -80,7 +82,7 @@ export default function Promopage() {
 
   return (
     <>
-      <Box bg="blue.200" w="full" align="center" height="60px">
+      <Box bg="teal.300" w="full" align="center" height="60px">
         <Text fontSize={"xx-large"} fontWeight={"bold"}>
           Promo Management
         </Text>
@@ -104,7 +106,8 @@ export default function Promopage() {
                   _hover={{
                     rounded: "full",
                     bg: "white",
-                  }}>
+                  }}
+                >
                   <SearchIcon />
                 </Button>
               </InputRightElement>
@@ -115,7 +118,8 @@ export default function Promopage() {
               _hover={{
                 bg: "white",
                 textColor: "blue",
-              }}>
+              }}
+            >
               Add Promo
             </Button>
           </HStack>
@@ -130,10 +134,22 @@ export default function Promopage() {
               rounded={"20px"}
               mt="10px"
               boxShadow="0 3px 5px rgba(0,0,0,0.2)"
-              key={`${promotion.promo_id}`}>
-              <Grid w="full" templateColumns="repeat(3,1fr)" templateRows="repeat(1,1fr)">
+              key={`${promotion.promo_id}`}
+            >
+              <Grid
+                w="full"
+                templateColumns="repeat(3,1fr)"
+                templateRows="repeat(1,1fr)"
+              >
                 <GridItem>
-                  <Box w="80%" p="20px" bg="white" rounded="lg" mt="40px" align="center">
+                  <Box
+                    w="80%"
+                    p="20px"
+                    bg="white"
+                    rounded="lg"
+                    mt="40px"
+                    align="center"
+                  >
                     {" "}
                     <Text as="b"> {`${promotion.type}`} </Text>{" "}
                   </Box>
@@ -167,7 +183,8 @@ export default function Promopage() {
                       _hover={{
                         bg: "blue",
                         textColor: "white",
-                      }}>
+                      }}
+                    >
                       Manage
                     </Button>
                     <Popover>
@@ -179,14 +196,18 @@ export default function Promopage() {
                             bg: "red",
                             textColor: "white",
                             border: "none",
-                          }}>
+                          }}
+                        >
                           Delete
                         </Button>
                       </PopoverTrigger>
                       <Portal>
                         <PopoverContent>
                           <PopoverArrow />
-                          <PopoverHeader> Proceed to delete this ? </PopoverHeader>
+                          <PopoverHeader>
+                            {" "}
+                            Proceed to delete this ?{" "}
+                          </PopoverHeader>
                           <PopoverBody>
                             <PopoverCloseButton />
                             <Button
@@ -196,7 +217,8 @@ export default function Promopage() {
                               onClick={() => handleDelete(promotion.promo_id)}
                               key={promotion.promo_id}
                               closeOnBlur
-                              closeDelay="200">
+                              closeDelay="200"
+                            >
                               Delete
                             </Button>
                           </PopoverBody>

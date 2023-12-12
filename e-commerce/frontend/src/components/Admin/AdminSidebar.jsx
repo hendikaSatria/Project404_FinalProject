@@ -5,9 +5,7 @@ import { FaClipboardList } from "react-icons/fa";
 import { BiSolidDiscount } from "react-icons/bi";
 import { IoLogOut } from "react-icons/io5";
 
-
 import { Link, useNavigate } from "react-router-dom";
-
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
@@ -18,7 +16,7 @@ const AdminSidebar = () => {
   };
 
   return (
-    <Box w="250px" h="100%" bg="blue.200" color="black" p="4">
+    <Box w="250px" h="100%" bg="teal.300" color="black" p="4">
       <VStack align="center" spacing="6">
         <Text fontSize="xl" as={"b"}>
           Admin
@@ -30,7 +28,7 @@ const AdminSidebar = () => {
             height="60px"
             width="200px"
             rounded="lg"
-            bg="blue.100"
+            bg="teal.100"
             align="center"
             boxShadow="lg"
             _hover={{
@@ -50,7 +48,7 @@ const AdminSidebar = () => {
             height="60px"
             width="200px"
             rounded="lg"
-            bg="blue.100"
+            bg="teal.100"
             align="center"
             boxShadow="lg"
             _hover={{
@@ -70,7 +68,7 @@ const AdminSidebar = () => {
             height="60px"
             width="200px"
             rounded="lg"
-            bg="blue.100"
+            bg="teal.100"
             align="center"
             boxShadow="lg"
             _hover={{
@@ -90,7 +88,7 @@ const AdminSidebar = () => {
             height="60px"
             width="200px"
             rounded="lg"
-            bg="blue.100"
+            bg="teal.100"
             align="center"
             boxShadow="lg"
             _hover={{
@@ -110,7 +108,7 @@ const AdminSidebar = () => {
             height="60px"
             width="200px"
             rounded="lg"
-            bg="blue.100"
+            bg="teal.100"
             align="center"
             boxShadow="lg"
             _hover={{
@@ -131,7 +129,7 @@ const AdminSidebar = () => {
             height="60px"
             width="200px"
             rounded="lg"
-            bg="blue.100"
+            bg="teal.100"
             align="center"
             boxShadow="lg"
             _hover={{

@@ -4,8 +4,12 @@ node_modules
 # Ignore Prisma generated files
 /prisma/generated
 
+.vscode
+
+
 # Ignore Prisma migration branch files
 /prisma/migrations/20231130163344_branch_abel_migrate
 
-.vscode/*
-public
+
+public/images/*
+
