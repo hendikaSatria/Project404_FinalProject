@@ -104,7 +104,7 @@ export default function PromoForm() {
 
   return (
     <>
-      <Box bg="blue.200" w="full" align="center" height="60px">
+      <Box bg="teal.300" w="full" align="center" height="60px">
         <Text fontWeight="bold" fontSize={"xx-large"}>
           Promotion Form
         </Text>
@@ -127,7 +127,8 @@ export default function PromoForm() {
               rounded: "full",
               transitionTimingFunction: "ease-in-out",
               bg: "gray.200",
-            }}>
+            }}
+          >
             <ArrowBackIcon />
           </Button>
           <VStack spacing="4" w="full">
@@ -198,7 +199,8 @@ export default function PromoForm() {
                   _hover={{
                     textColor: "blue",
                     bg: "white",
-                  }}>
+                  }}
+                >
                   Create Promo
                 </Button>
               )}
@@ -215,7 +217,8 @@ export default function PromoForm() {
                   _hover={{
                     textColor: "blue",
                     bg: "white",
-                  }}>
+                  }}
+                >
                   Edit Promo
                 </Button>
               )}
