@@ -175,7 +175,7 @@ const FormEditProduct = () => {
           <Box>
             <label>Harga</label>
             <Input
-              type="text"
+              type="number"
               name="price"
               placeholder="Harga"
               value={formData.price}
@@ -264,7 +264,7 @@ const FormEditProduct = () => {
           </Box>
         </Grid>
   
-        <Button colorScheme="blue" mt={4} onClick={handleEditProduct}>
+        <Button colorScheme="green" mt={4} onClick={handleEditProduct}>
           Simpan Perubahan
         </Button>
       </form>
