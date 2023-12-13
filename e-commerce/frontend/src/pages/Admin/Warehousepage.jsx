@@ -194,6 +194,7 @@ export default function WarehousePage() {
                         textAlign="center"
                         fontSize={"x-large"}
                         textColor={"red"}
+                        fontWeight={"bold"}
                       >
                         Not found !!!
                       </Td>
