@@ -173,7 +173,7 @@ const WarehouseForm = () => {
 
   return (
     <>
-      <Box bg="blue.200" w="full" align="center" height="60px">
+      <Box bg="teal.300" w="full" align="center" height="60px">
         <Text fontWeight="bold" fontSize={"xx-large"}>
           Warehouse Form
         </Text>
@@ -273,14 +273,14 @@ const WarehouseForm = () => {
             />
             {/* Tombol Create */}
             {!id && (
-              <Button bg="blue.100" onClick={handleSubmit}>
+              <Button bg="teal.200" onClick={handleSubmit}>
                 Create
               </Button>
             )}
 
             {/* Tombol Edit */}
             {id && (
-              <Button bg="blue.100" onClick={() => handleEdit(id)}>
+              <Button bg="teal.200" onClick={() => handleEdit(id)}>
                 Edit
               </Button>
             )}

@@ -36,26 +36,27 @@ async function main() {
   });
   //end of seeding Warehouse
 
-  // //Seeding Category
-  // const category = await prisma.category.createMany({
-  //   data: [
-  //     {
-  //       category_name: "Category 1",
-  //     },
-  //     {
-  //       category_name: "Category 2",
-  //     },
-  //     {
-  //       category_name: "Category 3",
-  //     },
-  //     {
-  //       category_name: "Category 4",
-  //     },
-  //     {
-  //       category_name: "Category 5",
-  //     },
-  //   ],
-  // });
+  //Seeding Category
+  const category = await prisma.category.createMany({
+    data: [
+      {
+        category_name: "Category 1",
+      },
+      {
+        category_name: "Category 2",
+      },
+      {
+        category_name: "Category 3",
+      },
+      {
+        category_name: "Category 4",
+      },
+      {
+        category_name: "Category 5",
+      },
+    ],
+  });
+  
   // Delete all existing OrderItems
   await prisma.orderItem.deleteMany();
 
@@ -240,82 +241,82 @@ async function main() {
     ],
   });
 
-  //seeding User
+  // seeding User
 
-  // const user = await prisma.user.createMany({
-  //   data: [
-  //     {
-  //       full_name: "John Doe",
-  //       password: "securepassword1",
-  //       email: "john.doe@example.com",
-  //       affiliate_code: "ABC123",
-  //       affiliate_usage: true,
-  //     },
-  //     {
-  //       full_name: "Jane Smith",
-  //       password: "strongpass2023",
-  //       email: "jane.smith@example.com",
-  //       affiliate_code: "XYZ789",
-  //       affiliate_usage: false,
-  //     },
-  //     {
-  //       full_name: "Mike Johnson",
-  //       password: "mypassword123",
-  //       email: "mike.johnson@example.com",
-  //       affiliate_code: "DEF456",
-  //       affiliate_usage: true,
-  //     },
-  //     {
-  //       full_name: "Emily Brown",
-  //       password: "secretword321",
-  //       email: "emily.brown@example.com",
-  //       affiliate_code: "GHI789",
-  //       affiliate_usage: false,
-  //     },
-  //     {
-  //       full_name: "Alex Turner",
-  //       password: "pass1234word",
-  //       email: "alex.turner@example.com",
-  //       affiliate_code: "JKL012",
-  //       affiliate_usage: true,
-  //     },
-  //     {
-  //       full_name: "Grace Wilson",
-  //       password: "gracefulpass",
-  //       email: "grace.wilson@example.com",
-  //       affiliate_code: "MNO345",
-  //       affiliate_usage: false,
-  //     },
-  //     {
-  //       full_name: "Daniel Lee",
-  //       password: "danielpass456",
-  //       email: "daniel.lee@example.com",
-  //       affiliate_code: "PQR678",
-  //       affiliate_usage: true,
-  //     },
-  //     {
-  //       full_name: "Olivia Moore",
-  //       password: "oliviapass789",
-  //       email: "olivia.moore@example.com",
-  //       affiliate_code: "STU901",
-  //       affiliate_usage: false,
-  //     },
-  //     {
-  //       full_name: "William Davis",
-  //       password: "william123pass",
-  //       email: "william.davis@example.com",
-  //       affiliate_code: "VWX234",
-  //       affiliate_usage: true,
-  //     },
-  //     {
-  //       full_name: "Sophia Rodriguez",
-  //       password: "sophiapass567",
-  //       email: "sophia.rodriguez@example.com",
-  //       affiliate_code: "YZA567",
-  //       affiliate_usage: false,
-  //     },
-  //   ],
-  // });
+  const user = await prisma.user.createMany({
+    data: [
+      {
+        full_name: "John Doe",
+        password: "securepassword1",
+        email: "john.doe@example.com",
+        affiliate_code: "ABC123",
+        affiliate_usage: true,
+      },
+      {
+        full_name: "Jane Smith",
+        password: "strongpass2023",
+        email: "jane.smith@example.com",
+        affiliate_code: "XYZ789",
+        affiliate_usage: false,
+      },
+      {
+        full_name: "Mike Johnson",
+        password: "mypassword123",
+        email: "mike.johnson@example.com",
+        affiliate_code: "DEF456",
+        affiliate_usage: true,
+      },
+      {
+        full_name: "Emily Brown",
+        password: "secretword321",
+        email: "emily.brown@example.com",
+        affiliate_code: "GHI789",
+        affiliate_usage: false,
+      },
+      {
+        full_name: "Alex Turner",
+        password: "pass1234word",
+        email: "alex.turner@example.com",
+        affiliate_code: "JKL012",
+        affiliate_usage: true,
+      },
+      {
+        full_name: "Grace Wilson",
+        password: "gracefulpass",
+        email: "grace.wilson@example.com",
+        affiliate_code: "MNO345",
+        affiliate_usage: false,
+      },
+      {
+        full_name: "Daniel Lee",
+        password: "danielpass456",
+        email: "daniel.lee@example.com",
+        affiliate_code: "PQR678",
+        affiliate_usage: true,
+      },
+      {
+        full_name: "Olivia Moore",
+        password: "oliviapass789",
+        email: "olivia.moore@example.com",
+        affiliate_code: "STU901",
+        affiliate_usage: false,
+      },
+      {
+        full_name: "William Davis",
+        password: "william123pass",
+        email: "william.davis@example.com",
+        affiliate_code: "VWX234",
+        affiliate_usage: true,
+      },
+      {
+        full_name: "Sophia Rodriguez",
+        password: "sophiapass567",
+        email: "sophia.rodriguez@example.com",
+        affiliate_code: "YZA567",
+        affiliate_usage: false,
+      },
+    ],
+  });
 
   await prisma.promotion.create({
     data: {
