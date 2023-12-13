@@ -55,15 +55,20 @@ export default function Promopage() {
     setPromotions(filteredPromo);
   };
 
+  //Handle for search button when pressed enter
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   //Handle Delete
   const handleDelete = async (promoid) => {
     try {
       //Calling function from api
       await deletePromo(promoid);
 
-      const updatedPromo = promotions.filter(
-        (promotion) => promotion.promo_id !== promoid
-      );
+      const updatedPromo = promotions.filter((promotion) => promotion.promo_id !== promoid);
       setPromotions(updatedPromo);
 
       console.log("Promo deleted successfully");
@@ -97,6 +102,7 @@ export default function Promopage() {
                 placeholder="Search Promo"
                 value={searchTerm}
                 onChange={(e) => SetsearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
               />
               <InputRightElement>
                 <Button
@@ -106,8 +112,7 @@ export default function Promopage() {
                   _hover={{
                     rounded: "full",
                     bg: "white",
-                  }}
-                >
+                  }}>
                   <SearchIcon />
                 </Button>
               </InputRightElement>
@@ -118,44 +123,31 @@ export default function Promopage() {
               _hover={{
                 bg: "white",
                 textColor: "blue",
-              }}
-            >
+              }}>
               Add Promo
             </Button>
           </HStack>
         </Box>
+        {/* end of search bar */}
 
         <Box align="center">
           {promotions.map((promotion) => (
             <WrapItem
               h="150px"
               w="750px"
-              bg="blue.100"
+              bg="teal.200"
               rounded={"20px"}
               mt="10px"
               boxShadow="0 3px 5px rgba(0,0,0,0.2)"
-              key={`${promotion.promo_id}`}
-            >
-              <Grid
-                w="full"
-                templateColumns="repeat(3,1fr)"
-                templateRows="repeat(1,1fr)"
-              >
+              key={`${promotion.promo_id}`}>
+              <Grid w="full" templateColumns="repeat(3,1fr)" templateRows="repeat(1,1fr)">
                 <GridItem>
-                  <Box
-                    w="80%"
-                    p="20px"
-                    bg="white"
-                    rounded="lg"
-                    mt="40px"
-                    align="center"
-                  >
-                    {" "}
-                    <Text as="b"> {`${promotion.type}`} </Text>{" "}
+                  <Box w="80%" p="20px" bg="white" rounded="lg" mt="40px" align="center">
+                    <Text as="b"> {`${promotion.type}`} </Text>
                   </Box>
                 </GridItem>
                 <GridItem>
-                  <Box p="3px" mt="12px" bg="#E0F4FF" rounded="10px">
+                  <Box p="3px" mt="12px" bg="gray.100" rounded="10px">
                     <Grid templateColumns="repeat(2,1fr)">
                       <GridItem align="right">
                         <Text ml="8px"> Type : </Text>
@@ -183,8 +175,7 @@ export default function Promopage() {
                       _hover={{
                         bg: "blue",
                         textColor: "white",
-                      }}
-                    >
+                      }}>
                       Manage
                     </Button>
                     <Popover>
@@ -196,18 +187,14 @@ export default function Promopage() {
                             bg: "red",
                             textColor: "white",
                             border: "none",
-                          }}
-                        >
+                          }}>
                           Delete
                         </Button>
                       </PopoverTrigger>
                       <Portal>
                         <PopoverContent>
                           <PopoverArrow />
-                          <PopoverHeader>
-                            {" "}
-                            Proceed to delete this ?{" "}
-                          </PopoverHeader>
+                          <PopoverHeader> Proceed to delete this ? </PopoverHeader>
                           <PopoverBody>
                             <PopoverCloseButton />
                             <Button
@@ -217,8 +204,7 @@ export default function Promopage() {
                               onClick={() => handleDelete(promotion.promo_id)}
                               key={promotion.promo_id}
                               closeOnBlur
-                              closeDelay="200"
-                            >
+                              closeDelay="200">
                               Delete
                             </Button>
                           </PopoverBody>
