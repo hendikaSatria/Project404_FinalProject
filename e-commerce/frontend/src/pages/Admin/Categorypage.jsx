@@ -17,6 +17,8 @@ import {
   ModalBody,
   ModalCloseButton,
   Stack,
+  Alert,
+  AlertIcon,
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
@@ -43,6 +45,7 @@ import {
 
 const Categorypage = () => {
   const [categories, setCategories] = useState([]);
+  const [isCategoryNameEmpty, setIsCategoryNameEmpty] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryData, setCategoryData] = useState(null);
@@ -89,6 +92,21 @@ const Categorypage = () => {
 
   const handleSubmit = async () => {
     try {
+      if (!categoryData.category_name) {
+        // Jika category name kosong, tampilkan toast
+        toast({
+          title: "Error",
+          description: "Category name cannot be empty!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+
+      // Reset status validasi jika category name tidak kosong
+      setIsCategoryNameEmpty(false);
+
       if (modalHeader === "Add Category") {
         try {
           // Logika untuk menambah kategori baru
@@ -230,6 +248,14 @@ const Categorypage = () => {
             </HStack>
           </Box>
           {/* End of search bar */}
+
+          {/* Alert for empty category name */}
+          {/* {isCategoryNameEmpty && (
+            <Alert status="error" mb={4}>
+              <AlertIcon />
+              Category name cannot be empty!
+            </Alert>
+          )} */}
           <Box w={"full"}>
             <Box border="1px solid" roundedTop={"lg"}>
               <Table>
