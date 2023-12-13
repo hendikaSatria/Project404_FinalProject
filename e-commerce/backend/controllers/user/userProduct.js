@@ -104,7 +104,9 @@ const getProductById = async (req, res) => {
 
 const getTotalProducts = async (req, res) => {
   try {
-    const totalProducts = await prisma.product.count();
+    const totalProducts = await prisma.product.count({
+      where: { is_available: true },
+    });
     res.json({ totalProducts });
   } catch (error) {
     console.error("Error fetching total products:", error);
