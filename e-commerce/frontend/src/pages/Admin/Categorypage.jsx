@@ -254,39 +254,52 @@ const Categorypage = () => {
             >
               <Table>
                 <Tbody>
-                  {categories?.map((category) => (
-                    <Tr key={category.category_id}>
-                      <Td w={"50%"}>{`${category.category_name}`}</Td>
-                      <Td w={"50%"}>
-                        <HStack>
-                          <Button
-                            w="full"
-                            colorScheme="yellow"
-                            onClick={() => {
-                              setModalHeader("Edit Category");
-                              setModalButtonLabel("Update"); // Ubah teks header modal
-                              setOverlay(<OverlayOne />);
-                              setCategoryData(category); // Set data kategori yang akan diedit
-                              onOpen();
-                            }}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            w="full"
-                            colorScheme="red"
-                            onClick={() => {
-                              handleOpenDeleteDialog(category.category_id);
-                              setDeleteCategoryName(category.category_name);
-                            }}
-                            // key={category.category_id}
-                          >
-                            Delete
-                          </Button>
-                        </HStack>
+                  {categories && categories.length > 0 ? (
+                    categories?.map((category) => (
+                      <Tr key={category.category_id}>
+                        <Td w={"50%"}>{`${category.category_name}`}</Td>
+                        <Td w={"50%"}>
+                          <HStack>
+                            <Button
+                              w="full"
+                              colorScheme="yellow"
+                              onClick={() => {
+                                setModalHeader("Edit Category");
+                                setModalButtonLabel("Update"); // Ubah teks header modal
+                                setOverlay(<OverlayOne />);
+                                setCategoryData(category); // Set data kategori yang akan diedit
+                                onOpen();
+                              }}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              w="full"
+                              colorScheme="red"
+                              onClick={() => {
+                                handleOpenDeleteDialog(category.category_id);
+                                setDeleteCategoryName(category.category_name);
+                              }}
+                              // key={category.category_id}
+                            >
+                              Delete
+                            </Button>
+                          </HStack>
+                        </Td>
+                      </Tr>
+                    ))
+                  ) : (
+                    <Tr>
+                      <Td
+                        colSpan={4}
+                        textAlign="center"
+                        fontSize={"x-large"}
+                        textColor={"red"}
+                      >
+                        Not found !!!
                       </Td>
                     </Tr>
-                  ))}
+                  )}
                 </Tbody>
               </Table>
             </Box>

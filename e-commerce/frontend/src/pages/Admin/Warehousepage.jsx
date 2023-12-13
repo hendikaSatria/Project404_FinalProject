@@ -157,35 +157,48 @@ export default function WarehousePage() {
             >
               <Table>
                 <Tbody>
-                  {warehouses?.map((warehouse) => (
-                    <Tr key={warehouse.warehouse_id}>
-                      <Td w={"25%"}>{`${warehouse.warehouse_name}`}</Td>
-                      <Td w={"25%"}>{`${warehouse.province_name}`}</Td>
-                      <Td w={"25%"}>{`${warehouse.city_name}`}</Td>
-                      <Td w={"25%"}>
-                        <HStack justify={"center"}>
-                          <Button
-                            colorScheme="yellow"
-                            as={Link}
-                            to={`/admin/warehouse/${warehouse.warehouse_id}`}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            colorScheme="red"
-                            onClick={() =>
-                              handleOpenDeleteDialog(
-                                warehouse.warehouse_id,
-                                warehouse.warehouse_name
-                              )
-                            }
-                          >
-                            Delete
-                          </Button>
-                        </HStack>
+                  {warehouses && warehouses.length > 0 ? (
+                    warehouses.map((warehouse) => (
+                      <Tr key={warehouse.warehouse_id}>
+                        <Td w={"25%"}>{`${warehouse.warehouse_name}`}</Td>
+                        <Td w={"25%"}>{`${warehouse.province_name}`}</Td>
+                        <Td w={"25%"}>{`${warehouse.city_name}`}</Td>
+                        <Td w={"25%"}>
+                          <HStack justify={"center"}>
+                            <Button
+                              colorScheme="yellow"
+                              as={Link}
+                              to={`/admin/warehouse/${warehouse.warehouse_id}`}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              colorScheme="red"
+                              onClick={() =>
+                                handleOpenDeleteDialog(
+                                  warehouse.warehouse_id,
+                                  warehouse.warehouse_name
+                                )
+                              }
+                            >
+                              Delete
+                            </Button>
+                          </HStack>
+                        </Td>
+                      </Tr>
+                    ))
+                  ) : (
+                    <Tr>
+                      <Td
+                        colSpan={4}
+                        textAlign="center"
+                        fontSize={"x-large"}
+                        textColor={"red"}
+                      >
+                        Not found !!!
                       </Td>
                     </Tr>
-                  ))}
+                  )}
                 </Tbody>
               </Table>
             </Box>
