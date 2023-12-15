@@ -208,9 +208,7 @@ const Order = () => {
                   <Th textAlign="center" borderBottom="1px solid" p={2}>
                     Order Date
                   </Th>
-                  <Th textAlign="center" borderBottom="1px solid" p={2}>
-                    Total Price
-                  </Th>
+
                   <Th textAlign="center" borderBottom="1px solid" p={2}>
                     Product Name
                   </Th>
@@ -219,6 +217,9 @@ const Order = () => {
                   </Th>
                   <Th textAlign="center" borderBottom="1px solid" p={2}>
                     Price
+                  </Th>
+                  <Th textAlign="center" borderBottom="1px solid" p={2}>
+                    Total Price
                   </Th>
                   <Th textAlign="center" borderBottom="1px solid" p={2}>
                     Proof of Payment
@@ -248,9 +249,6 @@ const Order = () => {
                         {new Date(order.order_date).toLocaleDateString()}
                       </Td>
                       <Td textAlign="center" p={2}>
-                        {order.total_price}
-                      </Td>
-                      <Td textAlign="center" p={2}>
                         {order.order_items[0]?.product.name}
                       </Td>
                       <Td textAlign="center" p={2}>
@@ -258,6 +256,9 @@ const Order = () => {
                       </Td>
                       <Td textAlign="center" p={2}>
                         {order.order_items[0]?.price}
+                      </Td>
+                      <Td textAlign="center" p={2}>
+                        {order.total_price}
                       </Td>
                       <Td textAlign="center" p={2}>
                         {order.ProofsOfPayment.map((proof, proofIndex) => (
