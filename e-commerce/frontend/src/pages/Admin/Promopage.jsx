@@ -68,7 +68,9 @@ export default function Promopage() {
       //Calling function from api
       await deletePromo(promoid);
 
-      const updatedPromo = promotions.filter((promotion) => promotion.promo_id !== promoid);
+      const updatedPromo = promotions.filter(
+        (promotion) => promotion.promo_id !== promoid
+      );
       setPromotions(updatedPromo);
 
       console.log("Promo deleted successfully");
@@ -92,44 +94,46 @@ export default function Promopage() {
           Promo Management
         </Text>
       </Box>
-      <VStack overflowY="auto" h="55em" spacing={4} align="stretch" p={12}>
-        {/* search bar */}
-        <Box align="center">
-          <HStack w="750px">
-            <InputGroup size="md">
-              <Input
-                pr="100px"
-                placeholder="Search Promo"
-                value={searchTerm}
-                onChange={(e) => SetsearchTerm(e.target.value)}
-                onKeyDown={handleKeyDown}
-              />
-              <InputRightElement>
-                <Button
-                  size="sm"
-                  onClick={handleSearch}
-                  bg={"transparent"}
-                  _hover={{
-                    rounded: "full",
-                    bg: "white",
-                  }}>
-                  <SearchIcon />
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            <Button
-              onClick={() => navigate("/admin/promo/create")}
-              colorScheme="blue"
-              _hover={{
-                bg: "white",
-                textColor: "blue",
-              }}>
-              Add Promo
-            </Button>
-          </HStack>
-        </Box>
-        {/* end of search bar */}
 
+      {/* search bar */}
+      <Box align="center" mt={8} mb={4}>
+        <HStack w="750px">
+          <InputGroup size="md">
+            <Input
+              pr="100px"
+              placeholder="Search Promo"
+              value={searchTerm}
+              onChange={(e) => SetsearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <InputRightElement>
+              <Button
+                size="sm"
+                onClick={handleSearch}
+                bg={"transparent"}
+                _hover={{
+                  rounded: "full",
+                  bg: "white",
+                }}
+              >
+                <SearchIcon />
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+          <Button
+            onClick={() => navigate("/admin/promo/create")}
+            colorScheme="blue"
+            _hover={{
+              bg: "white",
+              textColor: "blue",
+            }}
+          >
+            Add Promo
+          </Button>
+        </HStack>
+      </Box>
+      {/* end of search bar */}
+      <VStack overflowY="auto" h="80vh" spacing={4} align="stretch" p={12}>
         <Box align="center">
           {promotions.map((promotion) => (
             <WrapItem
@@ -139,10 +143,22 @@ export default function Promopage() {
               rounded={"20px"}
               mt="10px"
               boxShadow="0 3px 5px rgba(0,0,0,0.2)"
-              key={`${promotion.promo_id}`}>
-              <Grid w="full" templateColumns="repeat(3,1fr)" templateRows="repeat(1,1fr)">
+              key={`${promotion.promo_id}`}
+            >
+              <Grid
+                w="full"
+                templateColumns="repeat(3,1fr)"
+                templateRows="repeat(1,1fr)"
+              >
                 <GridItem>
-                  <Box w="80%" p="20px" bg="white" rounded="lg" mt="40px" align="center">
+                  <Box
+                    w="80%"
+                    p="20px"
+                    bg="white"
+                    rounded="lg"
+                    mt="40px"
+                    align="center"
+                  >
                     <Text as="b"> {`${promotion.type}`} </Text>
                   </Box>
                 </GridItem>
@@ -175,7 +191,8 @@ export default function Promopage() {
                       _hover={{
                         bg: "blue",
                         textColor: "white",
-                      }}>
+                      }}
+                    >
                       Manage
                     </Button>
                     <Popover>
@@ -187,14 +204,18 @@ export default function Promopage() {
                             bg: "red",
                             textColor: "white",
                             border: "none",
-                          }}>
+                          }}
+                        >
                           Delete
                         </Button>
                       </PopoverTrigger>
                       <Portal>
                         <PopoverContent>
                           <PopoverArrow />
-                          <PopoverHeader> Proceed to delete this ? </PopoverHeader>
+                          <PopoverHeader>
+                            {" "}
+                            Proceed to delete this ?{" "}
+                          </PopoverHeader>
                           <PopoverBody>
                             <PopoverCloseButton />
                             <Button
@@ -204,7 +225,8 @@ export default function Promopage() {
                               onClick={() => handleDelete(promotion.promo_id)}
                               key={promotion.promo_id}
                               closeOnBlur
-                              closeDelay="200">
+                              closeDelay="200"
+                            >
                               Delete
                             </Button>
                           </PopoverBody>

@@ -62,6 +62,8 @@ const OrderCard = ({ order }) => {
         console.error("Error completing order:", response.error);
       } else {
         alert("Order completed successfully!");
+
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error completing order:", error);
@@ -144,7 +146,7 @@ const OrderCard = ({ order }) => {
             </>
           )}
 
-        {order.order_status === "Processing" && (
+        {order.order_status === "processing" && (
           <Button
             mt="2"
             colorScheme="teal"
