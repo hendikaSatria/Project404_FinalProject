@@ -24,9 +24,10 @@ const HomePage = ({ searchTerm }) => {
         search: searchTerm,
       });
 
+      // console.log(response.data);
       if (response && response.data) {
         setSearchedProducts(response.data);
-        setTotalPages(Math.ceil(response.data.length / 12));
+        setTotalPages(Math.ceil(response.length / 12));
       } else {
         console.error("Invalid response format:", response);
       }
