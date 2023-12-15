@@ -263,7 +263,7 @@ const Order = () => {
                         {order.ProofsOfPayment.map((proof, proofIndex) => (
                           <img
                             key={proofIndex}
-                            src={`http://localhost:3000/images/${proof.image}`}
+                            src={`http://localhost:3000/uploads/${proof.image}`}
                             alt={`Proof of Payment ${order.order_id} - ${
                               proofIndex + 1
                             }`}

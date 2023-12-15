@@ -6,6 +6,7 @@ const app = express();
 
 app.use(cors()); // Letakkan ini di sini
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "uploads")));
 
 app.use(express.json());
 
