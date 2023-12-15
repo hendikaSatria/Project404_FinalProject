@@ -36,7 +36,7 @@ const getProducts = async (req, res) => {
     const totalProducts = await prisma.product.count({
       where: { is_available: true },
     });
-    console.log(totalProducts);
+    // console.log(totalProducts);
     let products = await prisma.product.findMany(options);
 
     if (!!sort) {
